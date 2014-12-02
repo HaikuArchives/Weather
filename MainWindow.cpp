@@ -17,10 +17,11 @@ MainWindow::MainWindow(void) : BWindow(
 								B_ASYNCHRONOUS_CONTROLS |
 								B_QUIT_ON_WINDOW_CLOSE) {
 	// TODO: something on construction
-	layout = new BGridLayout();
-	this->SetLayout(layout);
-	layout->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	view = new BGridView(3, 3);
+	layout = view->GridLayout();
+	this->AddChild(view);
 	layout->AddView(new BStringView(BRect(100, 10, 50, 50), "Hello", "Mostly showers."), (int32) 0, (int32) 0);
+	view->Show();
 }
 
 void MainWindow::MessageRecieved(BMessage *msg) {
