@@ -5,13 +5,12 @@
 
 
 #include "App.h"
-#include "Menu.h"
+#include "MainWindow.h"
 
 App::App(void) : BApplication("application/x-vnd.gw-Weather") {
 	BRect frame(256, 256, 256, 256);
-	window = new BWindow(frame, "Weather", B_TITLED_WINDOW,
-					B_QUIT_ON_WINDOW_CLOSE);
-	window->Show();
+	MainWindow *mw = new MainWindow();
+	mw->Show();
 }
 
 int main() {

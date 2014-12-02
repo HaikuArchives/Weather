@@ -4,12 +4,13 @@
 
 NAME= Weather
 TYPE= APP
-APP_VERSI=
+APP_VERSION=
 APP_MIME_SIG=
 
 # The source les.
 SRCS= \
-	App.cpp
+	App.cpp \
+	MainWindow.cpp
 
 # Includes.
 LOCAL_INCLUDE_PATHS = \
