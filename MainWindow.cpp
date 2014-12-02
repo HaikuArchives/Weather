@@ -16,6 +16,7 @@
 #include <Button.h>
 #include <AppKit.h>
 #include "MainWindow.h"
+#include "SelectionWindow.h"
 
 
 // Placeholder
@@ -108,12 +109,12 @@ const unsigned char rainIcon[] = {
 	0xc0, 0x9f, 0x13, 0x4a, 0xf5, 0x6a
 };
 
-BMenuBar* PrepareMenuBar(void) {
+BMenuBar* MainWindow::PrepareMenuBar(void) {
 	BMenuBar *menubar = new BMenuBar("menu");
 	BMenu *menu = new BMenu("Edit");
 	
 	menu->AddItem(new BMenuItem("Refresh", NULL, 'r'));
-	menu->AddItem(new BMenuItem("Change location", NULL, NULL));
+	menu->AddItem(new BMenuItem("Change location", &BMessage(25), NULL, NULL));
 	
 	menubar->AddItem(menu);
 	
@@ -133,7 +134,8 @@ MainWindow::MainWindow(void) : BWindow(
 	view = new BGridView(3, 3);
 	layout = view->GridLayout();
 	layout->SetInsets(5);
-	this->AddChild(PrepareMenuBar());
+	BMenuBar *menubar = PrepareMenuBar();
+	this->AddChild(menubar);
 	this->AddChild(view);
 	
 	// Icon for weather
@@ -171,6 +173,10 @@ MainWindow::MainWindow(void) : BWindow(
 
 void MainWindow::MessageRecieved(BMessage *msg) {
 	switch (msg->what) {
+		case 25: {
+			(new SelectionWindow())->Show();
+		}
+		
 		default: {
 			// BWindow::MessageRecieved(msg);
 			break;

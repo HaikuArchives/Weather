@@ -7,6 +7,7 @@
 #include <Window.h>
 #include <GridLayout.h>
 #include <GridView.h>
+#include <MenuBar.h>
 #include <View.h>
 
 class MainWindow : public BWindow {
@@ -17,5 +18,6 @@ private:
 public:
 	MainWindow(void);
 	void MessageRecieved(BMessage *);
+	BMenuBar *PrepareMenuBar(void);
 	void AddView(BView *);
 };
