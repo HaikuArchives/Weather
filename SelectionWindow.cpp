@@ -9,6 +9,7 @@
 #include <GroupView.h>
 #include <StringView.h>
 #include <Button.h>
+#include <TextControl.h>
 #include "SelectorWindow.h"
 
 SelectorWindow::SelectorWindow(void) : BWindow(
@@ -22,8 +23,10 @@ SelectorWindow::SelectorWindow(void) : BWindow(
 	
 	BGroupView *view = new BGroupView(B_VERTICAL);
 	BGroupLayout *layout = view->GroupLayout();
-	
 	this->AddChild(view);
+	
+	layout->AddView(new BStringView("select description", "Select a city to change location:"));
+	layout->AddView(new BTextControl(NULL, "search", "Search", NULL, NULL));
 }
 	
 									
