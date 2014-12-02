@@ -10,7 +10,8 @@ APP_MIME_SIG=
 # The source files.
 SRCS= \
 	App.cpp \
-	MainWindow.cpp
+	MainWindow.cpp \
+	SelectionWindow.cpp
 
 # Includes.
 LOCAL_INCLUDE_PATHS = \

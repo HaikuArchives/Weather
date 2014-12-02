@@ -1,4 +1,4 @@
-#import <Window.h>
+#include <Window.h>
 
 class SelectorWindow : public BWindow {
 	public:

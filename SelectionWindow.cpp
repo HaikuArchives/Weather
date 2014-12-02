@@ -8,11 +8,12 @@
 #include <GroupLayout.h>
 #include <GroupView.h>
 #include <StringView.h>
+#include <ListView.h>
 #include <Button.h>
 #include <TextControl.h>
-#include "SelectorWindow.h"
+#include "SelectionWindow.h"
 
-SelectorWindow::SelectorWindow(void) : BWindow(
+SelectionWindow::SelectionWindow(void) : BWindow(
 								BRect(50, 50, 0, 0),
 								"Change location",
 								B_TITLED_WINDOW,
@@ -27,6 +28,8 @@ SelectorWindow::SelectorWindow(void) : BWindow(
 	
 	layout->AddView(new BStringView("select description", "Select a city to change location:"));
 	layout->AddView(new BTextControl(NULL, "search", "Search", NULL, NULL));
+	layout->AddView(new BListView("list"));
+	layout->AddView(new BButton("save", "Save"));
 }
 	
 									
