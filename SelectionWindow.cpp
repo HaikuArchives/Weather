@@ -27,9 +27,9 @@ SelectionWindow::SelectionWindow(void) : BWindow(
 	this->AddChild(view);
 	
 	layout->AddView(new BStringView("select description", "Select a city to change location:"));
-	layout->AddView(new BTextControl(NULL, "search", "Search", NULL, NULL));
+	layout->AddView(new BTextControl(NULL, "search", "Search", NULL));
 	layout->AddView(new BListView("list"));
-	layout->AddView(new BButton("save", "Save"));
+	layout->AddView(new BButton("save", "Save", NULL));
 }
 	
 									
