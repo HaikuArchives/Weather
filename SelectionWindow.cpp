@@ -24,10 +24,11 @@ SelectionWindow::SelectionWindow(void) : BWindow(
 	
 	BGroupView *view = new BGroupView(B_VERTICAL);
 	BGroupLayout *layout = view->GroupLayout();
+	layout->SetInsets(16);
 	this->AddChild(view);
 	
 	layout->AddView(new BStringView("select description", "Select a city to change location:"));
-	layout->AddView(new BTextControl(NULL, "search", "Search", NULL));
+	layout->AddView(new BTextControl(NULL, "Search", "city", NULL));
 	layout->AddView(new BListView("list"));
 	layout->AddView(new BButton("save", "Save", NULL));
 }

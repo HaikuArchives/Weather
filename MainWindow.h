@@ -17,7 +17,7 @@ private:
 
 public:
 	MainWindow(void);
-	void MessageRecieved(BMessage *);
+	void MessageReceived(BMessage *);
 	BMenuBar *PrepareMenuBar(void);
 	void AddView(BView *);
 };

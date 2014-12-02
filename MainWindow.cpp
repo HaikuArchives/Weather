@@ -18,7 +18,6 @@
 #include "MainWindow.h"
 #include "SelectionWindow.h"
 
-
 // Placeholder
 const unsigned char rainIcon[] = {
 	0x6e, 0x63, 0x69, 0x66, 0x06, 0x04, 0x00, 0x6e, 0x05, 0x76, 0x05, 0xec,
@@ -115,7 +114,7 @@ BMenuBar* MainWindow::PrepareMenuBar(void) {
 	
 	menu->AddItem(new BMenuItem("Refresh", NULL, 'r'));
 	
-	BMessage *msg = &BMessage(25);
+	BMessage *msg = new BMessage(25);
 	menu->AddItem(new BMenuItem("Change location", msg, NULL, NULL));
 	
 	menubar->AddItem(menu);
@@ -173,7 +172,7 @@ MainWindow::MainWindow(void) : BWindow(
 	
 }
 
-void MainWindow::MessageRecieved(BMessage *msg) {
+void MainWindow::MessageReceived(BMessage *msg) {
 	switch (msg->what) {
 		case 25: {
 			(new SelectionWindow())->Show();
