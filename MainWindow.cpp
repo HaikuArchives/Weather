@@ -114,7 +114,9 @@ BMenuBar* MainWindow::PrepareMenuBar(void) {
 	BMenu *menu = new BMenu("Edit");
 	
 	menu->AddItem(new BMenuItem("Refresh", NULL, 'r'));
-	menu->AddItem(new BMenuItem("Change location", &BMessage(25), NULL, NULL));
+	
+	BMessage *msg = &BMessage(25);
+	menu->AddItem(new BMenuItem("Change location", msg, NULL, NULL));
 	
 	menubar->AddItem(menu);
 	
