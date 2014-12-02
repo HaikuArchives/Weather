@@ -1,6 +1,6 @@
 #include <Window.h>
 
-class SelectorWindow : public BWindow {
+class SelectionWindow : public BWindow {
 	public:
-		SelectorWindow(void);
-}
+		SelectionWindow(void);
+};
