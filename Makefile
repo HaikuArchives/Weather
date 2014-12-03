@@ -7,7 +7,7 @@ TYPE= APP
 APP_VERSION=
 APP_MIME_SIG=
 
-# The source les.
+# The source files.
 SRCS= \
 	App.cpp \
 	MainWindow.cpp
