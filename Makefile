@@ -26,4 +26,4 @@ LIBS= be
 LIBPATHS=
 
 
-include $(BUILDHOME)/etc/makefile-engine
+include /boot/system/develop/etc/makefile-engine
