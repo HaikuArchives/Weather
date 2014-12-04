@@ -142,7 +142,7 @@ MainWindow::MainWindow(void) : BWindow(
 	// Icon for weather
 	BButton *weatherButton = new BButton("");
 	BBitmap *rainBitmap = new BBitmap(BRect(0, 0, 128, 128), NULL, B_RGBA32);
-	(new BIconUtils)->GetVectorIcon(rainIcon, sizeof(rainIcon), rainBitmap);
+	BIconUtils::GetVectorIcon(rainIcon, sizeof(rainIcon), rainBitmap);
 	weatherButton->SetIcon(rainBitmap);
 	layout->AddView(weatherButton, (int32) 0, (int32) 0);
 	

@@ -22,7 +22,7 @@ RDEFS=
 RSRCS=
 
 # Libraries.
-LIBS= be
+LIBS= be stdc++
 LIBPATHS=
 
 
