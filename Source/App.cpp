@@ -7,7 +7,7 @@
 #include "App.h"
 #include "MainWindow.h"
 
-App::App(void) : BApplication("application/x-vnd.gw-Weather") {
+App::App(void) : BApplication("application/x-vnd.przemub.HaikuWeather") {
 	BRect frame(256, 256, 256, 256);
 	MainWindow *mw = new MainWindow();
 	mw->Show();
