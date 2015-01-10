@@ -1,8 +1,8 @@
 /*
-	Copyright (C) 2014 George White.
-	Licensed under the MIT license.
-	Made for Haiku.
-*/
+ * Copyright 2015 Przemysław Buczkowski <przemub@przemub.pl>
+ * Copyright 2014 George White
+ * All rights reserved. Distributed under the terms of the MIT license.
+ */
 
 #include <Window.h>
 #include <GroupLayout.h>

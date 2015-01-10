@@ -34,8 +34,10 @@ APP_MIME_SIG=application/x-vnd.przemub.HaikuWeather
 #	if two source files with the same name (source.c or source.cpp)
 #	are included from different directories.  Also note that spaces
 #	in folder names do not work well with this makefile.
-SRCS=Source/App.cpp Source/MainWindow.cpp \
-	Source/SelectionWindow.cpp
+SRCS=Source/App.cpp \
+	Source/NetListener.cpp\
+	Source/MainWindow.cpp \
+	Source/SelectionWindow.cpp 
 
 #	specify the resource definition files to use
 #	full path or a relative path to the resource file can be used.
@@ -67,7 +69,7 @@ RSRCS=
 #		naming scheme you need to specify the path to the library
 #		and it's name
 #		library: my_lib.a entry: my_lib.a or path/my_lib.a
-LIBS=be game localestub translation $(STDCPPLIBS)
+LIBS=be localestub translation bnetapi $(STDCPPLIBS)
 
 #	specify additional paths to directories following the standard
 #	libXXX.so or libXXX.a naming scheme.  You can specify full paths
@@ -126,7 +128,7 @@ DEBUGGER=
 COMPILER_FLAGS =-Wall -Wno-multichar -Wno-unknown-pragmas
 
 #	specify additional linker flags
-LINKER_FLAGS =
+LINKER_FLAGS = 
 
 #	specify the version of this particular item
 #	(for example, -app 3 4 0 d 0 -short 340 -long "340 "`echo -n -e '\302\251'`"1999 GNU GPL")
