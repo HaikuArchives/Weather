@@ -57,13 +57,12 @@ MainWindow::MainWindow()
 	fResources = be_app->AppResources();
 	_LoadBitmaps();
 	
-	fCondition = -1;
-	fTemperature = -101;
-	_DownloadData(2487889);
+	fCityId = 2487889;
+	_DownloadData();
 	
 	// Icon for weather
 	fConditionButton = new BButton("");
-	fConditionButton->SetIcon(fCloudy);
+	fConditionButton->SetIcon(fFewClouds);
 	fLayout->AddView(fConditionButton, (int32) 0, (int32) 0);
 	
 	BGroupView *infoView = new BGroupView(B_VERTICAL);
@@ -109,9 +108,48 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		fTemperatureView->SetText(tempString);
 		fConditionView->SetText(text);
 		
-		/*switch (fCondition) {
-			
-		}*/
+		if (fCondition >= 0 && fCondition <= 2)
+			fConditionButton->SetIcon(fAlert);
+		else if (fCondition >= 3 && fCondition <= 4)
+			fConditionButton->SetIcon(fStorm);
+		else if (fCondition >= 5 && fCondition <= 7)
+			fConditionButton->SetIcon(fSnow);
+		else if (fCondition == 10)
+			fConditionButton->SetIcon(fRaining);
+		else if (fCondition >= 8 && fCondition <= 12)
+			fConditionButton->SetIcon(fRainingScattered);
+		else if (fCondition >= 13 && fCondition <= 18)
+			fConditionButton->SetIcon(fSnow);
+		else if (fCondition >= 26 && fCondition <= 28)
+			fConditionButton->SetIcon(fClouds);
+		else if (fCondition == 29)
+			fConditionButton->SetIcon(fNightFewClouds);
+		else if (fCondition == 31)
+			fConditionButton->SetIcon(fClearNight);
+		else if (fCondition == 32)
+			fConditionButton->SetIcon(fClear);
+		else if (fCondition == 33)
+			fConditionButton->SetIcon(fClearNight);
+		else if (fCondition == 34)
+			fConditionButton->SetIcon(fShining);
+		else if (fCondition == 35)
+			fConditionButton->SetIcon(fRainingScattered);
+		else if (fCondition == 36)
+			fConditionButton->SetIcon(fShining);
+		else if (fCondition == 37)
+			fConditionButton->SetIcon(fThunder);
+		else if (fCondition >= 38 && fCondition <= 39)
+			fConditionButton->SetIcon(fStorm);
+		else if (fCondition == 40)
+			fConditionButton->SetIcon(fRaining);
+		else if (fCondition >= 41 && fCondition <= 43)
+			fConditionButton->SetIcon(fSnow);
+		else if (fCondition == 45)
+			fConditionButton->SetIcon(fStorm);
+		else if (fCondition == 46)
+			fConditionButton->SetIcon(fSnow);
+		else if (fCondition == 47)
+			fConditionButton->SetIcon(fThunder);
 		break;
 	case 25:
 		(new SelectionWindow())->Show();
@@ -122,14 +160,35 @@ void MainWindow::MessageReceived(BMessage *msg) {
 
 
 void MainWindow::_LoadBitmaps() {
-	fCloudy = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_clouds.hvif");
+	fAlert = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_alert.hvif");
+	fClearNight = BTranslationUtils::GetBitmap('rGFX',
+		"Artwork/weather_clear_night.hvif");
+	fClear = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_clear.hvif");
+	fClouds = BTranslationUtils::GetBitmap('rGFX',
+		"Artwork/weather_clouds.hvif");
+	fFewClouds = BTranslationUtils::GetBitmap('rGFX',
+		"Artwork/weather_few_clouds.hvif");
+	fFog = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_fog.hvif");
+	fNightFewClouds = BTranslationUtils::GetBitmap('rGFX',
+		"Artwork/weather_night_few_clouds.hvif");
+	fRainingScattered = BTranslationUtils::GetBitmap('rGFX',
+		"Artwork/weather_raining_scattered.hvif");
+	fRaining = BTranslationUtils::GetBitmap('rGFX',
+		"Artwork/weather_raining.hvif");
+	fShining = BTranslationUtils::GetBitmap('rGFX',
+		"Artwork/weather_shining.hvif");
+	fShiny = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_shiny.hvif");
+	fSnow = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_snow.hvif");
+	fStorm = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_storm.hvif");
+	fThunder = BTranslationUtils::GetBitmap('rGFX',
+		"Artwork/weather_thunder.hvif");
 }
 
 
-void MainWindow::_DownloadData(int city) {
+void MainWindow::_DownloadData() {
 	BString urlString("https://query.yahooapis.com/v1/public/yql");
 	urlString << "?q=select+item.condition+from+weather.forecast+"
-		<< "where+woeid+=+" << city;
+		<< "where+woeid+=+" << fCityId;
 	
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),

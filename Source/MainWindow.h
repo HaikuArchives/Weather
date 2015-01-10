@@ -25,7 +25,7 @@ private:
 	BGridLayout* 	fLayout;
 	
 	void 			_LoadBitmaps();
-	void			_DownloadData(int city);
+	void			_DownloadData();
 	
 	BString			fCity;
 	int				fCityId;
@@ -35,7 +35,20 @@ private:
 	
 	BResources*		fResources;
 	
-	BBitmap* 		fCloudy;
+	BBitmap* 		fAlert;
+	BBitmap* 		fClearNight;
+	BBitmap* 		fClear;
+	BBitmap* 		fClouds;
+	BBitmap* 		fFewClouds;
+	BBitmap* 		fFog;
+	BBitmap* 		fNightFewClouds;
+	BBitmap* 		fRainingScattered;
+	BBitmap* 		fRaining;
+	BBitmap* 		fShining;
+	BBitmap* 		fShiny;
+	BBitmap* 		fSnow;
+	BBitmap* 		fStorm;
+	BBitmap* 		fThunder;
 	
 	BButton*		fConditionButton;
 	BStringView*	fConditionView;

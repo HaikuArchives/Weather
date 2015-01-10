@@ -50,9 +50,10 @@ void NetListener::RequestCompleted(BUrlRequest* caller,
 	
 	BString text = fResponse;
 	first = fResponse.FindFirst("text=\"");
-	length = fResponse.FindLast("\"", first + 12);
+	length = fResponse.FindLast("\"", first + 25);
 	text.Truncate(length);
 	text.Remove(0, first + 6);
+	fprintf(stderr,"%d %d\n", first, length);
 	
 	// convert to integers
 	int temperature, condition;
