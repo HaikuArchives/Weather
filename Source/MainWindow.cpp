@@ -6,6 +6,7 @@
 
 #include <AppKit.h>
 #include <Bitmap.h>
+#include <FindDirectory.h>
 #include <Font.h>
 #include <GroupLayout.h>
 #include <GroupView.h>
@@ -18,11 +19,11 @@
 #include <UrlProtocolRoster.h>
 #include <UrlRequest.h>
 
-#include <stdio.h>
-
 #include "MainWindow.h"
 #include "NetListener.h"
 #include "SelectionWindow.h"
+
+const char* kSettingsFileName = "HaikuWeather settings";
 
 
 BMenuBar* MainWindow::PrepareMenuBar(void) {
@@ -59,6 +60,8 @@ MainWindow::MainWindow()
 	
 	fCity = "Katowice, Poland";
 	fCityId = "498842";
+	_LoadSettings();
+	
 	_DownloadData();
 	
 	// Icon for weather
@@ -151,13 +154,17 @@ void MainWindow::MessageReceived(BMessage *msg) {
 			fConditionButton->SetIcon(fThunder);
 		break;
 	case kUpdateCityMessage:
+		tempString = fCityId;
 		msg->FindString("city", &fCity);
 		msg->FindString("id", &fCityId);
 		
-		fCityView->SetText(fCity);
-		fConditionView->SetText("Loading...");
-		_DownloadData();
+		if (fCityId != tempString) {
+			fCityView->SetText(fCity);
+			fConditionView->SetText("Loading...");
+			_DownloadData();
+		}
 		
+		_SaveSettings();
 		break;
 	case 25:
 		(new SelectionWindow(this, fCity, fCityId))->Show();
@@ -202,4 +209,55 @@ void MainWindow::_DownloadData() {
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
 		new NetListener(this));
 	status_t err = request->Run();
+}
+
+
+status_t MainWindow::_LoadSettings() {
+	BPath p;
+	BFile f;
+	BMessage m;
+	
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
+		return B_ERROR;
+	p.Append(kSettingsFileName);
+	
+	f.SetTo(p.Path(), B_READ_ONLY);
+	if (f.InitCheck() != B_OK)
+		return B_ERROR;
+	
+	if (m.Unflatten(&f) != B_OK)
+		return B_ERROR;
+	
+	if (m.what != kSettingsMessage)
+		return B_ERROR;
+	
+	if (m.FindString("fCity", &fCity) != B_OK)
+		fCity = "Katowice, Poland";
+	if (m.FindString("fCityId", &fCityId) != B_OK)
+		fCityId = "498842";
+	
+	return B_OK;
+}
+
+
+status_t MainWindow::_SaveSettings() {
+	BPath p;
+	BFile f;
+	BMessage m(kSettingsMessage);
+	
+	m.AddString("fCity", fCity);
+	m.AddString("fCityId", fCityId);
+	
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
+		return B_ERROR;
+	p.Append(kSettingsFileName);
+	
+	f.SetTo(p.Path(), B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
+	if (f.InitCheck() != B_OK)
+		return B_ERROR;
+	
+	if (m.Flatten(&f) != B_OK)
+		return B_ERROR;
+	
+	return B_OK;
 }

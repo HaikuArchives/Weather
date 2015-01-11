@@ -2,6 +2,9 @@
  * Copyright 2015 Przemysław Buczkowski <przemub@przemub.pl>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
+#ifndef _SELECTIONWINDOW_H_
+#define _SELECTIONWINDOW_H_
+
 
 #include <Message.h>
 #include <String.h>
@@ -33,3 +36,6 @@ private:
 	BTextControl* 	fCityControl;
 	BTextControl* 	fIdControl;
 };
+
+
+#endif // _SELECTIONWINDOW_H_

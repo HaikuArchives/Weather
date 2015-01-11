@@ -53,8 +53,12 @@ void SelectionWindow::MessageReceived(BMessage *msg) {
 	case kDataMessage:
 		msg->FindString("id", &fCityId);
 		fIdControl->SetText(fCityId);
+		
+		_UpdateCity();
+		break;
 	case kSaveMessage:
 		_UpdateCity();
+		Quit();
 		break;
 	case kFailureMessage:
 		fIdControl->SetText("Failed!");

@@ -3,6 +3,9 @@
  * Copyright 2014 George White
  * All rights reserved. Distributed under the terms of the MIT license.
  */
+#ifndef _MAINWINDOW_H_
+#define _MAINWINDOW_H_
+
 
 #include <Bitmap.h>
 #include <Button.h>
@@ -18,14 +21,26 @@
 #define CEL(T) (5.0 / 9.0) * (T - 32.0)
 	// Macro converting a Fahrenheit value to a Celsius value
 
+const int32 kSettingsMessage = 'Pref';
+
+extern const char* kSettingsFileName;
+
 
 class MainWindow : public BWindow {
-private:
-	BGridView* 		fView;
-	BGridLayout* 	fLayout;
+public:
+					MainWindow(void);
+	void 			MessageReceived(BMessage* msg);
+	BMenuBar 		*PrepareMenuBar(void);
+	void 			AddView(BView *);
 	
+private:
 	void 			_LoadBitmaps();
 	void			_DownloadData();
+	status_t		_LoadSettings();
+	status_t		_SaveSettings();
+
+	BGridView* 		fView;
+	BGridLayout* 	fLayout;
 	
 	BString			fCity;
 	BString			fCityId;
@@ -54,10 +69,7 @@ private:
 	BStringView*	fConditionView;
 	BStringView*	fTemperatureView;
 	BStringView*	fCityView;
-
-public:
-					MainWindow(void);
-	void 			MessageReceived(BMessage* msg);
-	BMenuBar 		*PrepareMenuBar(void);
-	void 			AddView(BView *);	
 };
+
+
+#endif // _MAINWINDOW_H_
