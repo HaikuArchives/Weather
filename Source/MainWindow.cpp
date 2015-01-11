@@ -24,21 +24,24 @@
 #include "SelectionWindow.h"
 
 const char* kSettingsFileName = "HaikuWeather settings";
+int fAutoUpdateDelay = 15 * 60 * 1000 * 1000;
+	// 15 minutes
 
 
 BMenuBar* MainWindow::PrepareMenuBar(void) {
 	BMenuBar *menubar = new BMenuBar("menu");
 	BMenu *menu = new BMenu("Edit");
 	
-	menu->AddItem(new BMenuItem("Refresh", NULL, 'r'));
+	menu->AddItem(new BMenuItem("Refresh", new BMessage(kUpdateMessage), 'r'));
 	
-	BMessage *msg = new BMessage(25);
-	menu->AddItem(new BMenuItem("Change location", msg, NULL, NULL));
+	menu->AddItem(new BMenuItem("Change location",
+		new BMessage(kCitySelectionMessage), NULL, NULL));
 	
 	menubar->AddItem(menu);
 	
 	return menubar;
 }
+
 
 MainWindow::MainWindow()
 	:
@@ -62,10 +65,13 @@ MainWindow::MainWindow()
 	fCityId = "498842";
 	_LoadSettings();
 	
-	_DownloadData();
+	thread_id thread;
+	thread = spawn_thread(autoUpdate, "autoUpdate", 10, (void*) this);
+	resume_thread(thread);
 	
 	// Icon for weather
-	fConditionButton = new BButton("");
+	fConditionButton = new BButton("condition", "",
+		new BMessage(kUpdateMessage));
 	fConditionButton->SetIcon(fFewClouds);
 	fLayout->AddView(fConditionButton, (int32) 0, (int32) 0);
 	
@@ -166,10 +172,13 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		
 		_SaveSettings();
 		break;
-	case 25:
+	case kUpdateMessage:
+		fConditionView->SetText("Loading...");
+	case kAutoUpdateMessage:
+		_DownloadData();
+		break;
+	case kCitySelectionMessage:
 		(new SelectionWindow(this, fCity, fCityId))->Show();
-	// default:
-		// BWindow::MessageRecieved(msg);
 	}
 }
 
@@ -260,4 +269,15 @@ status_t MainWindow::_SaveSettings() {
 		return B_ERROR;
 	
 	return B_OK;
+}
+
+
+status_t autoUpdate(void* data) {
+	while (true) {
+		BMessenger* messenger = new BMessenger((MainWindow*) data);
+		BMessage* message = new BMessage(kAutoUpdateMessage);
+		messenger->SendMessage(message);
+		
+		snooze(fAutoUpdateDelay);
+	}
 }

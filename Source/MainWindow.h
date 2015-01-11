@@ -22,6 +22,9 @@
 	// Macro converting a Fahrenheit value to a Celsius value
 
 const int32 kSettingsMessage = 'Pref';
+const int32 kAutoUpdateMessage = 'AutU';
+const int32 kUpdateMessage = 'Upda';
+const int32 kCitySelectionMessage = 'SelC';
 
 extern const char* kSettingsFileName;
 
@@ -70,6 +73,10 @@ private:
 	BStringView*	fTemperatureView;
 	BStringView*	fCityView;
 };
+
+
+extern int fAutoUpdateDelay;
+status_t autoUpdate(void* data);
 
 
 #endif // _MAINWINDOW_H_
