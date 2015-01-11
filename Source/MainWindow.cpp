@@ -21,11 +21,11 @@
 
 #include "MainWindow.h"
 #include "NetListener.h"
+#include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 
 const char* kSettingsFileName = "HaikuWeather settings";
-int fAutoUpdateDelay = 15 * 60 * 1000 * 1000;
-	// 15 minutes
+int fAutoUpdateDelay = 15;
 
 
 BMenuBar* MainWindow::PrepareMenuBar(void) {
@@ -33,9 +33,12 @@ BMenuBar* MainWindow::PrepareMenuBar(void) {
 	BMenu *menu = new BMenu("Edit");
 	
 	menu->AddItem(new BMenuItem("Refresh", new BMessage(kUpdateMessage), 'r'));
+	menu->AddSeparatorItem();
 	
-	menu->AddItem(new BMenuItem("Change location",
+	menu->AddItem(new BMenuItem("Change location...",
 		new BMessage(kCitySelectionMessage), NULL, NULL));
+	menu->AddItem(new BMenuItem("Preferences...",
+		new BMessage(kOpenPreferencesMessage), NULL, NULL));
 	
 	menubar->AddItem(menu);
 	
@@ -63,11 +66,13 @@ MainWindow::MainWindow()
 	
 	fCity = "Katowice, Poland";
 	fCityId = "498842";
+	fUpdateDelay = 15;
+	fFahrenheit = false;
+	
 	_LoadSettings();
 	
-	thread_id thread;
-	thread = spawn_thread(autoUpdate, "autoUpdate", 10, (void*) this);
-	resume_thread(thread);
+	fAutoUpdate = spawn_thread(autoUpdate, "autoUpdate", 10, (void*) this);
+	resume_thread(fAutoUpdate);
 	
 	// Icon for weather
 	fConditionButton = new BButton("condition", "",
@@ -105,6 +110,8 @@ MainWindow::MainWindow()
 void MainWindow::MessageReceived(BMessage *msg) {
 	BString tempString("");
 	BString text("");
+	int32 tempDelay;
+	bool tempFahrenheit;
 
 	switch (msg->what) {
 	case kDataMessage:
@@ -112,7 +119,11 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		msg->FindInt32("code", &fCondition);
 		msg->FindString("text", &text);
 		
-		tempString << static_cast<int>(floor(CEL(fTemperature))) << "°C";
+		if (fFahrenheit)
+			tempString << fTemperature << "°F";
+		else
+			tempString << static_cast<int>(floor(CEL(fTemperature))) << "°C";
+		
 		fTemperatureView->SetText(tempString);
 		fConditionView->SetText(text);
 		
@@ -172,6 +183,27 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		
 		_SaveSettings();
 		break;
+	case kUpdatePrefMessage:
+		tempDelay = fUpdateDelay;
+		tempFahrenheit = fFahrenheit;
+		
+		msg->FindInt32("delay", &fUpdateDelay);
+		msg->FindBool("fahrenheit", &fFahrenheit);
+		
+		if (fFahrenheit != tempFahrenheit) {
+			fConditionView->SetText("Loading...");
+			_DownloadData();
+		}
+		
+		if (fUpdateDelay != tempDelay) {
+			kill_thread(fAutoUpdate);
+			fAutoUpdate = spawn_thread(autoUpdate, "autoUpdate", 10,
+				(void*) this);
+			resume_thread(fAutoUpdate);
+		}
+		
+		_SaveSettings();
+		break;
 	case kUpdateMessage:
 		fConditionView->SetText("Loading...");
 	case kAutoUpdateMessage:
@@ -179,6 +211,9 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		break;
 	case kCitySelectionMessage:
 		(new SelectionWindow(this, fCity, fCityId))->Show();
+		break;
+	case kOpenPreferencesMessage:
+		(new PreferencesWindow(this, fUpdateDelay, fFahrenheit))->Show();
 	}
 }
 
@@ -245,6 +280,11 @@ status_t MainWindow::_LoadSettings() {
 	if (m.FindString("fCityId", &fCityId) != B_OK)
 		fCityId = "498842";
 	
+	if (m.FindInt32("fUpdateDelay", &fUpdateDelay) != B_OK)
+		fUpdateDelay = 15;
+	if (m.FindBool("fFahrenheit", &fFahrenheit) != B_OK)
+		fFahrenheit = false;
+	
 	return B_OK;
 }
 
@@ -256,6 +296,9 @@ status_t MainWindow::_SaveSettings() {
 	
 	m.AddString("fCity", fCity);
 	m.AddString("fCityId", fCityId);
+	
+	m.AddInt32("fUpdateDelay", fUpdateDelay);
+	m.AddBool("fFahrenheit", fFahrenheit);
 	
 	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
 		return B_ERROR;
@@ -278,6 +321,6 @@ status_t autoUpdate(void* data) {
 		BMessage* message = new BMessage(kAutoUpdateMessage);
 		messenger->SendMessage(message);
 		
-		snooze(fAutoUpdateDelay);
+		snooze(fAutoUpdateDelay * 60 * 1000 * 1000);
 	}
 }

@@ -25,6 +25,7 @@ const int32 kSettingsMessage = 'Pref';
 const int32 kAutoUpdateMessage = 'AutU';
 const int32 kUpdateMessage = 'Upda';
 const int32 kCitySelectionMessage = 'SelC';
+const int32 kOpenPreferencesMessage = 'OPrf';
 
 extern const char* kSettingsFileName;
 
@@ -47,10 +48,13 @@ private:
 	
 	BString			fCity;
 	BString			fCityId;
+	int32			fUpdateDelay;
+	bool			fFahrenheit;
 	
 	int32			fTemperature;
 	int32			fCondition;
 	
+	thread_id		fAutoUpdate;
 	BResources*		fResources;
 	
 	BBitmap* 		fAlert;

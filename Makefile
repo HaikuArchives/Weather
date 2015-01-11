@@ -37,6 +37,7 @@ APP_MIME_SIG=application/x-vnd.przemub.HaikuWeather
 SRCS=Source/App.cpp \
 	Source/NetListener.cpp\
 	Source/MainWindow.cpp \
+	Source/PreferencesWindow.cpp \
 	Source/SelectionWindow.cpp 
 
 #	specify the resource definition files to use
