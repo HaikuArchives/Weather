@@ -5,13 +5,10 @@
 
 #include <Messenger.h>
 
-#include <stdio.h>
-
-#include "MainWindow.h"
 #include "NetListener.h"
 
 
-NetListener::NetListener(MainWindow* parent)
+NetListener::NetListener(BLooper* parent)
 	:
 	BUrlProtocolListener()
 {
@@ -32,19 +29,43 @@ void NetListener::DataReceived(BUrlRequest* caller, const char* data,
 	fResponse << buf;
 }
 
-
+#include <stdio.h>
 void NetListener::RequestCompleted(BUrlRequest* caller,
 	bool success) {
+	BMessenger* messenger = new BMessenger(fParent);
+	
 	// extract data
 	BString temp = fResponse;
-	int first = fResponse.FindFirst("temp=\"");
-	int length = fResponse.FindLast("\"", first + 9);
+	int first = fResponse.FindFirst("woeid>");
+	int length = fResponse.FindFirst("<", first + 6);
+	
+	if (first != -1) {
+		temp.Truncate(length);
+		temp.Remove(0, first + 6);
+		
+		BMessage* message = new BMessage(kDataMessage);
+		message->AddString("id", temp);
+		messenger->SendMessage(message);
+		
+		return;
+	}
+	
+	first = fResponse.FindFirst("temp=\"");
+	length = fResponse.FindFirst("\"", first + 6);
+	
+	if (first == -1) {
+		BMessage* message = new BMessage(kFailureMessage);
+		messenger->SendMessage(message);
+		
+		return;
+	}
+	
 	temp.Truncate(length);
 	temp.Remove(0, first + 6);
 		
 	BString code = fResponse;
 	first = fResponse.FindFirst("code=\"");
-	length = fResponse.FindLast("\"", first + 9);
+	length = fResponse.FindFirst("\"", first + 6);
 	code.Truncate(length);
 	code.Remove(0, first + 6);
 	
@@ -53,17 +74,17 @@ void NetListener::RequestCompleted(BUrlRequest* caller,
 	length = fResponse.FindLast("\"", first + 25);
 	text.Truncate(length);
 	text.Remove(0, first + 6);
-	fprintf(stderr,"%d %d\n", first, length);
 	
 	// convert to integers
 	int temperature, condition;
 	sscanf(temp.String(), "%d", &temperature);
 	sscanf(code.String(), "%d", &condition);
 	
-	BMessenger* messenger = new BMessenger(fParent);
 	BMessage* message = new BMessage(kDataMessage);
 	message->AddInt32("temp", temperature);
 	message->AddInt32("code", condition);
 	message->AddString("text", text);
 	messenger->SendMessage(message);
+	
+	delete messenger;
 }

@@ -57,7 +57,8 @@ MainWindow::MainWindow()
 	fResources = be_app->AppResources();
 	_LoadBitmaps();
 	
-	fCityId = 2487889;
+	fCity = "Katowice, Poland";
+	fCityId = "498842";
 	_DownloadData();
 	
 	// Icon for weather
@@ -87,7 +88,7 @@ MainWindow::MainWindow()
 	numberLayout->AddView(fTemperatureView);
 	
 	// City
-	fCityView = new BStringView("city", "New York");
+	fCityView = new BStringView("city", fCity);
 	numberLayout->AddView(fCityView);
 	
 }
@@ -98,10 +99,8 @@ void MainWindow::MessageReceived(BMessage *msg) {
 
 	switch (msg->what) {
 	case kDataMessage:
-		fConditionView->SetText("Test!");
 		msg->FindInt32("temp", &fTemperature);
 		msg->FindInt32("code", &fCondition);
-		
 		msg->FindString("text", &text);
 		
 		tempString << static_cast<int>(floor(CEL(fTemperature))) << "°C";
@@ -151,8 +150,17 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		else if (fCondition == 47)
 			fConditionButton->SetIcon(fThunder);
 		break;
+	case kUpdateCityMessage:
+		msg->FindString("city", &fCity);
+		msg->FindString("id", &fCityId);
+		
+		fCityView->SetText(fCity);
+		fConditionView->SetText("Loading...");
+		_DownloadData();
+		
+		break;
 	case 25:
-		(new SelectionWindow())->Show();
+		(new SelectionWindow(this, fCity, fCityId))->Show();
 	// default:
 		// BWindow::MessageRecieved(msg);
 	}

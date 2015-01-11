@@ -6,16 +6,16 @@
 #define _NETLISTENER_H_
 
 
+#include <Looper.h>
 #include <String.h>
 #include <UrlProtocolListener.h>
 
-class MainWindow;
-
 const int32 kDataMessage = 'Data';
+const int32 kFailureMessage = 'Fail';
 
 class NetListener : public BUrlProtocolListener {
 public:
-						NetListener(MainWindow* parent);
+						NetListener(BLooper* parent);
 
 	virtual	void		ResponseStarted(BUrlRequest* caller);
 	virtual	void		DataReceived(BUrlRequest* caller, const char* data,
@@ -23,7 +23,7 @@ public:
 	virtual	void		RequestCompleted(BUrlRequest* caller,
 							bool success);
 private:
-			MainWindow*	fParent;
+			BLooper*	fParent;
 			
 			BString		fResponse;
 };

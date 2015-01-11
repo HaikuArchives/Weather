@@ -28,7 +28,7 @@ private:
 	void			_DownloadData();
 	
 	BString			fCity;
-	int				fCityId;
+	BString			fCityId;
 	
 	int32			fTemperature;
 	int32			fCondition;
