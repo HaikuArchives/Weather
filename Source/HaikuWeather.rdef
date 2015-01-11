@@ -29,7 +29,8 @@ resource(13, "Artwork/weather_raining.hvif")			#'rGFX' import "../Artwork/weathe
 resource(14, "Artwork/weather_shining.hvif")			#'rGFX' import "../Artwork/weather_shining.hvif" ;
 resource(15, "Artwork/weather_shiny.hvif")				#'rGFX' import "../Artwork/weather_shiny.hvif" ;
 resource(16, "Artwork/weather_snow.hvif")				#'rGFX' import "../Artwork/weather_snow.hvif" ;
-resource(17, "Artwork/weather_thunder.hvif")			#'rGFX' import "../Artwork/weather_thunder.hvif" ;
+resource(17, "Artwork/weather_storm.hvif")				#'rGFX' import "../Artwork/weather_storm.hvif" ;
+resource(18, "Artwork/weather_thunder.hvif")			#'rGFX' import "../Artwork/weather_thunder.hvif" ;
 
 resource vector_icon {
 	$"6E63696603020306023C3D703FD70ABFD70A3C3D704B5C28C5D70A00D9B92396"
