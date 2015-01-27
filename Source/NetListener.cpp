@@ -42,8 +42,7 @@ void NetListener::RequestCompleted(BUrlRequest* caller,
 		
 	if (fRequestType == CITY_REQUEST)
 		_ProcessCityData(success);
-		
-	
+
 }
 
 void NetListener::_ProcessWeatherData(bool success)
@@ -67,8 +66,6 @@ void NetListener::_ProcessWeatherData(bool success)
 		messenger.SendMessage(message);
 		return;
 	}
-
-	//parsedData.PrintToStream();
 
 	BMessage conditionMessage;
 	BMessage forecastMessage;
@@ -176,8 +173,6 @@ void NetListener::_ProcessCityData(bool success)
 		messenger.SendMessage(message);
 		return;
 	}
-	
-	//parsedData.PrintToStream();
 
 	BMessage queryMessage, resultsMessage, placeMessage;
 	BString woeid;
