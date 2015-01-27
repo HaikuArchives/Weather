@@ -10,22 +10,31 @@
 #include <String.h>
 #include <UrlProtocolListener.h>
 
-const int32 kDataMessage = 'Data';
-const int32 kFailureMessage = 'Fail';
+enum RequestType {
+	CITY_REQUEST,
+	WEATHER_REQUEST
+} ;
+
+const uint32 kDataMessage = 'Data';
+const uint32 kForecastDataMessage = 'FDta';
+const uint32 kFailureMessage = 'Fail';
+const uint32 kUpdateCityName = 'UpCN';
 
 class NetListener : public BUrlProtocolListener {
 public:
-						NetListener(BLooper* parent);
-
+						NetListener(BLooper* parent, RequestType requestType);
+	virtual				~NetListener();
 	virtual	void		ResponseStarted(BUrlRequest* caller);
 	virtual	void		DataReceived(BUrlRequest* caller, const char* data,
 							off_t position, ssize_t size);
 	virtual	void		RequestCompleted(BUrlRequest* caller,
 							bool success);
 private:
+			void		_ProcessWeatherData(bool success);
+			void		_ProcessCityData(bool success);
 			BLooper*	fParent;
-			
-			BString		fResponse;
+			RequestType fRequestType;
+			BMallocIO	fResponseData;
 };
 
 

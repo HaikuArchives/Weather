@@ -13,16 +13,17 @@
 #include <UrlProtocolRoster.h>
 #include <UrlRequest.h>
 #include <Window.h>
+#include <stdio.h>
 
 #include "MainWindow.h"
 #include "NetListener.h"
 #include "SelectionWindow.h"
 
-SelectionWindow::SelectionWindow(MainWindow* parent,
+SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent,
 	BString city, BString cityId)
 :
-BWindow(BRect(50, 50, 250, 200), "Change location",
-	B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS) {
+BWindow(rect, "Change location",
+	B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS| B_AUTO_UPDATE_SIZE_LIMITS) {
 	fParent = parent;
 	fCity = city;
 	fCityId = cityId;
@@ -30,18 +31,19 @@ BWindow(BRect(50, 50, 250, 200), "Change location",
 	BGroupLayout *root = new BGroupLayout(B_VERTICAL);
 	this->SetLayout(root);
 	
-	BGroupView *view = new BGroupView(B_VERTICAL);
+	BGroupView *view = new BGroupView(B_HORIZONTAL);
 	BGroupLayout *layout = view->GroupLayout();
 	layout->SetInsets(16);
 	this->AddChild(view);
 	
 	fCityControl = new BTextControl(NULL, "City:", fCity, NULL);
-	fIdControl = new BTextControl(NULL, "City ID:", fCityId, NULL);
-	
+	fCityControl->SetToolTip("Select city: city, country, region");
+
 	layout->AddView(fCityControl);
-	layout->AddView(new BButton("search", "Search", new BMessage(kSearchMessage)));
-	layout->AddView(fIdControl);
-	layout->AddView(new BButton("save", "Save", new BMessage(kSaveMessage)));
+	BButton* button;
+	layout->AddView(button = new BButton("search", "Go", new BMessage(kSearchMessage)));
+	fCityControl->MakeFocus(true);
+	button->MakeDefault(true);
 }
 
 
@@ -49,20 +51,28 @@ void SelectionWindow::MessageReceived(BMessage *msg) {
 	switch (msg->what) {
 	case kSearchMessage:
 		_FindId();
+		Hide();
 		break;
 	case kDataMessage:
 		msg->FindString("id", &fCityId);
-		fIdControl->SetText(fCityId);
-		
 		_UpdateCity();
-		break;
-	case kSaveMessage:
-		_UpdateCity();
-		Quit();
+		QuitRequested();
+		Close();
 		break;
 	case kFailureMessage:
-		fIdControl->SetText("Failed!");
+		// TODO add a message to the window
+		Show();
+		break;
+	default:
+		BWindow::MessageReceived(msg);
 	}
+}
+
+bool SelectionWindow::QuitRequested() {
+	BMessenger messenger(fParent);
+	BMessage* message = new BMessage(kCloseCitySelectionWindowMessage);
+	messenger.SendMessage(message);
+	return true;
 }
 
 
@@ -71,22 +81,21 @@ void SelectionWindow::_UpdateCity() {
 	BMessage* message = new BMessage(kUpdateCityMessage);
 	
 	message->AddString("city", fCityControl->Text());
-	message->AddString("id", fIdControl->Text());
+	message->AddString("id", fCityId);
 	
 	messenger->SendMessage(message);
 }
 
 
 void SelectionWindow::_FindId() {
-	fIdControl->SetText("Searching...");
-	
 	BString urlString("https://query.yahooapis.com/v1/public/yql");
 	urlString << "?q=select+woeid+from+geo.places(1)+"
-		<< "where+text+=\"" << fCityControl->Text() << "\"";
+		<< "where+text+=\"" << fCityControl->Text() << "\"&format=json";
 	urlString.ReplaceAll(" ", "+");
 	
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
-		new NetListener(this));
+		new NetListener(this, CITY_REQUEST));
 	status_t err = request->Run();
+	if (err != B_OK) ; // TODO Send error message
 }

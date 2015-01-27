@@ -16,14 +16,16 @@ class MainWindow;
 const int32 kSearchMessage = 'Srch';
 const int32 kSaveMessage = 'Save';
 const int32 kUpdateCityMessage = 'Updt';
+const int32 kCloseCitySelectionWindowMessage = 'SUCe';
 
 
 class SelectionWindow : public BWindow {
 public:
-					SelectionWindow(MainWindow* parent,
+					SelectionWindow(BRect rect, MainWindow* parent,
 						BString city, BString cityId);
 	
-	void			MessageReceived(BMessage *msg);
+	virtual void	MessageReceived(BMessage *msg);
+	virtual bool	QuitRequested();
 private:
 	void			_UpdateCity();
 	void			_FindId();
@@ -34,7 +36,6 @@ private:
 	BString			fCityId;
 	
 	BTextControl* 	fCityControl;
-	BTextControl* 	fIdControl;
 };
 
 

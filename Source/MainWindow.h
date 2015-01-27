@@ -11,6 +11,7 @@
 #include <Button.h>
 #include <GridLayout.h>
 #include <GridView.h>
+#include <GroupView.h>
 #include <MenuBar.h>
 #include <Resources.h>
 #include <String.h>
@@ -18,14 +19,19 @@
 #include <View.h>
 #include <Window.h>
 
+#include "SelectionWindow.h"
+#include "PreferencesWindow.h"
+
+
 #define CEL(T) (5.0 / 9.0) * (T - 32.0)
 	// Macro converting a Fahrenheit value to a Celsius value
 
-const int32 kSettingsMessage = 'Pref';
-const int32 kAutoUpdateMessage = 'AutU';
-const int32 kUpdateMessage = 'Upda';
-const int32 kCitySelectionMessage = 'SelC';
-const int32 kOpenPreferencesMessage = 'OPrf';
+const uint32 kSettingsMessage = 'Pref';
+const uint32 kAutoUpdateMessage = 'AutU';
+const uint32 kUpdateMessage = 'Upda';
+const uint32 kCitySelectionMessage = 'SelC';
+const uint32 kOpenPreferencesMessage = 'OPrf';
+const uint32 kShowForecastMessage = 'SFor';
 
 extern const char* kSettingsFileName;
 
@@ -33,15 +39,18 @@ extern const char* kSettingsFileName;
 class MainWindow : public BWindow {
 public:
 					MainWindow(void);
-	void 			MessageReceived(BMessage* msg);
+	virtual void	MessageReceived(BMessage* msg);
 	BMenuBar 		*PrepareMenuBar(void);
 	void 			AddView(BView *);
+	virtual bool	QuitRequested();
 	
 private:
 	void 			_LoadBitmaps();
-	void			_DownloadData();
+	BBitmap* 		_GetWeatherIcon(int32 condition);
+	void			_DownloadData(bool forcedForecast = false);
 	status_t		_LoadSettings();
 	status_t		_SaveSettings();
+	void			_ShowForecast(bool);
 
 	BGridView* 		fView;
 	BGridLayout* 	fLayout;
@@ -50,11 +59,14 @@ private:
 	BString			fCityId;
 	int32			fUpdateDelay;
 	bool			fFahrenheit;
+	bool			fShowForecast;
 	
 	int32			fTemperature;
 	int32			fCondition;
-	
-	thread_id		fAutoUpdate;
+	BRect			fMainWindowRect;
+	SelectionWindow*	fSelectionWindow;
+	PreferencesWindow* fPreferencesWindow;
+	BMessageRunner*	fAutoUpdate;
 	BResources*		fResources;
 	
 	BBitmap* 		fAlert;
@@ -71,16 +83,13 @@ private:
 	BBitmap* 		fSnow;
 	BBitmap* 		fStorm;
 	BBitmap* 		fThunder;
-	
+	BGroupView* 	fForecastView;
+	BMenuItem*		fShowForecastMenuItem;
 	BButton*		fConditionButton;
+	BButton*		fForecastButton[5];
 	BStringView*	fConditionView;
 	BStringView*	fTemperatureView;
 	BStringView*	fCityView;
 };
-
-
-extern int fAutoUpdateDelay;
-status_t autoUpdate(void* data);
-
 
 #endif // _MAINWINDOW_H_
