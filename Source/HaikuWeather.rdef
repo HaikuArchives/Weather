@@ -17,7 +17,7 @@ resource(2, "Artwork/Day.hvif")							#'rGFX' import "../Artwork/Day.hvif" ;
 resource(3, "Artwork/Evening.hvif")						#'rGFX' import "../Artwork/Evening.hvif" ;
 resource(4, "Artwork/Night.hvif")						#'rGFX' import "../Artwork/Night.hvif" ;
 
-resource(5, "Artwork/weather_alert.hvif")				#'rGFX' import "../Artwork/weather_clouds.hvif" ;
+resource(5, "Artwork/weather_alert.hvif")				#'rGFX' import "../Artwork/weather_alert.hvif" ;
 resource(6, "Artwork/weather_clear_night.hvif")			#'rGFX' import "../Artwork/weather_clear_night.hvif" ;
 resource(7, "Artwork/weather_clear.hvif")				#'rGFX' import "../Artwork/weather_clear.hvif" ;
 resource(8, "Artwork/weather_clouds.hvif")				#'rGFX' import "../Artwork/weather_clouds.hvif" ;
@@ -32,11 +32,13 @@ resource(16, "Artwork/weather_snow.hvif")				#'rGFX' import "../Artwork/weather_
 resource(17, "Artwork/weather_storm.hvif")				#'rGFX' import "../Artwork/weather_storm.hvif" ;
 resource(18, "Artwork/weather_thunder.hvif")			#'rGFX' import "../Artwork/weather_thunder.hvif" ;
 
+
 resource vector_icon {
 	$"6E63696603020306023C3D703FD70ABFD70A3C3D704B5C28C5D70A00D9B92396"
 	$"FFFEF1020306023C3D703FD70ABFD70A3C3D704B5C28C5D70A00C6700A96EED6"
 	$"9B04018D0202044030C34530BC3A30304030BC3A30C3454050BC3A50C3455050"
 	$"4050C34550BC3A02043D54455330542C562C542C593C5B365A495C4C574C5C4C"
-	$"53030A020101023F5BED330EC6B293F03FFBFC482FC9C591860A000100000A01"
-	$"0100100117820004"
+	$"53030A020101024053CD34236AB3927A40C94E465D21C93EC70A0001000240C5"
+	$"7A00000000000040CC1DC7B243C7FEB30A0101001240C57A00000000000040CC"
+	$"1DC7B243C7FEB30117820004"
 };
