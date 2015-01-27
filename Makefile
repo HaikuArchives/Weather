@@ -78,7 +78,7 @@ LIBS=be localestub translation bnetapi shared $(STDCPPLIBS)
 #	be recursive, so include all of the paths where libraries can
 #	be found.  Directories where source files are found are
 #	automatically included.
-LIBPATHS=/boot/system/develop/lib/ /boot/system/develop/lib/x86/
+LIBPATHS=
 
 #	additional paths to look for system headers
 #	thes use the form: #include <header>

@@ -36,7 +36,6 @@ private:
 	BString			fCityId;
 	
 	BTextControl* 	fCityControl;
-	BTextControl* 	fIdControl;
 };
 
 

@@ -56,13 +56,10 @@ void SelectionWindow::MessageReceived(BMessage *msg) {
 	case kDataMessage:
 		msg->FindString("id", &fCityId);
 		_UpdateCity();
-		//if (IsHidden()){
-			QuitRequested();
-			Close();
-		//}
+		QuitRequested();
+		Close();
 		break;
 	case kFailureMessage:
-		//printf("Failed\n");
 		// TODO add a message to the window
 		Show();
 		break;

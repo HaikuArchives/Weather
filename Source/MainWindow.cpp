@@ -24,10 +24,6 @@
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 
-#include <stdio.h>
-
-//#include <Dragger.h>
-
 const char* kSettingsFileName = "HaikuWeather settings";
 
 const char* kDefaultCityName = "Menlo Park, CA";
@@ -150,8 +146,6 @@ void MainWindow::MessageReceived(BMessage *msg) {
 	BString text("");
 	int32 tempDelay;
 	bool tempFahrenheit;
-
-	//msg->PrintToStream();
 
 	switch (msg->what) {
 	case kDataMessage:
@@ -359,7 +353,6 @@ BBitmap* MainWindow::_GetWeatherIcon(int32 condition) {
 		case 46: return fSnow;
 		case 47: return fThunder;
 	}
-	//printf("Unknow code %d\n", condition);
 	return NULL; // Change to N/A
 
 }
@@ -374,12 +367,11 @@ void MainWindow::_DownloadData(bool forcedForecast) {
 
 	urlString << "where+woeid+=+" << fCityId << "&format=json";
 
-	//printf("Request %s\n", urlString.String());
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
 		new NetListener(this, WEATHER_REQUEST));
 	status_t err = request->Run();
-	if (err != B_OK) ; // TODO Sent error message
+	if (err != B_OK) ; // TODO Send error message
 }
 
 void MainWindow::_ShowForecast(bool show) {
