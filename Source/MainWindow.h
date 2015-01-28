@@ -95,7 +95,7 @@ private:
 	BGroupView* 	fForecastView;
 	BMenuItem*		fShowForecastMenuItem;
 	BButton*		fConditionButton;
-	ForecastDayView*		fForecastButton[5];
+	ForecastDayView*		fForecastDayView[5];
 	BStringView*	fConditionView;
 	BStringView*	fTemperatureView;
 	BStringView*	fCityView;

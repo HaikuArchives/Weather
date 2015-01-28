@@ -24,8 +24,6 @@
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 
-#include <stdio.h>
-
 const char* kSettingsFileName = "HaikuWeather settings";
 
 const char* kDefaultCityName = "Menlo Park, CA";
@@ -133,9 +131,9 @@ MainWindow::MainWindow()
 
 	for (int32 i = 0; i < kMaxForecastDay; i++)
 	{
-		fForecastButton[i] = new ForecastDayView(BRect(0,0,48,96));
-		fForecastButton[i]->SetIcon(fFewClouds[SMALL_ICON]);
-		forecastLayout->AddView(fForecastButton[i]);
+		fForecastDayView[i] = new ForecastDayView(BRect(0,0,48,96));
+		fForecastDayView[i]->SetIcon(fFewClouds[SMALL_ICON]);
+		forecastLayout->AddView(fForecastDayView[i]);
 	}
 
 	if (!fShowForecast) {
@@ -196,11 +194,9 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		else
 			lowString << static_cast<int>(floor(CEL(low))) << "°C";
 
-		fForecastButton[forecastNum]->SetDayLabel(day);
-		BString toolTip = text << "\n" << lowString << "/" << highString; // << " (" << condition << ")";
-		fForecastButton[forecastNum]->SetToolTip(toolTip);
-		fForecastButton[forecastNum]->SetIcon(_GetWeatherIcon(condition, SMALL_ICON));
-		fForecastButton[forecastNum]->SetTemp(highString);
+		fForecastDayView[forecastNum]->SetDayLabel(day);
+		fForecastDayView[forecastNum]->SetIcon(_GetWeatherIcon(condition, SMALL_ICON));
+		fForecastDayView[forecastNum]->SetTemp(highString);
 		break;
 	}
 	case kUpdateCityMessage:
