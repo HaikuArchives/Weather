@@ -19,9 +19,9 @@
 #include <View.h>
 #include <Window.h>
 
-#include "SelectionWindow.h"
+#include "ForecastDayView.h"
 #include "PreferencesWindow.h"
-
+#include "SelectionWindow.h"
 
 #define CEL(T) (5.0 / 9.0) * (T - 32.0)
 	// Macro converting a Fahrenheit value to a Celsius value
@@ -35,6 +35,14 @@ const uint32 kShowForecastMessage = 'SFor';
 
 extern const char* kSettingsFileName;
 
+const uint32 kSizeSmallIcon = 40;
+const uint32 kSizeLargeIcon = 64;
+
+enum weatherIconSize {
+	SMALL_ICON,
+	LARGE_ICON
+};
+
 
 class MainWindow : public BWindow {
 public:
@@ -46,11 +54,12 @@ public:
 	
 private:
 	void 			_LoadBitmaps();
-	BBitmap* 		_GetWeatherIcon(int32 condition);
+	BBitmap* 		_GetWeatherIcon(int32 condition, weatherIconSize size);
 	void			_DownloadData(bool forcedForecast = false);
 	status_t		_LoadSettings();
 	status_t		_SaveSettings();
 	void			_ShowForecast(bool);
+	void			_LoadIcons(BBitmap*	bitmap[2], uint32 type, const char* name);
 
 	BGridView* 		fView;
 	BGridLayout* 	fLayout;
@@ -69,24 +78,24 @@ private:
 	BMessageRunner*	fAutoUpdate;
 	BResources*		fResources;
 	
-	BBitmap* 		fAlert;
-	BBitmap* 		fClearNight;
-	BBitmap* 		fClear;
-	BBitmap* 		fClouds;
-	BBitmap* 		fFewClouds;
-	BBitmap* 		fFog;
-	BBitmap* 		fNightFewClouds;
-	BBitmap* 		fRainingScattered;
-	BBitmap* 		fRaining;
-	BBitmap* 		fShining;
-	BBitmap* 		fShiny;
-	BBitmap* 		fSnow;
-	BBitmap* 		fStorm;
-	BBitmap* 		fThunder;
+	BBitmap* 		fAlert[2];
+	BBitmap* 		fClearNight[2];
+	BBitmap* 		fClear[2];
+	BBitmap* 		fClouds[2];
+	BBitmap* 		fFewClouds[2];
+	BBitmap* 		fFog[2];
+	BBitmap* 		fNightFewClouds[2];
+	BBitmap* 		fRainingScattered[2];
+	BBitmap* 		fRaining[2];
+	BBitmap* 		fShining[2];
+	BBitmap* 		fShiny[2];
+	BBitmap* 		fSnow[2];
+	BBitmap* 		fStorm[2];
+	BBitmap* 		fThunder[2];
 	BGroupView* 	fForecastView;
 	BMenuItem*		fShowForecastMenuItem;
 	BButton*		fConditionButton;
-	BButton*		fForecastButton[5];
+	ForecastDayView*		fForecastButton[5];
 	BStringView*	fConditionView;
 	BStringView*	fTemperatureView;
 	BStringView*	fCityView;
