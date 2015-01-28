@@ -24,6 +24,8 @@
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 
+#include <stdio.h>
+
 const char* kSettingsFileName = "HaikuWeather settings";
 
 const char* kDefaultCityName = "Menlo Park, CA";
@@ -32,6 +34,7 @@ const int32	kDefaultUpdateDelay = 30;
 const bool	kDefaultFahrenheit = false;
 const bool	kDefaultShowForecast = false;
 const BRect kDefaultMainWindowRect = BRect(150,150,0,0);
+const int32 kMaxForecastDay = 5;
 
 BMenuBar* MainWindow::PrepareMenuBar(void) {
 	BMenuBar *menubar = new BMenuBar("menu");
@@ -93,7 +96,7 @@ MainWindow::MainWindow()
 	// Icon for weather
 	fConditionButton = new BButton("condition", "",
 		new BMessage(kUpdateMessage));
-	fConditionButton->SetIcon(fFewClouds);
+	fConditionButton->SetIcon(fFewClouds[LARGE_ICON]);
 	fLayout->AddView(fConditionButton, (int32) 0, (int32) 0);
 	
 	BGroupView *infoView = new BGroupView(B_VERTICAL);
@@ -124,14 +127,14 @@ MainWindow::MainWindow()
 	// Numbers (e.g. temperature etc.)
 	fForecastView = new BGroupView(B_HORIZONTAL);
 	BGroupLayout* forecastLayout = fForecastView->GroupLayout();
-	//infoLayout->AddView(forecastView);
+	forecastLayout->SetInsets(5, 0, 5, 5);
+	forecastLayout->SetSpacing(2);
 	this->AddChild(fForecastView);
 
-	for (int i = 0; i < 5 /*MAX_FORECAST_DAY*/; i++)
+	for (int32 i = 0; i < kMaxForecastDay; i++)
 	{
-		fForecastButton[i] = new BButton("condition", "",
-									new BMessage(kUpdateMessage));
-		fForecastButton[i]->SetIcon(fFewClouds);
+		fForecastButton[i] = new ForecastDayView(BRect(0,0,48,96));
+		fForecastButton[i]->SetIcon(fFewClouds[SMALL_ICON]);
 		forecastLayout->AddView(fForecastButton[i]);
 	}
 
@@ -160,7 +163,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		
 		fTemperatureView->SetText(tempString);
 		fConditionView->SetText(text);
-		fConditionButton->SetIcon(_GetWeatherIcon(fCondition));
+		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
 		break;
 
 	case kForecastDataMessage:
@@ -177,7 +180,7 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		msg->FindString("text", &text);
 		msg->FindString("day", &day);
 
-		if (forecastNum < 0 || forecastNum > 5 /*MAX_DAY_FORECAST*/)
+		if (forecastNum < 0 || forecastNum >= kMaxForecastDay)
 			break;
 
 		BString highString = "";
@@ -193,10 +196,11 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		else
 			lowString << static_cast<int>(floor(CEL(low))) << "°C";
 
-		fForecastButton[forecastNum]->SetLabel(day);
+		fForecastButton[forecastNum]->SetDayLabel(day);
 		BString toolTip = text << "\n" << lowString << "/" << highString; // << " (" << condition << ")";
 		fForecastButton[forecastNum]->SetToolTip(toolTip);
-		fForecastButton[forecastNum]->SetIcon(_GetWeatherIcon(condition));
+		fForecastButton[forecastNum]->SetIcon(_GetWeatherIcon(condition, SMALL_ICON));
+		fForecastButton[forecastNum]->SetTemp(highString);
 		break;
 	}
 	case kUpdateCityMessage:
@@ -284,74 +288,96 @@ void MainWindow::MessageReceived(BMessage *msg) {
 
 
 void MainWindow::_LoadBitmaps() {
-	fAlert = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_alert.hvif");
-	fClearNight = BTranslationUtils::GetBitmap('rGFX',
-		"Artwork/weather_clear_night.hvif");
-	fClear = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_clear.hvif");
-	fClouds = BTranslationUtils::GetBitmap('rGFX',
-		"Artwork/weather_clouds.hvif");
-	fFewClouds = BTranslationUtils::GetBitmap('rGFX',
-		"Artwork/weather_few_clouds.hvif");
-	fFog = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_fog.hvif");
-	fNightFewClouds = BTranslationUtils::GetBitmap('rGFX',
-		"Artwork/weather_night_few_clouds.hvif");
-	fRainingScattered = BTranslationUtils::GetBitmap('rGFX',
-		"Artwork/weather_raining_scattered.hvif");
-	fRaining = BTranslationUtils::GetBitmap('rGFX',
-		"Artwork/weather_raining.hvif");
-	fShining = BTranslationUtils::GetBitmap('rGFX',
-		"Artwork/weather_shining.hvif");
-	fShiny = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_shiny.hvif");
-	fSnow = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_snow.hvif");
-	fStorm = BTranslationUtils::GetBitmap('rGFX', "Artwork/weather_storm.hvif");
-	fThunder = BTranslationUtils::GetBitmap('rGFX',
-		"Artwork/weather_thunder.hvif");
+	_LoadIcons(fAlert, 'rGFX', "Artwork/weather_alert.hvif");
+	_LoadIcons(fClearNight, 'rGFX',	"Artwork/weather_clear_night.hvif");
+	_LoadIcons(fClear, 'rGFX', "Artwork/weather_clear.hvif");
+	_LoadIcons(fClouds, 'rGFX',	"Artwork/weather_clouds.hvif");
+	_LoadIcons(fFewClouds, 'rGFX', "Artwork/weather_few_clouds.hvif");
+	_LoadIcons(fFog, 'rGFX', "Artwork/weather_fog.hvif");
+	_LoadIcons(fNightFewClouds, 'rGFX', "Artwork/weather_night_few_clouds.hvif");
+	_LoadIcons(fRainingScattered, 'rGFX', "Artwork/weather_raining_scattered.hvif");
+	_LoadIcons(fRaining, 'rGFX', "Artwork/weather_raining.hvif");
+	_LoadIcons(fShining, 'rGFX', "Artwork/weather_shining.hvif");
+	_LoadIcons(fShiny, 'rGFX', "Artwork/weather_shiny.hvif");
+	_LoadIcons(fSnow, 'rGFX', "Artwork/weather_snow.hvif");
+	_LoadIcons(fStorm, 'rGFX', "Artwork/weather_storm.hvif");
+	_LoadIcons(fThunder, 'rGFX', "Artwork/weather_thunder.hvif");
 }
 
-BBitmap* MainWindow::_GetWeatherIcon(int32 condition) {
+void MainWindow::_LoadIcons(BBitmap* bitmap[2], uint32 type, const char* name) {
+
+	size_t dataSize;
+
+	bitmap[0] = NULL;
+	bitmap[1] = NULL;
+
+	const void* data = fResources->LoadResource(type, name, &dataSize);
+
+	if (data != NULL){
+		BBitmap* smallBitmap = new BBitmap(BRect(0, 0, kSizeSmallIcon - 1, kSizeSmallIcon - 1), 0,
+			B_RGBA32);
+		BBitmap* largeBitmap = new BBitmap(BRect(0, 0, kSizeLargeIcon - 1, kSizeLargeIcon - 1), 0,
+			B_RGBA32);
+
+		status_t status = smallBitmap->InitCheck();
+		if (status == B_OK) {
+			status = BIconUtils::GetVectorIcon(
+				reinterpret_cast<const uint8*>(data), dataSize, smallBitmap);
+		};
+		status = largeBitmap->InitCheck();
+		if (status == B_OK) {
+			status = BIconUtils::GetVectorIcon(
+				reinterpret_cast<const uint8*>(data), dataSize, largeBitmap);
+		};
+		bitmap[0] = smallBitmap;
+		bitmap[1] = largeBitmap;
+	};
+}
+
+BBitmap* MainWindow::_GetWeatherIcon(int32 condition, weatherIconSize iconSize) {
 
 	switch (condition) {
 		case 0:
 		case 1:
-		case 2:	return fAlert;
+		case 2:	return fAlert[iconSize];
 		case 3:
-		case 4:	return fStorm;
+		case 4:	return fStorm[iconSize];
 		case 5:
 		case 6:
-		case 7: return fSnow;
+		case 7: return fSnow[iconSize];
 		case 8:
 		case 9:
 		case 11:
-		case 12: return fRainingScattered;
-		case 10: return fRaining;
+		case 12: return fRainingScattered[iconSize];
+		case 10: return fRaining[iconSize];
 		case 13:
 		case 14:
 		case 15:
 		case 16:
 		case 17:
-		case 18: return fSnow;
-		case 20: return fFog;
+		case 18: return fSnow[iconSize];
+		case 20: return fFog[iconSize];
 		case 26:
 		case 27:
-		case 28: return fClouds;
-		case 29: return fNightFewClouds;
-		case 30: return fFewClouds;
-		case 31: return fClearNight;
-		case 32: return fClear;
-		case 33: return fClearNight;
-		case 34: return fFewClouds;
-		case 35: return fRainingScattered;
-		case 36: return fShining;
-		case 37: return fThunder;
+		case 28: return fClouds[iconSize];
+		case 29: return fNightFewClouds[iconSize];
+		case 30: return fFewClouds[iconSize];
+		case 31: return fClearNight[iconSize];
+		case 32: return fClear[iconSize];
+		case 33: return fClearNight[iconSize];
+		case 34: return fFewClouds[iconSize];
+		case 35: return fRainingScattered[iconSize];
+		case 36: return fShining[iconSize];
+		case 37: return fThunder[iconSize];
 		case 38:
-		case 39: return fStorm;
-		case 40: return fRaining;
+		case 39: return fStorm[iconSize];
+		case 40: return fRaining[iconSize];
 		case 41:
 		case 42:
-		case 43: return fSnow;
-		case 45: return fStorm;
-		case 46: return fSnow;
-		case 47: return fThunder;
+		case 43: return fSnow[iconSize];
+		case 45: return fStorm[iconSize];
+		case 46: return fSnow[iconSize];
+		case 47: return fThunder[iconSize];
 	}
 	return NULL; // Change to N/A
 
