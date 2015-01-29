@@ -18,7 +18,15 @@ public:
 			void	SetIcon(BBitmap *icon);
 			void	SetDayLabel(BString& dayLabel);
 			void	SetTemp(BString& temp);
+			void	SetHighTemp(int32 high);
+			void	SetLowTemp(int32 low);
+			void	SetFahrenheit(bool fahrenheit);
+			bool	IsFahrenheit();
+
 private:
+			bool	fFahrenheit;
+			int32	fHigh;
+			int32	fLow;
 	BString			fDayLabel;
 	BString			fTemp;
 	BBitmap*		fIcon;

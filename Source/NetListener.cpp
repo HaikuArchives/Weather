@@ -10,10 +10,10 @@
 
 #include <stdio.h>
 
-NetListener::NetListener(BLooper* parent, RequestType requestType)
+NetListener::NetListener(BHandler* handler, RequestType requestType)
 	:
 	BUrlProtocolListener(),
-	fParent(parent),
+	fHandler(handler),
 	fRequestType(requestType)
 {
 }
@@ -47,7 +47,7 @@ void NetListener::RequestCompleted(BUrlRequest* caller,
 
 void NetListener::_ProcessWeatherData(bool success)
 {
-	BMessenger messenger(fParent);
+	BMessenger messenger(fHandler);
 	BString jsonString;
 		
 	if (!success)
@@ -155,7 +155,7 @@ void NetListener::_ProcessWeatherData(bool success)
 
 void NetListener::_ProcessCityData(bool success)
 {
-	BMessenger messenger(fParent);
+	BMessenger messenger(fHandler);
 	BString jsonString;
 	if (!success)
 		messenger.SendMessage(new BMessage(kFailureMessage));

@@ -16,14 +16,16 @@ class MainWindow;
 
 const int32 kSavePrefMessage = 'SavP';
 const int32 kUpdatePrefMessage = 'UpdM';
+const int32 kClosePrefWindowMessage = 'CPrW';
 
 
 class PreferencesWindow : public BWindow {
 public:
-					PreferencesWindow(MainWindow* parent,
+					PreferencesWindow(BRect frame, MainWindow* parent,
 						int32 updateDelay, bool cityId);
 	
 	void			MessageReceived(BMessage *msg);
+	virtual bool	QuitRequested();
 private:
 	void			_UpdatePreferences();
 
