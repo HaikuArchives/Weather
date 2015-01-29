@@ -27,8 +27,13 @@ public:
 	virtual void	MessageReceived(BMessage *msg);
 	virtual bool	QuitRequested();
 private:
+	void			_StartSearch();
+	void			_StopSearch();
+	static int32	_FindIdFunc(void *cookie);
 	void			_UpdateCity();
 	void			_FindId();
+
+	thread_id		fDownloadThread;
 
 	MainWindow*		fParent;
 

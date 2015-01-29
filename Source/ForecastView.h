@@ -54,6 +54,7 @@ virtual status_t	Archive(BMessage* into, bool deep = true) const;
 static	BArchivable* Instantiate(BMessage* archive);
 
 	void			Reload(bool forcedForecast = false);
+	void			StopReload();
 	void			SetCityName(BString city);
 	BString			CityName();
 	void			SetCityId(BString cityId);
@@ -67,7 +68,8 @@ static	BArchivable* Instantiate(BMessage* archive);
 	bool			ShowForecast();
 	status_t		_SaveSettings();
 private:
-	void			_DownloadData(bool forcedForecast = false);
+	void			_DownloadData();
+	static int32	_DownloadDataFunc(void *cookie);
 	void 			_LoadBitmaps();
 	BBitmap* 		_GetWeatherIcon(int32 condition, weatherIconSize size);
 
@@ -76,6 +78,8 @@ private:
 	void			_ShowForecast(bool);
 	void			_LoadIcons(BBitmap*	bitmap[2], uint32 type, const char* name);
 
+	thread_id		fDownloadThread;
+	bool 			fForcedForecast;
 	BGridView* 		fView;
 	BGridLayout* 	fLayout;
 	

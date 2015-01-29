@@ -43,7 +43,8 @@ extern const char* kSignature;
 
 ForecastView::ForecastView(BRect frame)
 	:
-	BView(frame, "ForecastView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS)
+	BView(frame, "ForecastView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
+	fDownloadThread(-1)
 {
 
 	BGroupLayout* root = new BGroupLayout(B_VERTICAL);
@@ -81,10 +82,10 @@ ForecastView::ForecastView(BRect frame)
 	fLayout->AddView(infoView, (int32) 1, (int32) 0);
 	
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
-	BFont* bold_font = new BFont(be_bold_font);
-	bold_font->SetSize(24);
+	BFont bold_font(be_bold_font);
+	bold_font.SetSize(24);
 	fConditionView = new BStringView("description", "Loading" B_UTF8_ELLIPSIS);
-	fConditionView->SetFont(bold_font);
+	fConditionView->SetFont(&bold_font);
 	infoLayout->AddView(fConditionView);
 
 	// Numbers (e.g. temperature etc.)
@@ -232,12 +233,12 @@ void ForecastView::MessageReceived(BMessage *msg) {
 	case kUpdateMessage:
 		fConditionView->SetText("Loading" B_UTF8_ELLIPSIS);
 	case kAutoUpdateMessage:
-		_DownloadData();
+		Reload();
 		break;
 	case kShowForecastMessage:
 		_ShowForecast(!fShowForecast);
 		if (fShowForecast)
-			_DownloadData();
+			Reload();
 		break;
 	case kUpdateCityName:{
 		BString newCityName;
@@ -249,9 +250,6 @@ void ForecastView::MessageReceived(BMessage *msg) {
 	}
 }
 
-void ForecastView::Reload(bool forcedForecast = false) {
-	_DownloadData(forcedForecast);
-}
 
 void ForecastView::_LoadBitmaps() {
 	_LoadIcons(fAlert, 'rGFX', "Artwork/weather_alert.hvif");
@@ -425,21 +423,48 @@ bool ForecastView::ShowForecast(){
 	return fShowForecast;
 }
 
-void ForecastView::_DownloadData(bool forcedForecast) {
+void ForecastView::Reload(bool forcedForecast = false) {
+	StopReload();
+
+	fForcedForecast = forcedForecast;
+
+	fDownloadThread = spawn_thread(&_DownloadDataFunc,
+		"Download Data", B_NORMAL_PRIORITY, this);
+	if (fDownloadThread >= 0)
+		resume_thread(fDownloadThread);
+}
+
+void ForecastView::StopReload() {
+	if (fDownloadThread < 0)
+		return;
+	wait_for_thread(fDownloadThread, NULL);
+	fDownloadThread = -1;
+}
+
+int32 ForecastView::_DownloadDataFunc(void *cookie) {
+	ForecastView* forecastView = static_cast<ForecastView*>(cookie);
+	forecastView->_DownloadData();
+	return 0;
+}
+
+void ForecastView::_DownloadData() {
 
 	BString urlString("https://query.yahooapis.com/v1/public/yql");
-	if (fShowForecast || forcedForecast)
+	if (fShowForecast || fForcedForecast)
 		urlString << "?q=select+*+from+weather.forecast+";
 	else
 		urlString << "?q=select+item.condition+from+weather.forecast+";
 
 	urlString << "where+woeid+=+" << fCityId << "&format=json";
 
+	NetListener listener(this, WEATHER_REQUEST);
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
-		new NetListener(this, WEATHER_REQUEST));
-	status_t err = request->Run();
-	if (err != B_OK) ; // TODO Send error message
+		&listener);
+
+	thread_id thread = request->Run();
+	wait_for_thread(thread, NULL);
+	delete request;
 }
 
 void ForecastView::_ShowForecast(bool show) {
