@@ -58,14 +58,13 @@ void PreferencesWindow::MessageReceived(BMessage *msg) {
 
 
 void PreferencesWindow::_UpdatePreferences() {
-	BMessenger* messenger = new BMessenger(fParent);
+	BMessenger messenger(fParent);
 	BMessage* message = new BMessage(kUpdatePrefMessage);
 	
 	message->AddInt32("delay", fUpdateDelaySlider->Value());
 	message->AddBool("fahrenheit", fFahrenheitBox->Value());
 	
-	messenger->SendMessage(message);
-	delete messenger;
+	messenger.SendMessage(message);
 }
 
 bool PreferencesWindow::QuitRequested() {
