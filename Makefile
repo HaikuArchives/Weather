@@ -39,7 +39,8 @@ SRCS=Source/App.cpp \
 	Source/MainWindow.cpp \
 	Source/PreferencesWindow.cpp \
 	Source/SelectionWindow.cpp \
-	Source/ForecastDayView.cpp
+	Source/ForecastDayView.cpp \
+	Source/ForecastView.cpp
 
 #	specify the resource definition files to use
 #	full path or a relative path to the resource file can be used.

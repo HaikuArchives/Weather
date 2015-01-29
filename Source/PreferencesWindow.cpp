@@ -13,10 +13,10 @@
 #include "PreferencesWindow.h"
 
 
-PreferencesWindow::PreferencesWindow(MainWindow* parent,
+PreferencesWindow::PreferencesWindow(BRect frame, MainWindow* parent,
 	int32 updateDelay, bool fahrenheit)
 :
-BWindow(BRect(50, 50, 0, 0), "Preferences",
+BWindow(frame, "Preferences",
 	B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS) {
 	fParent = parent;
 	fUpdateDelay = updateDelay;
@@ -51,6 +51,7 @@ void PreferencesWindow::MessageReceived(BMessage *msg) {
 	switch (msg->what) {
 	case kSavePrefMessage:
 		_UpdatePreferences();
+		QuitRequested();
 		Quit();
 	}
 }
@@ -66,3 +67,11 @@ void PreferencesWindow::_UpdatePreferences() {
 	messenger->SendMessage(message);
 	delete messenger;
 }
+
+bool PreferencesWindow::QuitRequested() {
+	BMessenger messenger(fParent);
+	BMessage* message = new BMessage(kClosePrefWindowMessage);
+	messenger.SendMessage(message);
+	return true;
+}
+
