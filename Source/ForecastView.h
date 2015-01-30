@@ -52,6 +52,7 @@ public:
 	
 virtual status_t	Archive(BMessage* into, bool deep = true) const;
 static	BArchivable* Instantiate(BMessage* archive);
+status_t			SaveState(BMessage* into, bool deep = true) const;
 
 	void			Reload(bool forcedForecast = false);
 	void			StopReload();
@@ -82,6 +83,7 @@ private:
 	bool 			fForcedForecast;
 	BGridView* 		fView;
 	BGridLayout* 	fLayout;
+	bool			fReplicated;
 	
 	BString			fCity;
 	BString			fCityId;

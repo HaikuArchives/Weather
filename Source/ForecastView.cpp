@@ -44,7 +44,8 @@ extern const char* kSignature;
 ForecastView::ForecastView(BRect frame)
 	:
 	BView(frame, "ForecastView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
-	fDownloadThread(-1)
+	fDownloadThread(-1),
+	fReplicated(false)
 {
 
 	BGroupLayout* root = new BGroupLayout(B_VERTICAL);
@@ -150,8 +151,32 @@ ForecastView::Instantiate(BMessage* archive)
 ForecastView::ForecastView(BMessage* archive)
 	: BView(archive)
 {
-	// Implement Me!
-	//_Init(archive);
+	fReplicated = true;
+	// move to -> _Init(archive);
+	fDownloadThread = -1;
+	fForcedForecast = false;
+
+	if (archive->FindString("city", &fCity)!= B_OK)
+		fCity = kDefaultCityName;
+
+	if (archive->FindString("cityId", &fCityId)!= B_OK)
+		fCityId = kDefaultCityId;
+
+	if (archive->FindInt32("updateDelay", &fUpdateDelay)!= B_OK)
+		fUpdateDelay = kDefaultUpdateDelay;
+
+	if (archive->FindBool("fahrenheit", &fFahrenheit) != B_OK)
+		fFahrenheit = kDefaultFahrenheit;
+
+	if (archive->FindBool("showForecast", &fShowForecast) != B_OK)
+		fShowForecast = kDefaultShowForecast;
+
+	if (archive->FindInt32("temperature", &fTemperature)!= B_OK)
+		fTemperature = 0;
+
+	if (archive->FindInt32("condition", &fCondition)!= B_OK)
+		fCondition = 0;
+
 }
 
 status_t
@@ -166,23 +191,54 @@ ForecastView::Archive(BMessage* into, bool deep) const
 	status = into->AddString("add_on", kSignature);
 	if (status < B_OK)
 		return status;
-	// Implement Me!
-/*
-	status = SaveState(*into);
+
+	status = SaveState(into, deep);
 	if (status < B_OK)
 		return status;
-*/
+
 	return B_OK;
 }
 
+status_t
+ForecastView::SaveState(BMessage* into, bool deep) const
+{
+	status_t status;
+
+	status = into->AddString("city", fCity);
+	if (status != B_OK)
+		return status;
+	status = into->AddString("cityId", fCityId);
+	if (status != B_OK)
+		return status;
+	status = into->AddInt32("updateDelay", fUpdateDelay);
+	if (status != B_OK)
+		return status;
+	status = into->AddBool("fahrenheit", fFahrenheit);
+	if (status != B_OK)
+		return status;
+	status = into->AddBool("showForecast", fShowForecast);
+	if (status != B_OK)
+		return status;
+	status = into->AddInt32("temperature", fTemperature);
+	if (status != B_OK)
+		return status;
+	status = into->AddInt32("condition", fCondition);
+	if (status != B_OK)
+		return status;
+
+	return B_OK;
+
+}
+
 void ForecastView::AttachedToWindow() {
-	BMessenger window(this);
+	BMessenger view(this);
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
-	fAutoUpdate = new BMessageRunner(window,  &autoUpdateMessage, fUpdateDelay * 60 * 1000 * 1000);
-	window.SendMessage(new BMessage(kUpdateMessage));
+	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, fUpdateDelay * 60 * 1000 * 1000);
+	view.SendMessage(new BMessage(kUpdateMessage));
 	
-	if (Window() != NULL)
+	if (Window() != NULL && !fReplicated)
 		Window()->MoveTo(fForecastViewRect.LeftTop());
+
 }
 
 void ForecastView::MessageReceived(BMessage *msg) {
