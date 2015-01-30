@@ -142,6 +142,8 @@ void MainWindow::MessageReceived(BMessage *msg) {
 	case kClosePrefWindowMessage:
 		fPreferencesWindow = NULL;
 		break;
+	default:
+		BWindow::MessageReceived(msg);
 	}
 
 }

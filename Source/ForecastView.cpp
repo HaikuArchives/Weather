@@ -242,11 +242,12 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		break;
 	case kUpdateCityName:{
 		BString newCityName;
-		if (msg->FindString("city", &newCityName) == B_OK) {
+		if (msg->FindString("city", &newCityName) == B_OK)
 			SetCityName(newCityName);
 		}
-		}
 		break;
+	default:
+		BView::MessageReceived(msg);
 	}
 }
 
