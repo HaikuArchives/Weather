@@ -7,8 +7,75 @@
 ForecastDayView::ForecastDayView(BRect frame)
 :BView(frame, "ForecastDayView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS),
 fHigh(0),
-fLow(0)
+fLow(0),
+fIcon(NULL)
 {
+}
+
+BArchivable*
+ForecastDayView::Instantiate(BMessage* archive)
+{
+	if (!validate_instantiation(archive, "ForecastView"))
+		return NULL;
+
+	return new ForecastDayView(archive);
+}
+
+ForecastDayView::ForecastDayView(BMessage* archive)
+	: BView(archive)
+{
+
+	if (archive->FindString("dayLabel", &fDayLabel)!= B_OK)
+		fDayLabel = "";
+
+	if (archive->FindBool("fahrenheit", &fFahrenheit) != B_OK)
+		fFahrenheit = false;
+
+	if (archive->FindInt32("high", &fHigh)!= B_OK)
+		fHigh = 0;
+
+	if (archive->FindInt32("low", &fLow)!= B_OK)
+		fLow = 0;
+
+}
+
+status_t ForecastDayView::Archive(BMessage* into, bool deep) const
+{
+	status_t status;
+
+	status = BView::Archive(into, deep);
+	if (status < B_OK)
+		return status;
+
+	status = SaveState(into, deep);
+	if (status < B_OK)
+		return status;
+
+	return B_OK;
+}
+
+status_t ForecastDayView::SaveState(BMessage* into, bool deep) const
+{
+	status_t status;
+
+	status = into->AddString("dayLabel", fDayLabel);
+	if (status != B_OK)
+		return status;
+
+	status = into->AddBool("fahrenheit", fFahrenheit);
+	if (status != B_OK)
+		return status;
+
+	status = into->AddInt32("high", fHigh);
+	if (status != B_OK)
+		return status;
+
+	status = into->AddInt32("low", fLow);
+	if (status != B_OK)
+		return status;
+
+	return B_OK;
+
 }
 
 void ForecastDayView::AttachedToWindow()

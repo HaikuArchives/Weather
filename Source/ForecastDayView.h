@@ -12,9 +12,14 @@ class ForecastDayView : public BView
 public:
 					ForecastDayView(BRect);
 					~ForecastDayView(void);
+					ForecastDayView(BMessage* archive);
 	virtual void	FrameResized(float, float);
 	virtual void	Draw(BRect);
 	virtual void	AttachedToWindow();
+virtual status_t	Archive(BMessage* into, bool deep = true) const;
+static BArchivable*	Instantiate(BMessage* archive);
+		status_t	SaveState(BMessage* into, bool deep = true) const;
+
 			void	SetIcon(BBitmap *icon);
 			void	SetDayLabel(BString& dayLabel);
 			void	SetTemp(BString& temp);
