@@ -53,6 +53,9 @@ void PreferencesWindow::MessageReceived(BMessage *msg) {
 		_UpdatePreferences();
 		QuitRequested();
 		Quit();
+		break;
+	default:
+		BWindow::MessageReceived(msg);
 	}
 }
 
