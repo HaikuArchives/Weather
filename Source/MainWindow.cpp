@@ -151,6 +151,6 @@ void MainWindow::MessageReceived(BMessage *msg) {
 
 bool MainWindow::QuitRequested()
 {
-	fForecastView->_SaveSettings();
+	fForecastView->SaveSettings();
 	return true;
 }

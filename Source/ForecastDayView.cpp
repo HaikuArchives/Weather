@@ -28,9 +28,6 @@ ForecastDayView::ForecastDayView(BMessage* archive)
 	if (archive->FindString("dayLabel", &fDayLabel)!= B_OK)
 		fDayLabel = "";
 
-	if (archive->FindBool("fahrenheit", &fFahrenheit) != B_OK)
-		fFahrenheit = false;
-
 	if (archive->FindInt32("high", &fHigh)!= B_OK)
 		fHigh = 0;
 
@@ -59,10 +56,6 @@ status_t ForecastDayView::SaveState(BMessage* into, bool deep) const
 	status_t status;
 
 	status = into->AddString("dayLabel", fDayLabel);
-	if (status != B_OK)
-		return status;
-
-	status = into->AddBool("fahrenheit", fFahrenheit);
 	if (status != B_OK)
 		return status;
 

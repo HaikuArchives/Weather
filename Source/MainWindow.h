@@ -35,15 +35,15 @@ public:
 	virtual bool	QuitRequested();
 	
 private:
+	status_t		_LoadSettings();
+	status_t		_SaveSettings();
 	BMenuBar*		_PrepareMenuBar(void);
 	ForecastView*	fForecastView;
 
 	bool			fShowForecast;
 
-	BRect			fMainWindowRect;
 	SelectionWindow*	fSelectionWindow;
 	PreferencesWindow* fPreferencesWindow;
-	BResources*		fResources;
 	
 	BMenuItem*		fShowForecastMenuItem;
 };
