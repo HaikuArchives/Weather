@@ -3,7 +3,7 @@
  * Copyright 2014 George White
  * All rights reserved. Distributed under the terms of the MIT license.
  */
-
+#include <Alert.h>
 #include <AppKit.h>
 #include <Bitmap.h>
 #include <Dragger.h>
@@ -36,44 +36,47 @@ const bool	kDefaultShowForecast = false;
 const BRect kDefaultForecastViewRect = BRect(150,150,0,0);
 const int32 kMaxForecastDay = 5;
 
-const bool	kReplicantEnabled = false; // NOT Implemented Yet
-
+const bool	kReplicantEnabled = true; // NOT Completed Yet
 
 extern const char* kSignature;
 
 ForecastView::ForecastView(BRect frame)
 	:
-	BView(frame, "ForecastView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
+	BView(frame, "HaikuWeather", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
 	fDownloadThread(-1),
 	fReplicated(false)
 {
 
+	if (_LoadSettings() != B_OK) {
+		fCity = kDefaultCityName;
+		fCityId = kDefaultCityId;
+		fUpdateDelay = kDefaultUpdateDelay;
+		fFahrenheit = kDefaultFahrenheit;
+		fShowForecast = kDefaultShowForecast;
+		fForecastViewRect = kDefaultForecastViewRect;
+	}
+
+	_Init();
+}
+
+
+
+void ForecastView::_Init() {
+
+	_LoadBitmaps();
+
 	BGroupLayout* root = new BGroupLayout(B_VERTICAL);
 	root->SetSpacing(0);
 	this->SetLayout(root);
-
-	
 	fView = new BGridView(3, 3);
 	fLayout = fView->GridLayout();
 	fLayout->SetInsets(5);
 	this->AddChild(fView);
 
-	fResources = be_app->AppResources();
-	
-	_LoadBitmaps();
-
-	fCity = kDefaultCityName;
-	fCityId = kDefaultCityId;
-	fUpdateDelay = kDefaultUpdateDelay;
-	fFahrenheit = kDefaultFahrenheit;
-	fShowForecast = kDefaultShowForecast;
-	fForecastViewRect = kDefaultForecastViewRect;
-
-	_LoadSettings();
-
 	// Icon for weather
 	fConditionButton = new BButton("condition", "",
 		new BMessage(kUpdateMessage));
+
 	fConditionButton->SetIcon(fFewClouds[LARGE_ICON]);
 	fLayout->AddView(fConditionButton, (int32) 0, (int32) 0);
 	
@@ -137,8 +140,6 @@ ForecastView::ForecastView(BRect frame)
 }
 
 
-
-
 BArchivable*
 ForecastView::Instantiate(BMessage* archive)
 {
@@ -152,7 +153,7 @@ ForecastView::ForecastView(BMessage* archive)
 	: BView(archive)
 {
 	fReplicated = true;
-	// move to -> _Init(archive);
+
 	fDownloadThread = -1;
 	fForcedForecast = false;
 
@@ -177,14 +178,32 @@ ForecastView::ForecastView(BMessage* archive)
 	if (archive->FindInt32("condition", &fCondition)!= B_OK)
 		fCondition = 0;
 
+	// Use _Init to rebuild the View with deep = false in Archive
+	_Init();
+
 }
+
+void ForecastView::_BindView(){
+
+	_LoadBitmaps();
+
+	fConditionButton = dynamic_cast<BButton*>(FindView("condition"));
+
+	fConditionView = dynamic_cast<BStringView*>(FindView("description"));
+
+	fTemperatureView = dynamic_cast<BStringView*>(FindView("temperature"));
+
+	fCityView = dynamic_cast<BStringView*>(FindView("city"));
+
+}
+
 
 status_t
 ForecastView::Archive(BMessage* into, bool deep) const
 {
 	status_t status;
 
-	status = BView::Archive(into, deep);
+	status = BView::Archive(into, false); // NO DEEP REBUILD THE VIEW
 	if (status < B_OK)
 		return status;
 
@@ -230,15 +249,28 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 
 }
 
+
+
 void ForecastView::AttachedToWindow() {
+
+	if (Window() != NULL && !fReplicated)
+		Window()->MoveTo(fForecastViewRect.LeftTop());
+
+	if (fReplicated)
+		fConditionButton->SetTarget(BMessenger(this));
+
 	BMessenger view(this);
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
 	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, fUpdateDelay * 60 * 1000 * 1000);
 	view.SendMessage(new BMessage(kUpdateMessage));
-	
-	if (Window() != NULL && !fReplicated)
-		Window()->MoveTo(fForecastViewRect.LeftTop());
+}
 
+
+void	ForecastView::AllAttached() {
+	/* Doesn't Work
+	if (fReplicated)
+		_BindView();
+	*/
 }
 
 void ForecastView::MessageReceived(BMessage *msg) {
@@ -302,6 +334,13 @@ void ForecastView::MessageReceived(BMessage *msg) {
 			SetCityName(newCityName);
 		}
 		break;
+	case B_ABOUT_REQUESTED:
+		{
+			BAlert *alert = new BAlert("About HaikuWeather",
+				"HaikuWeather (The Replicant version)\n\nUnder Development", "OK");
+			alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
+			alert->Go();
+		}	break;
 	default:
 		BView::MessageReceived(msg);
 	}
@@ -332,9 +371,17 @@ void ForecastView::_LoadIcons(BBitmap* bitmap[2], uint32 type, const char* name)
 	bitmap[0] = NULL;
 	bitmap[1] = NULL;
 
-	const void* data = fResources->LoadResource(type, name, &dataSize);
+	const void* data;
+
+	BResources resources;
+	status_t status = resources.SetToImage(&&dummy_label);
+dummy_label:
+
+	if (status == B_OK)
+		data = resources.LoadResource(type, name, &dataSize);
 
 	if (data != NULL){
+
 		BBitmap* smallBitmap = new BBitmap(BRect(0, 0, kSizeSmallIcon - 1, kSizeSmallIcon - 1), 0,
 			B_RGBA32);
 		BBitmap* largeBitmap = new BBitmap(BRect(0, 0, kSizeLargeIcon - 1, kSizeLargeIcon - 1), 0,
@@ -444,10 +491,6 @@ int32	ForecastView::UpdateDelay(){
 }
 
 void ForecastView::SetFahrenheit(bool fahrenheit){
-	
-	if (fFahrenheit == fahrenheit)
-		return;
-	
 	BString tempString;
 	fFahrenheit = fahrenheit;
 	if (fFahrenheit)
@@ -576,7 +619,7 @@ status_t ForecastView::_LoadSettings() {
 }
 
 
-status_t ForecastView::_SaveSettings() {
+status_t ForecastView::SaveSettings() {
 	BPath p;
 	BFile f;
 	BMessage m(kSettingsMessage);

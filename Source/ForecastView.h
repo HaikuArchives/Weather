@@ -42,6 +42,8 @@ enum weatherIconSize {
 	LARGE_ICON
 };
 
+class _EXPORT ForecastView;
+
 
 class ForecastView : public BView {
 public:
@@ -49,11 +51,10 @@ public:
 					ForecastView(BMessage* archive);
 	virtual void	MessageReceived(BMessage* msg);
 	virtual void	AttachedToWindow();
-	
+	virtual void	AllAttached();
 virtual status_t	Archive(BMessage* into, bool deep = true) const;
 static	BArchivable* Instantiate(BMessage* archive);
 status_t			SaveState(BMessage* into, bool deep = true) const;
-
 	void			Reload(bool forcedForecast = false);
 	void			StopReload();
 	void			SetCityName(BString city);
@@ -67,8 +68,10 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	bool			IsFahrenheit();
 	void			SetShowForecast(bool showForecast);
 	bool			ShowForecast();
-	status_t		_SaveSettings();
+	status_t		SaveSettings();
 private:
+	void			_Init();
+	void			_BindView();
 	void			_DownloadData();
 	static int32	_DownloadDataFunc(void *cookie);
 	void 			_LoadBitmaps();
@@ -97,7 +100,6 @@ private:
 	SelectionWindow*	fSelectionWindow;
 	PreferencesWindow* fPreferencesWindow;
 	BMessageRunner*	fAutoUpdate;
-	BResources*		fResources;
 	
 	BBitmap* 		fAlert[2];
 	BBitmap* 		fClearNight[2];
