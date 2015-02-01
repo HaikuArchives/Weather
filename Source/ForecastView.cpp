@@ -42,7 +42,7 @@ extern const char* kSignature;
 
 ForecastView::ForecastView(BRect frame, BMessage* settings)
 	:
-	BView(frame, "HaikuWeather", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
+	BView(frame, "HaikuWeather", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
 	fDownloadThread(-1),
 	fReplicated(false)
 {
@@ -106,10 +106,9 @@ void ForecastView::_Init() {
 
 	for (int32 i = 0; i < kMaxForecastDay; i++)
 	{
-		fForecastDayView[i] = new ForecastDayView(BRect(0,0,48,96));
+		fForecastDayView[i] = new ForecastDayView(BRect(0, 0, 48, 112));
 		fForecastDayView[i]->SetIcon(fFewClouds[SMALL_ICON]);
 		fForecastDayView[i]->SetFahrenheit(fFahrenheit);
-		fForecastDayView[i]->SetHighTemp(fFahrenheit ? 40 : 60);
 		forecastLayout->AddView(fForecastDayView[i]);
 	}
 
@@ -563,4 +562,3 @@ void ForecastView::_ShowForecast(bool show) {
 	else
 		fForecastView->Hide();
 }
-
