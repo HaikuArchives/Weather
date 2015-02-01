@@ -33,29 +33,21 @@ const char* kDefaultCityId = "2449435";
 const int32	kDefaultUpdateDelay = 30;
 const bool	kDefaultFahrenheit = false;
 const bool	kDefaultShowForecast = false;
-const BRect kDefaultForecastViewRect = BRect(150,150,0,0);
+
 const int32 kMaxForecastDay = 5;
 
 const bool	kReplicantEnabled = true; // NOT Completed Yet
 
 extern const char* kSignature;
 
-ForecastView::ForecastView(BRect frame)
+ForecastView::ForecastView(BRect frame, BMessage* settings)
 	:
-	BView(frame, "HaikuWeather", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
+	BView(frame, "HaikuWeather", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
 	fDownloadThread(-1),
 	fReplicated(false)
 {
 
-	if (_LoadSettings() != B_OK) {
-		fCity = kDefaultCityName;
-		fCityId = kDefaultCityId;
-		fUpdateDelay = kDefaultUpdateDelay;
-		fFahrenheit = kDefaultFahrenheit;
-		fShowForecast = kDefaultShowForecast;
-		fForecastViewRect = kDefaultForecastViewRect;
-	}
-
+	_ApplyState(settings);
 	_Init();
 }
 
@@ -139,7 +131,6 @@ void ForecastView::_Init() {
 	}
 }
 
-
 BArchivable*
 ForecastView::Instantiate(BMessage* archive)
 {
@@ -150,12 +141,20 @@ ForecastView::Instantiate(BMessage* archive)
 }
 
 ForecastView::ForecastView(BMessage* archive)
-	: BView(archive)
+	:
+	BView(archive),
+	fDownloadThread(-1),
+	fForcedForecast(false),
+	fReplicated(true)
 {
-	fReplicated = true;
 
-	fDownloadThread = -1;
-	fForcedForecast = false;
+	_ApplyState(archive);
+	// Use _Init to rebuild the View with deep = false in Archive
+	_Init();
+
+}
+
+status_t ForecastView::_ApplyState(BMessage* archive) {
 
 	if (archive->FindString("city", &fCity)!= B_OK)
 		fCity = kDefaultCityName;
@@ -172,15 +171,7 @@ ForecastView::ForecastView(BMessage* archive)
 	if (archive->FindBool("showForecast", &fShowForecast) != B_OK)
 		fShowForecast = kDefaultShowForecast;
 
-	if (archive->FindInt32("temperature", &fTemperature)!= B_OK)
-		fTemperature = 0;
-
-	if (archive->FindInt32("condition", &fCondition)!= B_OK)
-		fCondition = 0;
-
-	// Use _Init to rebuild the View with deep = false in Archive
-	_Init();
-
+	return B_OK;
 }
 
 void ForecastView::_BindView(){
@@ -238,12 +229,6 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	status = into->AddBool("showForecast", fShowForecast);
 	if (status != B_OK)
 		return status;
-	status = into->AddInt32("temperature", fTemperature);
-	if (status != B_OK)
-		return status;
-	status = into->AddInt32("condition", fCondition);
-	if (status != B_OK)
-		return status;
 
 	return B_OK;
 
@@ -252,9 +237,6 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 
 
 void ForecastView::AttachedToWindow() {
-
-	if (Window() != NULL && !fReplicated)
-		Window()->MoveTo(fForecastViewRect.LeftTop());
 
 	if (fReplicated)
 		fConditionButton->SetTarget(BMessenger(this));
@@ -371,7 +353,7 @@ void ForecastView::_LoadIcons(BBitmap* bitmap[2], uint32 type, const char* name)
 	bitmap[0] = NULL;
 	bitmap[1] = NULL;
 
-	const void* data;
+	const void* data = NULL;
 
 	BResources resources;
 	status_t status = resources.SetToImage(&&dummy_label);
@@ -578,69 +560,3 @@ void ForecastView::_ShowForecast(bool show) {
 		fForecastView->Hide();
 }
 
-
-status_t ForecastView::_LoadSettings() {
-	BPath p;
-	BFile f;
-	BMessage m;
-	
-	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
-		return B_ERROR;
-	p.Append(kSettingsFileName);
-	
-	f.SetTo(p.Path(), B_READ_ONLY);
-	if (f.InitCheck() != B_OK)
-		return B_ERROR;
-	
-	if (m.Unflatten(&f) != B_OK)
-		return B_ERROR;
-	
-	if (m.what != kSettingsMessage)
-		return B_ERROR;
-	
-	if (m.FindString("fCity", &fCity) != B_OK)
-		fCity = kDefaultCityName;
-	if (m.FindString("fCityId", &fCityId) != B_OK)
-		fCityId = kDefaultCityId;
-	
-	if (m.FindInt32("fUpdateDelay", &fUpdateDelay) != B_OK)
-		fUpdateDelay = kDefaultUpdateDelay;
-
-	if (m.FindBool("fFahrenheit", &fFahrenheit) != B_OK)
-		fFahrenheit = kDefaultFahrenheit;
-
-	if (m.FindBool("fShowForecast", &fShowForecast) != B_OK)
-		fShowForecast = kDefaultShowForecast;
-	
-	if (m.FindRect("fForecastViewRect", &fForecastViewRect) != B_OK)
-		fForecastViewRect = kDefaultForecastViewRect;
-
-	return B_OK;
-}
-
-
-status_t ForecastView::SaveSettings() {
-	BPath p;
-	BFile f;
-	BMessage m(kSettingsMessage);
-	
-	m.AddString("fCity", fCity);
-	m.AddString("fCityId", fCityId);
-	m.AddInt32("fUpdateDelay", fUpdateDelay);
-	m.AddBool("fFahrenheit", fFahrenheit);
-	m.AddBool("fShowForecast", fShowForecast);
-	m.AddRect("fForecastViewRect", Window()->Frame());
-	
-	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
-		return B_ERROR;
-	p.Append(kSettingsFileName);
-	
-	f.SetTo(p.Path(), B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
-	if (f.InitCheck() != B_OK)
-		return B_ERROR;
-	
-	if (m.Flatten(&f) != B_OK)
-		return B_ERROR;
-	
-	return B_OK;
-}

@@ -60,7 +60,11 @@ MainWindow::MainWindow()
 	SetLayout(root);
 
 	AddChild(_PrepareMenuBar());
-	fForecastView = new ForecastView(BRect(0,0,100,100));
+
+	BMessage settings;
+	_LoadSettings(settings);
+
+	fForecastView = new ForecastView(BRect(0,0,100,100), &settings);
 	AddChild(fForecastView);
 	fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
 
@@ -148,9 +152,59 @@ void MainWindow::MessageReceived(BMessage *msg) {
 
 }
 
+status_t MainWindow::_LoadSettings(BMessage& m) {
+	BPath p;
+	BFile f;
+
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
+		return B_ERROR;
+	p.Append(kSettingsFileName);
+
+	f.SetTo(p.Path(), B_READ_ONLY);
+	if (f.InitCheck() != B_OK)
+		return B_ERROR;
+
+	if (m.Unflatten(&f) != B_OK)
+		return B_ERROR;
+
+	if (m.what != kSettingsMessage)
+		return B_ERROR;
+
+	if (m.FindRect("fMainWindowRect", &fMainWindowRect) != B_OK)
+		fMainWindowRect = kDefaultMainWindowRect;
+
+	MoveTo(fMainWindowRect.LeftTop());
+
+	return B_OK;
+}
+
+
+status_t MainWindow::_SaveSettings() {
+	BPath p;
+	BFile f;
+	BMessage m(kSettingsMessage);
+
+	fForecastView->SaveState(&m);
+
+	m.AddRect("fMainWindowRect", Frame());
+
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
+		return B_ERROR;
+	p.Append(kSettingsFileName);
+
+	f.SetTo(p.Path(), B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
+	if (f.InitCheck() != B_OK)
+		return B_ERROR;
+
+	if (m.Flatten(&f) != B_OK)
+		return B_ERROR;
+
+	return B_OK;
+}
+
 
 bool MainWindow::QuitRequested()
 {
-	fForecastView->SaveSettings();
+	_SaveSettings();
 	return true;
 }
