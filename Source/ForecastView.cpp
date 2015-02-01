@@ -295,6 +295,9 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		fForecastDayView[forecastNum]->SetIcon(_GetWeatherIcon(condition, SMALL_ICON));
 		fForecastDayView[forecastNum]->SetHighTemp(high);
 		fForecastDayView[forecastNum]->SetLowTemp(low);
+
+		BString toolTip = text; // << "\n" << " (" << condition << ")"; // USE FOR TEST
+		fForecastDayView[forecastNum]->SetToolTip(toolTip);
 		break;
 	}
 	case kFailureMessage:
@@ -427,9 +430,10 @@ BBitmap* ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize
 		case 36: return fShining[iconSize];				// hot
 		case 37: return fThunder[iconSize];				// isolated thunderstorms
 											// 38 - 39  It isn't an error repeated
-		case 38:										// scattered thunderstorms
-		case 39: return fStorm[iconSize];				// scattered thunderstorms
-		case 40: return fRaining[iconSize];				// scattered showers
+							// 39 is PM Showers, Probably a documentation error
+		case 38: return fStorm[iconSize];				// scattered thunderstorms
+		case 39: return fRainingScattered[iconSize];	// scattered thunderstorms
+		case 40: return fRainingScattered[iconSize];	// scattered showers
 		case 41:										// heavy snow
 		case 42:										// scattered snow showers
 		case 43: return fSnow[iconSize];				// heavy snow
