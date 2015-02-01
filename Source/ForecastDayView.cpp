@@ -8,7 +8,7 @@
 	// Macro converting a Fahrenheit value to a Celsius value
 
 ForecastDayView::ForecastDayView(BRect frame)
-:BView(frame, "ForecastDayView", B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS),
+:BView(frame, "ForecastDayView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
 fHigh(0),
 fLow(0),
 fIcon(NULL)
@@ -131,15 +131,29 @@ void ForecastDayView::Draw(BRect urect)
 	else
 		lowString << static_cast<int>(floor(CEL(fLow))) << "°C";
 
+	float space = 7;
+	if (fDayLabel == "") {
+		lowString = highString = "--";
+	}
+
 	MovePenTo((Bounds().Width() - StringWidth(highString))/2,
-		boxRect.bottom - (finfo.descent + finfo.leading) - 5);
+		boxRect.bottom - (finfo.descent + finfo.leading + space) * 2 - 5);
 
 	DrawString(highString);
+
+	MovePenTo((Bounds().Width() - StringWidth(lowString))/2,
+		boxRect.bottom - (finfo.descent + finfo.leading)  - 5);
+
+	tempFont.SetSize(14);
+	SetFont(&tempFont);
+	SetHighColor(tint_color(ui_color(B_PANEL_TEXT_COLOR), 0.7));
+
+	DrawString(lowString);
 
 	if (fIcon) {
 		SetDrawingMode(B_OP_OVER);
 		float hOffset = (Bounds().Width() - fIcon->Bounds().Width()) / 2;
-		float vOffset = (Bounds().Height() -  (finfo.ascent + finfo.descent + finfo.leading)
+		float vOffset = (Bounds().Height() -  (finfo.ascent + finfo.descent + finfo.leading) * 2
 			- fIcon->Bounds().Height()) / 2;
 		vOffset += boxBRect.bottom / 2;
 		DrawBitmap(fIcon,
