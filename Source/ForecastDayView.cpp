@@ -1,11 +1,14 @@
+/*
+	Licensed under the MIT license.
+	Made for Haiku.
+*/
 #include "ForecastDayView.h"
-#include <Debug.h>
 
 #define CEL(T) (5.0 / 9.0) * (T - 32.0)
 	// Macro converting a Fahrenheit value to a Celsius value
 
 ForecastDayView::ForecastDayView(BRect frame)
-:BView(frame, "ForecastDayView", B_FOLLOW_LEFT_RIGHT | B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS),
+:BView(frame, "ForecastDayView", B_FOLLOW_TOP, B_WILL_DRAW | B_FRAME_EVENTS),
 fHigh(0),
 fLow(0),
 fIcon(NULL)
@@ -76,6 +79,7 @@ void ForecastDayView::AttachedToWindow()
 	if (Parent() != NULL)
 		SetViewColor(Parent()->ViewColor());
 }
+
 ForecastDayView::~ForecastDayView(void)
 {
 }

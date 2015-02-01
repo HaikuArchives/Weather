@@ -47,7 +47,7 @@ class _EXPORT ForecastView;
 
 class ForecastView : public BView {
 public:
-					ForecastView(BRect frame);
+					ForecastView(BRect frame, BMessage* settings);
 					ForecastView(BMessage* archive);
 	virtual void	MessageReceived(BMessage* msg);
 	virtual void	AttachedToWindow();
@@ -68,7 +68,6 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	bool			IsFahrenheit();
 	void			SetShowForecast(bool showForecast);
 	bool			ShowForecast();
-	status_t		SaveSettings();
 private:
 	void			_Init();
 	void			_BindView();
@@ -77,7 +76,7 @@ private:
 	void 			_LoadBitmaps();
 	BBitmap* 		_GetWeatherIcon(int32 condition, weatherIconSize size);
 
-	status_t		_LoadSettings();
+	status_t		_ApplyState(BMessage *settings);
 	
 	void			_ShowForecast(bool);
 	void			_LoadIcons(BBitmap*	bitmap[2], uint32 type, const char* name);
@@ -93,10 +92,10 @@ private:
 	int32			fUpdateDelay;
 	bool			fFahrenheit;
 	bool			fShowForecast;
-	
+
 	int32			fTemperature;
 	int32			fCondition;
-	BRect			fForecastViewRect;
+
 	SelectionWindow*	fSelectionWindow;
 	PreferencesWindow* fPreferencesWindow;
 	BMessageRunner*	fAutoUpdate;
