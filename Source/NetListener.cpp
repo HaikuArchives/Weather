@@ -50,8 +50,10 @@ void NetListener::_ProcessWeatherData(bool success)
 	BMessenger messenger(fHandler);
 	BString jsonString;
 		
-	if (!success)
+	if (!success) {
 		messenger.SendMessage(new BMessage(kFailureMessage));
+		return;
+	}
 
 	jsonString.SetTo(static_cast<const char*>(fResponseData.Buffer()),
 		fResponseData.BufferLength());
@@ -157,8 +159,11 @@ void NetListener::_ProcessCityData(bool success)
 {
 	BMessenger messenger(fHandler);
 	BString jsonString;
-	if (!success)
+
+	if (!success) {
 		messenger.SendMessage(new BMessage(kFailureMessage));
+		return;
+	}
 
 	BMessage parsedData;
 	BJson parser;
