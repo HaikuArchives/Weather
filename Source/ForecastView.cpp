@@ -508,7 +508,7 @@ bool ForecastView::ShowForecast(){
 	return fShowForecast;
 }
 
-void ForecastView::Reload(bool forcedForecast = false) {
+void ForecastView::Reload(bool forcedForecast) {
 	StopReload();
 
 	fForcedForecast = forcedForecast;
