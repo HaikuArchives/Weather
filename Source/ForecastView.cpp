@@ -32,7 +32,7 @@ const char* kDefaultCityName = "Menlo Park, CA";
 const char* kDefaultCityId = "2449435";
 const int32	kDefaultUpdateDelay = 30;
 const bool	kDefaultFahrenheit = false;
-const bool	kDefaultShowForecast = false;
+const bool	kDefaultShowForecast = true;
 
 const int32 kMaxForecastDay = 5;
 
@@ -79,7 +79,7 @@ void ForecastView::_Init() {
 	
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
 	BFont bold_font(be_bold_font);
-	bold_font.SetSize(24);
+	bold_font.SetSize(20);
 	fConditionView = new BStringView("description", "Loading" B_UTF8_ELLIPSIS);
 	fConditionView->SetFont(&bold_font);
 	infoLayout->AddView(fConditionView);
@@ -123,15 +123,14 @@ void ForecastView::_Init() {
 		BDragger* dragger = new BDragger(rect, this,
 			B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
 
-		AddChild(BLayoutBuilder::Group<>(B_HORIZONTAL)
-				.AddGlue()
-				.Add(dragger)
-		);
+		SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+		AddChild(dragger);
 	}
+	root->SetExplicitMinSize(BSize(328,230));
+	root->SetExplicitMaxSize(BSize(328,230));
 }
 
-BArchivable*
-ForecastView::Instantiate(BMessage* archive)
+BArchivable* ForecastView::Instantiate(BMessage* archive)
 {
 	if (!validate_instantiation(archive, "ForecastView"))
 		return NULL;
@@ -263,12 +262,12 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		msg->FindInt32("temp", &fTemperature);
 		msg->FindInt32("code", &fCondition);
 		msg->FindString("text", &text);
-		
+
 		if (fFahrenheit)
 			tempString << fTemperature << "°F";
 		else
 			tempString << static_cast<int>(floor(CEL(fTemperature))) << "°C";
-		
+
 		fTemperatureView->SetText(tempString);
 		fConditionView->SetText(text);
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
