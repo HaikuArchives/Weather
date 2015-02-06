@@ -79,7 +79,7 @@ void ForecastView::_Init() {
 	
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
 	BFont bold_font(be_bold_font);
-	bold_font.SetSize(20);
+	bold_font.SetSize(18);
 	fConditionView = new BStringView("description", "Loading" B_UTF8_ELLIPSIS);
 	fConditionView->SetFont(&bold_font);
 	infoLayout->AddView(fConditionView);
@@ -89,12 +89,16 @@ void ForecastView::_Init() {
 	BGroupLayout* numberLayout = numberView->GroupLayout();
 	infoLayout->AddView(numberView);
 	
+	BFont plain_font(be_plain_font);
+	plain_font.SetSize(14);
 	// Temperature (e.g. high 32 degrees C)
 	fTemperatureView = new BStringView("temperature", "");
+	fTemperatureView->SetFont(&plain_font);
 	numberLayout->AddView(fTemperatureView);
 	
 	// City
 	fCityView = new BStringView("city", fCity);
+	fCityView->SetFont(&plain_font);
 	numberLayout->AddView(fCityView);
 	
 	// Numbers (e.g. temperature etc.)
@@ -126,8 +130,8 @@ void ForecastView::_Init() {
 		SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 		AddChild(dragger);
 	}
-	root->SetExplicitMinSize(BSize(328,230));
-	root->SetExplicitMaxSize(BSize(328,230));
+	root->SetExplicitMinSize(BSize(335,226));
+	root->SetExplicitMaxSize(BSize(335,226));
 }
 
 BArchivable* ForecastView::Instantiate(BMessage* archive)
