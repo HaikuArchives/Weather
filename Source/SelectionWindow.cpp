@@ -23,7 +23,8 @@ SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent,
 	BString city, BString cityId)
 :
 BWindow(rect, "Change location",
-	B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS| B_AUTO_UPDATE_SIZE_LIMITS),
+	B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS| B_CLOSE_ON_ESCAPE
+	| B_AUTO_UPDATE_SIZE_LIMITS),
 		fDownloadThread(-1)
  {
 	fParent = parent;
