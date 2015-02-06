@@ -17,7 +17,8 @@ PreferencesWindow::PreferencesWindow(BRect frame, MainWindow* parent,
 	int32 updateDelay, bool fahrenheit)
 :
 BWindow(frame, "Preferences",
-	B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_AUTO_UPDATE_SIZE_LIMITS) {
+	B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE
+	| B_AUTO_UPDATE_SIZE_LIMITS) {
 	fParent = parent;
 	fUpdateDelay = updateDelay;
 	fFahrenheit = fahrenheit;
