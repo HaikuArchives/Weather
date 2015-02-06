@@ -8,7 +8,7 @@
 	// Macro converting a Fahrenheit value to a Celsius value
 
 ForecastDayView::ForecastDayView(BRect frame)
-:BView(frame, "ForecastDayView", B_FOLLOW_ALL, B_WILL_DRAW | B_FRAME_EVENTS),
+:BView(frame, "ForecastDayView", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
 fHigh(0),
 fLow(0),
 fIcon(NULL)
