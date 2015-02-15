@@ -15,6 +15,7 @@
 #include <Menu.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
+#include <PopUpMenu.h>
 #include <TranslationUtils.h>
 #include <Url.h>
 #include <UrlProtocolRoster.h>
@@ -71,11 +72,11 @@ void ForecastView::_Init() {
 
 	fConditionButton->SetIcon(fFewClouds[LARGE_ICON]);
 	fLayout->AddView(fConditionButton, (int32) 0, (int32) 0);
-	
-	BGroupView *infoView = new BGroupView(B_VERTICAL);
-	BGroupLayout *infoLayout = infoView->GroupLayout();
+				fConditionButton->SetFlat(true);
+	fInfoView = new BGroupView(B_VERTICAL);
+	BGroupLayout *infoLayout = fInfoView->GroupLayout();
 	infoLayout->SetInsets(16);
-	fLayout->AddView(infoView, (int32) 1, (int32) 0);
+	fLayout->AddView(fInfoView, (int32) 1, (int32) 0);
 	
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
 	BFont bold_font(be_bold_font);
@@ -85,9 +86,9 @@ void ForecastView::_Init() {
 	infoLayout->AddView(fConditionView);
 
 	// Numbers (e.g. temperature etc.)
-	BGroupView* numberView = new BGroupView(B_HORIZONTAL);
-	BGroupLayout* numberLayout = numberView->GroupLayout();
-	infoLayout->AddView(numberView);
+	fNumberView = new BGroupView(B_HORIZONTAL);
+	BGroupLayout* numberLayout = fNumberView->GroupLayout();
+	infoLayout->AddView(fNumberView);
 	
 	BFont plain_font(be_plain_font);
 	plain_font.SetSize(14);
@@ -127,7 +128,7 @@ void ForecastView::_Init() {
 		BDragger* dragger = new BDragger(rect, this,
 			B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
 
-		SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+		SetViewColor(fBackgroundColor);
 		AddChild(dragger);
 	}
 	root->SetExplicitMinSize(BSize(335,226));
@@ -172,6 +173,16 @@ status_t ForecastView::_ApplyState(BMessage* archive) {
 
 	if (archive->FindBool("showForecast", &fShowForecast) != B_OK)
 		fShowForecast = kDefaultShowForecast;
+
+	rgb_color *color;
+	ssize_t colorsize;
+	status_t status;
+
+	status = archive->FindData("backgroundColor", B_RGB_COLOR_TYPE, (const void **)&color, &colorsize);
+	fBackgroundColor = (status == B_NO_ERROR) ? *color : ui_color(B_PANEL_BACKGROUND_COLOR);
+
+	status = archive->FindData("textColor", B_RGB_COLOR_TYPE, (const void **)&color, &colorsize);
+	fTextColor = (status == B_NO_ERROR) ? *color : ui_color(B_PANEL_TEXT_COLOR);
 
 	return B_OK;
 }
@@ -232,11 +243,18 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	if (status != B_OK)
 		return status;
 
+	if (!IsDefaultColor()) {
+		status = into->AddData("textColor", B_RGB_COLOR_TYPE, &fTextColor, sizeof(rgb_color));
+		if (status != B_OK)
+			return status;
+		status = into->AddData("backgroundColor", B_RGB_COLOR_TYPE, &fBackgroundColor, sizeof(rgb_color));
+		if (status != B_OK)
+			return status;
+	}
+
 	return B_OK;
 
 }
-
-
 
 void ForecastView::AttachedToWindow() {
 
@@ -247,6 +265,7 @@ void ForecastView::AttachedToWindow() {
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
 	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, fUpdateDelay * 60 * 1000 * 1000);
 	view.SendMessage(new BMessage(kUpdateMessage));
+	BView::AttachedToWindow();
 }
 
 
@@ -255,11 +274,47 @@ void	ForecastView::AllAttached() {
 	if (fReplicated)
 		_BindView();
 	*/
+	SetBackgroundColor(fBackgroundColor);
+	SetTextColor(fTextColor);
 }
 
 void ForecastView::MessageReceived(BMessage *msg) {
 	BString tempString("");
 	BString text("");
+
+	if (msg->WasDropped()) {
+		rgb_color* color = NULL;
+		ssize_t size = 0;
+
+		if (msg->FindData("RGBColor", (type_code)'RGBC', (const void**)&color,
+				&size) == B_OK) {
+			BPoint point;
+			uint32	buttons;
+			GetMouse(&point, &buttons, true);
+			BMenuItem* item;
+			BPopUpMenu* popup = new BPopUpMenu("PopUp", false);
+			popup->AddItem(item = new BMenuItem("Background", new BMessage('BACC')));
+			popup->AddItem(item = new BMenuItem("Text", new BMessage('TEXC')));
+			popup->AddSeparatorItem();
+			popup->AddItem(item = new BMenuItem("Default", new BMessage('DEFT')));
+			item->SetEnabled(!IsDefaultColor());
+			ConvertToScreen(&point);
+			item = popup->Go(point);
+
+			if (item && item->Message()->what == 'BACC') {
+				SetBackgroundColor(*color);
+			}
+			if (item && item->Message()->what == 'TEXC') {
+				SetTextColor(*color);
+			}
+			if (item && item->Message()->what == 'DEFT') {
+				SetBackgroundColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+				SetTextColor(ui_color(B_PANEL_TEXT_COLOR));
+			}
+			return;
+		}
+
+	}
 
 	switch (msg->what) {
 	case kDataMessage:
@@ -564,4 +619,61 @@ void ForecastView::_ShowForecast(bool show) {
 		fForecastView->Show();
 	else
 		fForecastView->Hide();
+}
+
+void ForecastView::SetTextColor(rgb_color color)
+{
+	fTextColor = color;
+	SetHighColor(color);
+	fView->SetHighColor(color);
+	fInfoView->SetHighColor(color);
+	fConditionButton->SetHighColor(color);
+	fConditionView->SetHighColor(color);
+	fTemperatureView->SetHighColor(color);
+	fCityView->SetHighColor(color);
+	fForecastView->SetHighColor(color);
+	fNumberView->SetHighColor(color);
+	for (int32 i = 0; i < kMaxForecastDay; i++) {
+		fForecastDayView[i]->SetTextColor(color);
+	}
+	fNumberView->Invalidate();
+	fInfoView->Invalidate();
+	fView->Invalidate();
+	fConditionButton->Invalidate();
+	fConditionView->Invalidate();
+	fTemperatureView->Invalidate();
+	fCityView->Invalidate();
+	fForecastView->Invalidate();
+}
+void ForecastView::SetBackgroundColor(rgb_color color)
+{
+	fBackgroundColor = color;
+	SetViewColor(color);
+	SetLowColor(color);
+	fView->SetViewColor(color);
+	fInfoView->SetViewColor(color);
+	fConditionButton->SetLowColor(color);
+	fConditionView->SetViewColor(color);
+	fTemperatureView->SetViewColor(color);
+	fCityView->SetViewColor(color);
+	fForecastView->SetViewColor(color);
+	fNumberView->SetViewColor(color);
+	for (int32 i = 0; i < kMaxForecastDay; i++) {
+		fForecastDayView[i]->SetViewColor(color);
+		fForecastDayView[i]->Invalidate();
+	}
+	fNumberView->Invalidate();
+	fInfoView->Invalidate();
+	fView->Invalidate();
+	fConditionButton->Invalidate();
+	fConditionView->Invalidate();
+	fTemperatureView->Invalidate();
+	fCityView->Invalidate();
+	fForecastView->Invalidate();
+}
+
+bool ForecastView::IsDefaultColor() const
+{
+	return fBackgroundColor == ui_color(B_PANEL_BACKGROUND_COLOR)
+		&& fTextColor == ui_color(B_PANEL_TEXT_COLOR);
 }
