@@ -27,6 +27,7 @@ static BArchivable*	Instantiate(BMessage* archive);
 			void	SetLowTemp(int32 low);
 			void	SetFahrenheit(bool fahrenheit);
 			bool	IsFahrenheit();
+			void	SetTextColor(rgb_color color);
 
 private:
 			bool	fFahrenheit;
@@ -35,6 +36,7 @@ private:
 	BString			fDayLabel;
 	BString			fTemp;
 	BBitmap*		fIcon;
+	rgb_color		fTextColor;
 };
 
 #endif // _FORECASTDAYVIEW_H_

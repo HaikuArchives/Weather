@@ -13,6 +13,7 @@ fHigh(0),
 fLow(0),
 fIcon(NULL)
 {
+	fTextColor = ui_color(B_PANEL_TEXT_COLOR);
 }
 
 BArchivable*
@@ -99,25 +100,25 @@ void ForecastDayView::Draw(BRect urect)
 	BRect boxRect = Bounds();
 
 	// Full Box
-	SetHighColor(tint_color(ui_color(B_PANEL_BACKGROUND_COLOR), 0.7));
+	SetHighColor(tint_color(ViewColor(), 0.7));
 	FillRect(Bounds());
 
 	// Header Box
-	SetHighColor(tint_color(ui_color(B_PANEL_BACKGROUND_COLOR), 1.1));
+	SetHighColor(tint_color(ViewColor(), 1.1));
 	BRect boxBRect = Bounds();
 	boxBRect.bottom = boxBRect.top + finfo.ascent + finfo.descent + finfo.leading + 10;
 	FillRect(boxBRect);
 	MovePenTo((Bounds().Width() - StringWidth(fDayLabel))/2,
 		20 + boxRect.top + (finfo.descent + finfo.leading) - 5) ;
-	SetHighColor(ui_color(B_PANEL_TEXT_COLOR));
-	SetLowColor(tint_color(ui_color(B_PANEL_BACKGROUND_COLOR), 1.1));      	 
+	SetHighColor(fTextColor);
+	SetLowColor(tint_color(ViewColor(), 1.1));
 	DrawString(fDayLabel);
 
 	BFont tempFont = be_plain_font;
 	tempFont.SetSize(15);
 	tempFont.GetHeight(&finfo);
 	SetFont(&tempFont);
-	SetLowColor(tint_color(ui_color(B_PANEL_BACKGROUND_COLOR), 0.7));
+	SetLowColor(tint_color(ViewColor(), 0.7));
 
 	BString highString = "";
 	if (fFahrenheit)
@@ -146,7 +147,7 @@ void ForecastDayView::Draw(BRect urect)
 
 	tempFont.SetSize(14);
 	SetFont(&tempFont);
-	SetHighColor(tint_color(ui_color(B_PANEL_TEXT_COLOR), 0.7));
+	SetHighColor(tint_color(fTextColor, 0.7));
 
 	DrawString(lowString);
 
@@ -197,4 +198,10 @@ void ForecastDayView::SetFahrenheit(bool fahrenheit){
 
 bool ForecastDayView::IsFahrenheit(){
 	return fFahrenheit;
+}
+
+void ForecastDayView::SetTextColor(rgb_color color)
+{
+	fTextColor = color;
+	Invalidate();
 }

@@ -35,7 +35,7 @@ const uint32 kSettingsMessage = 'Pref';
 extern const char* kSettingsFileName;
 
 const uint32 kSizeSmallIcon = 40;
-const uint32 kSizeLargeIcon = 64;
+const uint32 kSizeLargeIcon = 80;
 
 enum weatherIconSize {
 	SMALL_ICON,
@@ -68,6 +68,9 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	bool			IsFahrenheit();
 	void			SetShowForecast(bool showForecast);
 	bool			ShowForecast();
+	void			SetTextColor(rgb_color color);
+	void			SetBackgroundColor(rgb_color color);
+	bool			IsDefaultColor() const;
 private:
 	void			_Init();
 	void			_BindView();
@@ -114,6 +117,8 @@ private:
 	BBitmap* 		fSnow[2];
 	BBitmap* 		fStorm[2];
 	BBitmap* 		fThunder[2];
+	BGroupView*		fInfoView;
+	BGroupView*		fNumberView;
 	BGroupView* 	fForecastView;
 	BMenuItem*		fShowForecastMenuItem;
 	BButton*		fConditionButton;
@@ -121,6 +126,8 @@ private:
 	BStringView*	fConditionView;
 	BStringView*	fTemperatureView;
 	BStringView*	fCityView;
+	rgb_color		fBackgroundColor;
+	rgb_color		fTextColor;
 };
 
 #endif // _FORECASTVIEW_H_
