@@ -72,7 +72,7 @@ void ForecastView::_Init() {
 
 	fConditionButton->SetIcon(fFewClouds[LARGE_ICON]);
 	fLayout->AddView(fConditionButton, (int32) 0, (int32) 0);
-				fConditionButton->SetFlat(true);
+	fConditionButton->SetFlat(true);
 	fInfoView = new BGroupView(B_VERTICAL);
 	BGroupLayout *infoLayout = fInfoView->GroupLayout();
 	infoLayout->SetInsets(16);
@@ -301,12 +301,12 @@ void ForecastView::MessageReceived(BMessage *msg) {
 			ConvertToScreen(&point);
 			item = popup->Go(point);
 
-			if (item && item->Message()->what == 'BACC') {
+			if (item && item->Message()->what == 'BACC')
 				SetBackgroundColor(*color);
-			}
-			if (item && item->Message()->what == 'TEXC') {
+
+			if (item && item->Message()->what == 'TEXC')
 				SetTextColor(*color);
-			}
+
 			if (item && item->Message()->what == 'DEFT') {
 				SetBackgroundColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 				SetTextColor(ui_color(B_PANEL_TEXT_COLOR));
@@ -670,6 +670,8 @@ void ForecastView::SetBackgroundColor(rgb_color color)
 	fTemperatureView->Invalidate();
 	fCityView->Invalidate();
 	fForecastView->Invalidate();
+	// Invalidate on this view doesn't work
+	Invalidate();
 }
 
 bool ForecastView::IsDefaultColor() const
