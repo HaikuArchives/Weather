@@ -51,7 +51,10 @@ ForecastView::ForecastView(BRect frame, BMessage* settings)
 	_Init();
 }
 
-
+ForecastView::~ForecastView()
+{
+	StopReload();
+}
 
 void ForecastView::_Init() {
 
