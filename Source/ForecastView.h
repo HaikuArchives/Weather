@@ -50,6 +50,7 @@ class ForecastView : public BView {
 public:
 					ForecastView(BRect frame, BMessage* settings);
 					ForecastView(BMessage* archive);
+	virtual			~ForecastView();
 	virtual void	MessageReceived(BMessage* msg);
 	virtual void	AttachedToWindow();
 	virtual void	AllAttached();
