@@ -9,6 +9,7 @@
 
 #include <Bitmap.h>
 #include <Button.h>
+#include <Dragger.h>
 #include <GridLayout.h>
 #include <GridView.h>
 #include <GroupView.h>
@@ -126,6 +127,7 @@ private:
 	BStringView*	fConditionView;
 	BStringView*	fTemperatureView;
 	BStringView*	fCityView;
+	BDragger* 		fDragger;
 	rgb_color		fBackgroundColor;
 	rgb_color		fTextColor;
 };
