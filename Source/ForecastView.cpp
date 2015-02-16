@@ -323,9 +323,9 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		msg->FindString("text", &text);
 
 		if (fFahrenheit)
-			tempString << fTemperature << "°F";
+			tempString << fTemperature << "℉";
 		else
-			tempString << static_cast<int>(floor(CEL(fTemperature))) << "°C";
+			tempString << static_cast<int>(floor(CEL(fTemperature))) << "℃";
 
 		fTemperatureView->SetText(tempString);
 		fConditionView->SetText(text);
@@ -537,9 +537,9 @@ void ForecastView::SetFahrenheit(bool fahrenheit){
 	BString tempString;
 	fFahrenheit = fahrenheit;
 	if (fFahrenheit)
-		tempString << fTemperature << "°F";
+		tempString << fTemperature << "℉";
 	else
-		tempString << static_cast<int>(floor(CEL(fTemperature))) << "°C";
+		tempString << static_cast<int>(floor(CEL(fTemperature))) << "℃";
 		
 	fTemperatureView->SetText(tempString);
 	
