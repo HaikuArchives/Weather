@@ -121,16 +121,17 @@ void ForecastDayView::Draw(BRect urect)
 	SetLowColor(tint_color(ViewColor(), 0.7));
 
 	BString highString = "";
+
 	if (fFahrenheit)
-		highString << fHigh << "°F";
+		highString << fHigh << "℉";
 	else
-		highString << static_cast<int>(floor(CEL(fHigh))) << "°C";
+		highString << static_cast<int>(floor(CEL(fHigh))) << "℃";
 
 	BString lowString = "";
 	if (fFahrenheit)
-		lowString << fLow << "°F";
+		lowString << fLow << "℉";
 	else
-		lowString << static_cast<int>(floor(CEL(fLow))) << "°C";
+		lowString << static_cast<int>(floor(CEL(fLow))) << "℃";
 
 	float space = 7;
 	if (fDayLabel == "") {
