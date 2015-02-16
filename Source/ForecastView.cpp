@@ -6,7 +6,6 @@
 #include <Alert.h>
 #include <AppKit.h>
 #include <Bitmap.h>
-#include <Dragger.h>
 #include <FindDirectory.h>
 #include <Font.h>
 #include <GroupLayout.h>
@@ -125,11 +124,11 @@ void ForecastView::_Init() {
 		BRect rect(Bounds());
 		rect.top = rect.bottom - kDraggerSize;
 		rect.left = rect.right - kDraggerSize;
-		BDragger* dragger = new BDragger(rect, this,
+		fDragger = new BDragger(rect, this,
 			B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
 
 		SetViewColor(fBackgroundColor);
-		AddChild(dragger);
+		AddChild(fDragger);
 	}
 	root->SetExplicitMinSize(BSize(335,226));
 	root->SetExplicitMaxSize(BSize(335,226));
@@ -670,8 +669,7 @@ void ForecastView::SetBackgroundColor(rgb_color color)
 	fTemperatureView->Invalidate();
 	fCityView->Invalidate();
 	fForecastView->Invalidate();
-	// Invalidate on this view doesn't work
-	Invalidate();
+	fDragger->Invalidate();
 }
 
 bool ForecastView::IsDefaultColor() const
