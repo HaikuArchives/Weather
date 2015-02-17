@@ -25,12 +25,15 @@
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 
+#include <stdio.h>
+
+
 const float kDraggerSize = 7;
 const char* kSettingsFileName = "HaikuWeather settings";
 
 const char* kDefaultCityName = "Menlo Park, CA";
 const char* kDefaultCityId = "2449435";
-const int32	kDefaultUpdateDelay = 30;
+const int32	kDefaultUpdateDelay = 60;
 const bool	kDefaultFahrenheit = false;
 const bool	kDefaultShowForecast = true;
 
@@ -265,7 +268,7 @@ void ForecastView::AttachedToWindow() {
 
 	BMessenger view(this);
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
-	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, fUpdateDelay * 60 * 1000 * 1000);
+	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, (bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
 	view.SendMessage(new BMessage(kUpdateMessage));
 	BView::AttachedToWindow();
 }
@@ -376,6 +379,12 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		BString newCityName;
 		if (msg->FindString("city", &newCityName) == B_OK)
 			SetCityName(newCityName);
+		}
+		break;
+	case kUpdateTTLMessage: {
+		int32 ttl;
+		msg->FindInt32("ttl", &ttl);
+		SetUpdateDelay(ttl < 240 ? ttl : 240);
 		}
 		break;
 	case B_ABOUT_REQUESTED:
@@ -527,7 +536,7 @@ BString ForecastView::CityName(){
 void ForecastView::SetUpdateDelay(int32 delay){
 	if (fUpdateDelay != delay){
 		fUpdateDelay = delay;
-		fAutoUpdate->SetInterval(fUpdateDelay * 60 * 1000 * 1000);
+		fAutoUpdate->SetInterval((bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
 	}
 }
 

@@ -33,16 +33,17 @@ BWindow(frame, "Preferences",
 	
 	//fUpdateDelayControl = new BTextControl(NULL,
 	//	"Auto-update delay (in minutes):", fUpdateDelay, NULL);
+	/*
 	fUpdateDelaySlider = new BSlider("delay", "Auto-update delay (in minutes):",
 		NULL, 1, 240, B_HORIZONTAL, B_TRIANGLE_THUMB);
 	fUpdateDelaySlider->SetHashMarks(B_HASH_MARKS_BOTTOM);
 	fUpdateDelaySlider->SetLimitLabels("1 minute", "4 hours");
-	fFahrenheitBox = new BCheckBox("fahrenheit", "Use Fahrenheit degrees", NULL);
-	
 	fUpdateDelaySlider->SetValue(fUpdateDelay);
+	*/
+	fFahrenheitBox = new BCheckBox("fahrenheit", "Use Fahrenheit degrees", NULL);
 	fFahrenheitBox->SetValue(fFahrenheit);
 	
-	layout->AddView(fUpdateDelaySlider);
+	//layout->AddView(fUpdateDelaySlider);
 	layout->AddView(fFahrenheitBox);
 	layout->AddView(new BButton("save", "Save", new BMessage(kSavePrefMessage)));
 }
@@ -65,7 +66,7 @@ void PreferencesWindow::_UpdatePreferences() {
 	BMessenger messenger(fParent);
 	BMessage* message = new BMessage(kUpdatePrefMessage);
 	
-	message->AddInt32("delay", fUpdateDelaySlider->Value());
+	//message->AddInt32("delay", fUpdateDelaySlider->Value());
 	message->AddBool("fahrenheit", fFahrenheitBox->Value());
 	
 	messenger.SendMessage(message);

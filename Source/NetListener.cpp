@@ -95,6 +95,17 @@ void NetListener::_ProcessWeatherData(bool success)
 			messenger.SendMessage(message);
 		}
 
+		// TTL: Retrieve Time To live
+		BString timeToLive;
+		if (channelMessage.FindString("ttl", &timeToLive) == B_OK)
+		{
+			int ttl;
+			sscanf(timeToLive.String(), "%d", &ttl);
+			BMessage* message = new BMessage(kUpdateTTLMessage);
+			message->AddInt32("ttl", ttl);
+			messenger.SendMessage(message);
+		}
+
 		BMessage itemMessage;
 		if (channelMessage.FindMessage("item", &itemMessage) == B_OK){
 			// Current Condition
