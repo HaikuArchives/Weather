@@ -19,6 +19,7 @@ const uint32 kDataMessage = 'Data';
 const uint32 kForecastDataMessage = 'FDta';
 const uint32 kFailureMessage = 'Fail';
 const uint32 kUpdateCityName = 'UpCN';
+const uint32 kUpdateTTLMessage = 'TTLm';
 
 class NetListener : public BUrlProtocolListener {
 public:

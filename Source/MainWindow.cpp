@@ -98,11 +98,11 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		int32 updateDelay;
 		bool fahrenheit;
 
-		msg->FindInt32("delay", &updateDelay);
+		//msg->FindInt32("delay", &updateDelay);
 		msg->FindBool("fahrenheit", &fahrenheit);
 
 		fForecastView->SetFahrenheit(fahrenheit);
-		fForecastView->SetUpdateDelay(updateDelay);
+		//fForecastView->SetUpdateDelay(updateDelay);
 		break;
 	case kUpdateMessage:
 		fForecastView->SetCondition("Loading" B_UTF8_ELLIPSIS);
