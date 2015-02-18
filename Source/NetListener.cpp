@@ -4,11 +4,9 @@
  */
 #include <Json.h>
 #include <Messenger.h>
+#include <stdio.h>
 
 #include "NetListener.h"
-
-
-#include <stdio.h>
 
 NetListener::NetListener(BHandler* handler, RequestType requestType)
 	:

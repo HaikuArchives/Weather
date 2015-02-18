@@ -25,9 +25,6 @@
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 
-#include <stdio.h>
-
-
 const float kDraggerSize = 7;
 const char* kSettingsFileName = "HaikuWeather settings";
 
@@ -98,14 +95,15 @@ void ForecastView::_Init() {
 	BFont plain_font(be_plain_font);
 	plain_font.SetSize(14);
 	// Temperature (e.g. high 32 degrees C)
-	fTemperatureView = new BStringView("temperature", "");
+	fTemperatureView = new BStringView("temperature", "--");
 	fTemperatureView->SetFont(&plain_font);
 	numberLayout->AddView(fTemperatureView);
 	
 	// City
-	fCityView = new BStringView("city", fCity);
+	fCityView = new BStringView("city", "--");
 	fCityView->SetFont(&plain_font);
 	numberLayout->AddView(fCityView);
+	SetCityName(fCity);
 	
 	// Numbers (e.g. temperature etc.)
 	fForecastView = new BGroupView(B_HORIZONTAL);
@@ -333,7 +331,7 @@ void ForecastView::MessageReceived(BMessage *msg) {
 			tempString << static_cast<int>(floor(CEL(fTemperature))) << "℃";
 
 		fTemperatureView->SetText(tempString);
-		fConditionView->SetText(text);
+		SetCondition(text);
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
 		break;
 	case kForecastDataMessage:
@@ -363,10 +361,10 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		break;
 	}
 	case kFailureMessage:
-		fConditionView->SetText("Connection error");
+		SetCondition("Connection error");
 		break;
 	case kUpdateMessage:
-		fConditionView->SetText("Loading" B_UTF8_ELLIPSIS);
+		SetCondition("Loading" B_UTF8_ELLIPSIS);
 	case kAutoUpdateMessage:
 		Reload();
 		break;
@@ -526,7 +524,12 @@ BString ForecastView::CityId(){
 
 void ForecastView::SetCityName(BString city){
 	fCity = city;
-	fCityView->SetText(fCity);
+    fCityView->TruncateString(&city, B_TRUNCATE_END, 150);
+    if (city != fCity)
+		fCityView->SetToolTip(fCity);
+    else
+		fCityView->SetToolTip("");
+	fCityView->SetText(city);
 }
 
 BString ForecastView::CityName(){
@@ -566,7 +569,13 @@ bool ForecastView::IsFahrenheit(){
 }
 
 void ForecastView::SetCondition(BString condition){
-	fConditionView->SetText(condition);
+	BString conditionTruncated(condition);
+	fConditionView->TruncateString(&conditionTruncated, B_TRUNCATE_END, 200);
+    if (conditionTruncated != condition)
+		fConditionView->SetToolTip(condition);
+    else
+		fConditionView->SetToolTip("");
+	fConditionView->SetText(conditionTruncated);
 }
 
 void ForecastView::SetShowForecast(bool showForecast){
