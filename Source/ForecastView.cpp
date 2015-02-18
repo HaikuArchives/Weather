@@ -93,7 +93,7 @@ void ForecastView::_Init() {
 	infoLayout->AddView(fNumberView);
 	
 	BFont plain_font(be_plain_font);
-	plain_font.SetSize(14);
+	plain_font.SetSize(16);
 	// Temperature (e.g. high 32 degrees C)
 	fTemperatureView = new BStringView("temperature", "--");
 	fTemperatureView->SetFont(&plain_font);
@@ -133,8 +133,8 @@ void ForecastView::_Init() {
 		SetViewColor(fBackgroundColor);
 		AddChild(fDragger);
 	}
-	root->SetExplicitMinSize(BSize(332,226));
-	root->SetExplicitMaxSize(BSize(332,226));
+	root->SetExplicitMinSize(BSize(332,228));
+	root->SetExplicitMaxSize(BSize(332,228));
 }
 
 BArchivable* ForecastView::Instantiate(BMessage* archive)
@@ -569,7 +569,7 @@ bool ForecastView::IsFahrenheit(){
 
 void ForecastView::SetCondition(BString condition){
 	BString conditionTruncated(condition);
-	fConditionView->TruncateString(&conditionTruncated, B_TRUNCATE_END, 200);
+	fConditionView->TruncateString(&conditionTruncated, B_TRUNCATE_END, 196);
     if (conditionTruncated != condition)
 		fConditionView->SetToolTip(condition);
     else
