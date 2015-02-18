@@ -63,7 +63,7 @@ void ForecastView::_Init() {
 	BGroupLayout* root = new BGroupLayout(B_VERTICAL);
 	root->SetSpacing(0);
 	this->SetLayout(root);
-	fView = new BGridView(3, 3);
+	fView = new BGridView(2, 2);
 	fLayout = fView->GridLayout();
 	fLayout->SetInsets(5);
 	this->AddChild(fView);
@@ -105,16 +105,15 @@ void ForecastView::_Init() {
 	numberLayout->AddView(fCityView);
 	SetCityName(fCity);
 	
-	// Numbers (e.g. temperature etc.)
 	fForecastView = new BGroupView(B_HORIZONTAL);
 	BGroupLayout* forecastLayout = fForecastView->GroupLayout();
-	forecastLayout->SetInsets(5, 0, 5, 5);
+	forecastLayout->SetInsets(0, 2, 0, 0);
 	forecastLayout->SetSpacing(2);
-	this->AddChild(fForecastView);
-
+	//this->AddChild(fForecastView);
+	fLayout->AddView(fForecastView, (int32) 0, (int32) 1, (int32) 2);
 	for (int32 i = 0; i < kMaxForecastDay; i++)
 	{
-		fForecastDayView[i] = new ForecastDayView(BRect(0, 0, 48, 112));
+		fForecastDayView[i] = new ForecastDayView(BRect(0, 0, 62, 112));
 		fForecastDayView[i]->SetIcon(fFewClouds[SMALL_ICON]);
 		fForecastDayView[i]->SetFahrenheit(fFahrenheit);
 		forecastLayout->AddView(fForecastDayView[i]);
@@ -134,8 +133,8 @@ void ForecastView::_Init() {
 		SetViewColor(fBackgroundColor);
 		AddChild(fDragger);
 	}
-	root->SetExplicitMinSize(BSize(335,226));
-	root->SetExplicitMaxSize(BSize(335,226));
+	root->SetExplicitMinSize(BSize(332,226));
+	root->SetExplicitMaxSize(BSize(332,226));
 }
 
 BArchivable* ForecastView::Instantiate(BMessage* archive)
