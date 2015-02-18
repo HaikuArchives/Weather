@@ -13,7 +13,6 @@
 #include <UrlProtocolRoster.h>
 #include <UrlRequest.h>
 #include <Window.h>
-#include <stdio.h>
 
 #include "MainWindow.h"
 #include "NetListener.h"
