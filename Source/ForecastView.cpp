@@ -579,7 +579,7 @@ bool ForecastView::IsFahrenheitDefault(){
 			BLanguage currentLanguage(currentID.String());
 
 			if (currentLanguage.CountryCode() == NULL)
-				break;
+				continue;
 			if (strcmp(currentLanguage.CountryCode(), "US") == 0)
 				return true;
 			if (strcmp(currentLanguage.CountryCode(), "BS") == 0)
@@ -590,7 +590,13 @@ bool ForecastView::IsFahrenheitDefault(){
 				return true;
 			if (strcmp(currentLanguage.CountryCode(), "KY") == 0)
 				return true;
-			break; // check only the first
+			if (strcmp(currentLanguage.CountryCode(), "GU") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "PR") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "VI") == 0)
+				return true;
+			break;
 		}
 	}
 	return false;
