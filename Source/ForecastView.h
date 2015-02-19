@@ -68,6 +68,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	int32			UpdateDelay();
 	void			SetFahrenheit(bool fahrenheit);
 	bool			IsFahrenheit();
+	bool			IsFahrenheitDefault();
 	void			SetShowForecast(bool showForecast);
 	bool			ShowForecast();
 	void			SetTextColor(rgb_color color);
