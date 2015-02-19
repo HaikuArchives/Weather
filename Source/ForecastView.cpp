@@ -11,6 +11,8 @@
 #include <GroupLayout.h>
 #include <LayoutBuilder.h>
 #include <IconUtils.h>
+#include <Language.h>
+#include <LocaleRoster.h>
 #include <Menu.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
@@ -31,7 +33,6 @@ const char* kSettingsFileName = "HaikuWeather settings";
 const char* kDefaultCityName = "Menlo Park, CA";
 const char* kDefaultCityId = "2449435";
 const int32	kDefaultUpdateDelay = 60;
-const bool	kDefaultFahrenheit = false;
 const bool	kDefaultShowForecast = true;
 
 const int32 kMaxForecastDay = 5;
@@ -171,7 +172,7 @@ status_t ForecastView::_ApplyState(BMessage* archive) {
 		fUpdateDelay = kDefaultUpdateDelay;
 
 	if (archive->FindBool("fahrenheit", &fFahrenheit) != B_OK)
-		fFahrenheit = kDefaultFahrenheit;
+		fFahrenheit = IsFahrenheitDefault();
 
 	if (archive->FindBool("showForecast", &fShowForecast) != B_OK)
 		fShowForecast = kDefaultShowForecast;
@@ -562,9 +563,43 @@ void ForecastView::SetFahrenheit(bool fahrenheit){
 	}
 }
 
-
 bool ForecastView::IsFahrenheit(){
 	return fFahrenheit;
+}
+
+// TODO replace this function when the localekit one is available
+bool ForecastView::IsFahrenheitDefault(){
+	BMessage availableLanguages;
+	if (BLocaleRoster::Default()->GetPreferredLanguages(&availableLanguages)
+			== B_OK) {
+		BString currentID;
+		for (int i = 0; availableLanguages.FindString("language", i, &currentID)
+				== B_OK; i++) {
+
+			BLanguage currentLanguage(currentID.String());
+
+			if (currentLanguage.CountryCode() == NULL)
+				continue;
+			if (strcmp(currentLanguage.CountryCode(), "US") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "BS") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "BZ") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "PW") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "KY") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "GU") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "PR") == 0)
+				return true;
+			if (strcmp(currentLanguage.CountryCode(), "VI") == 0)
+				return true;
+			break;
+		}
+	}
+	return false;
 }
 
 void ForecastView::SetCondition(BString condition){
