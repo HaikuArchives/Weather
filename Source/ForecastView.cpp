@@ -8,11 +8,11 @@
 #include <Bitmap.h>
 #include <FindDirectory.h>
 #include <Font.h>
+#include <FormattingConventions.h>
 #include <GroupLayout.h>
 #include <LayoutBuilder.h>
 #include <IconUtils.h>
-#include <Language.h>
-#include <LocaleRoster.h>
+#include <Locale.h>
 #include <Menu.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
@@ -32,33 +32,35 @@ const char* kSettingsFileName = "HaikuWeather settings";
 
 const char* kDefaultCityName = "Menlo Park, CA";
 const char* kDefaultCityId = "2449435";
-const int32	kDefaultUpdateDelay = 60;
-const bool	kDefaultShowForecast = true;
+const bool  kDefaultShowForecast = true;
 
+const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
 
-const bool	kReplicantEnabled = true; // NOT Completed Yet
-
 extern const char* kSignature;
+
 
 ForecastView::ForecastView(BRect frame, BMessage* settings)
 	:
 	BView(frame, "HaikuWeather", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
 	fDownloadThread(-1),
-	fReplicated(false)
+	fReplicated(false),
+	fUpdateDelay(kMaxUpdateDelay)
 {
-
 	_ApplyState(settings);
 	_Init();
 }
+
 
 ForecastView::~ForecastView()
 {
 	StopReload();
 }
 
-void ForecastView::_Init() {
 
+void
+ForecastView::_Init()
+{
 	_LoadBitmaps();
 
 	BGroupLayout* root = new BGroupLayout(B_VERTICAL);
@@ -110,10 +112,9 @@ void ForecastView::_Init() {
 	BGroupLayout* forecastLayout = fForecastView->GroupLayout();
 	forecastLayout->SetInsets(0, 2, 0, 0);
 	forecastLayout->SetSpacing(2);
-	//this->AddChild(fForecastView);
+
 	fLayout->AddView(fForecastView, (int32) 0, (int32) 1, (int32) 2);
-	for (int32 i = 0; i < kMaxForecastDay; i++)
-	{
+	for (int32 i = 0; i < kMaxForecastDay; i++) {
 		fForecastDayView[i] = new ForecastDayView(BRect(0, 0, 62, 112));
 		fForecastDayView[i]->SetIcon(fFewClouds[SMALL_ICON]);
 		fForecastDayView[i]->SetFahrenheit(fFahrenheit);
@@ -124,21 +125,21 @@ void ForecastView::_Init() {
 		fForecastView->Hide();
 	}
 
-	if (kReplicantEnabled) {
-		BRect rect(Bounds());
-		rect.top = rect.bottom - kDraggerSize;
-		rect.left = rect.right - kDraggerSize;
-		fDragger = new BDragger(rect, this,
-			B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+	BRect rect(Bounds());
+	rect.top = rect.bottom - kDraggerSize;
+	rect.left = rect.right - kDraggerSize;
+	fDragger = new BDragger(rect, this,
+		B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
 
-		SetViewColor(fBackgroundColor);
-		AddChild(fDragger);
-	}
+	SetViewColor(fBackgroundColor);
+	AddChild(fDragger);
 	root->SetExplicitMinSize(BSize(332,228));
 	root->SetExplicitMaxSize(BSize(332,228));
 }
 
-BArchivable* ForecastView::Instantiate(BMessage* archive)
+
+BArchivable*
+ForecastView::Instantiate(BMessage* archive)
 {
 	if (!validate_instantiation(archive, "ForecastView"))
 		return NULL;
@@ -146,30 +147,29 @@ BArchivable* ForecastView::Instantiate(BMessage* archive)
 	return new ForecastView(archive);
 }
 
+
 ForecastView::ForecastView(BMessage* archive)
 	:
 	BView(archive),
 	fDownloadThread(-1),
 	fForcedForecast(false),
-	fReplicated(true)
+	fReplicated(true),
+	fUpdateDelay(kMaxUpdateDelay)
 {
-
 	_ApplyState(archive);
 	// Use _Init to rebuild the View with deep = false in Archive
 	_Init();
-
 }
 
-status_t ForecastView::_ApplyState(BMessage* archive) {
 
+status_t
+ForecastView::_ApplyState(BMessage* archive)
+{
 	if (archive->FindString("city", &fCity)!= B_OK)
 		fCity = kDefaultCityName;
 
 	if (archive->FindString("cityId", &fCityId)!= B_OK)
 		fCityId = kDefaultCityId;
-
-	if (archive->FindInt32("updateDelay", &fUpdateDelay)!= B_OK)
-		fUpdateDelay = kDefaultUpdateDelay;
 
 	if (archive->FindBool("fahrenheit", &fFahrenheit) != B_OK)
 		fFahrenheit = IsFahrenheitDefault();
@@ -188,20 +188,6 @@ status_t ForecastView::_ApplyState(BMessage* archive) {
 	fTextColor = (status == B_NO_ERROR) ? *color : ui_color(B_PANEL_TEXT_COLOR);
 
 	return B_OK;
-}
-
-void ForecastView::_BindView(){
-
-	_LoadBitmaps();
-
-	fConditionButton = dynamic_cast<BButton*>(FindView("condition"));
-
-	fConditionView = dynamic_cast<BStringView*>(FindView("description"));
-
-	fTemperatureView = dynamic_cast<BStringView*>(FindView("temperature"));
-
-	fCityView = dynamic_cast<BStringView*>(FindView("city"));
-
 }
 
 
@@ -225,6 +211,7 @@ ForecastView::Archive(BMessage* into, bool deep) const
 	return B_OK;
 }
 
+
 status_t
 ForecastView::SaveState(BMessage* into, bool deep) const
 {
@@ -234,9 +221,6 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	if (status != B_OK)
 		return status;
 	status = into->AddString("cityId", fCityId);
-	if (status != B_OK)
-		return status;
-	status = into->AddInt32("updateDelay", fUpdateDelay);
 	if (status != B_OK)
 		return status;
 	status = into->AddBool("fahrenheit", fFahrenheit);
@@ -256,11 +240,12 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	}
 
 	return B_OK;
-
 }
 
-void ForecastView::AttachedToWindow() {
 
+void
+ForecastView::AttachedToWindow()
+{
 	if (fReplicated)
 		fConditionButton->SetTarget(BMessenger(this));
 
@@ -272,19 +257,18 @@ void ForecastView::AttachedToWindow() {
 }
 
 
-void	ForecastView::AllAttached() {
-	/* Doesn't Work
-	if (fReplicated)
-		_BindView();
-	*/
+void
+ForecastView::AllAttached()
+{
 	SetBackgroundColor(fBackgroundColor);
 	SetTextColor(fTextColor);
+	BView::AllAttached();
 }
 
-void ForecastView::MessageReceived(BMessage *msg) {
-	BString tempString("");
-	BString text("");
 
+void
+ForecastView::MessageReceived(BMessage *msg)
+{
 	if (msg->WasDropped()) {
 		rgb_color* color = NULL;
 		ssize_t size = 0;
@@ -316,11 +300,13 @@ void ForecastView::MessageReceived(BMessage *msg) {
 			}
 			return;
 		}
-
 	}
 
 	switch (msg->what) {
-	case kDataMessage:
+	case kDataMessage: {
+		BString text("");
+		BString tempString("");
+
 		msg->FindInt32("temp", &fTemperature);
 		msg->FindInt32("code", &fCondition);
 		msg->FindString("text", &text);
@@ -334,8 +320,9 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		SetCondition(text);
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
 		break;
-	case kForecastDataMessage:
-	{
+	}
+	case kForecastDataMessage: {
+		BString text("");
 		int32 forecastNum;
 		BString day;
 		int32 condition;
@@ -355,9 +342,7 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		fForecastDayView[forecastNum]->SetIcon(_GetWeatherIcon(condition, SMALL_ICON));
 		fForecastDayView[forecastNum]->SetHighTemp(high);
 		fForecastDayView[forecastNum]->SetLowTemp(low);
-
-		BString toolTip = text; // << "\n" << " (" << condition << ")"; // USE FOR TEST
-		fForecastDayView[forecastNum]->SetToolTip(toolTip);
+		fForecastDayView[forecastNum]->SetToolTip(text);
 		break;
 	}
 	case kFailureMessage:
@@ -373,32 +358,34 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		if (fShowForecast)
 			Reload();
 		break;
-	case kUpdateCityName:{
+	case kUpdateCityName: {
 		BString newCityName;
 		if (msg->FindString("city", &newCityName) == B_OK)
 			SetCityName(newCityName);
-		}
 		break;
+	}
 	case kUpdateTTLMessage: {
 		int32 ttl;
 		msg->FindInt32("ttl", &ttl);
-		SetUpdateDelay(ttl < 240 ? ttl : 240);
-		}
+		SetUpdateDelay(ttl < kMaxUpdateDelay ? ttl : kMaxUpdateDelay);
 		break;
-	case B_ABOUT_REQUESTED:
-		{
-			BAlert *alert = new BAlert("About HaikuWeather",
-				"HaikuWeather (The Replicant version)\n\nUnder Development", "OK");
-			alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
-			alert->Go();
-		}	break;
+	}
+	case B_ABOUT_REQUESTED: {
+		BAlert *alert = new BAlert("About HaikuWeather",
+			"HaikuWeather (The Replicant version)", "OK");
+		alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
+		alert->Go();
+		break;
+	}
 	default:
 		BView::MessageReceived(msg);
 	}
 }
 
 
-void ForecastView::_LoadBitmaps() {
+void
+ForecastView::_LoadBitmaps()
+{
 	_LoadIcons(fAlert, 'rGFX', "Artwork/weather_alert.hvif");
 	_LoadIcons(fClearNight, 'rGFX',	"Artwork/weather_clear_night.hvif");
 	_LoadIcons(fClear, 'rGFX', "Artwork/weather_clear.hvif");
@@ -415,8 +402,10 @@ void ForecastView::_LoadBitmaps() {
 	_LoadIcons(fThunder, 'rGFX', "Artwork/weather_thunder.hvif");
 }
 
-void ForecastView::_LoadIcons(BBitmap* bitmap[2], uint32 type, const char* name) {
 
+void
+ForecastView::_LoadIcons(BBitmap* bitmap[2], uint32 type, const char* name)
+{
 	size_t dataSize;
 
 	bitmap[0] = NULL;
@@ -453,8 +442,10 @@ dummy_label:
 	};
 }
 
-BBitmap* ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize) {
 
+BBitmap*
+ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
+{
 	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
 		case 0:											// tornado
 		case 1:											// tropical storm
@@ -511,18 +502,26 @@ BBitmap* ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize
 		
 	}
 	return NULL; // Change to N/A
-
 }
 
-void ForecastView::SetCityId(BString cityId){
+
+void
+ForecastView::SetCityId(BString cityId)
+{
 	fCityId = cityId;
 }
 
-BString ForecastView::CityId(){
+
+BString
+ForecastView::CityId()
+{
 	return fCityId;
 }
 
-void ForecastView::SetCityName(BString city){
+
+void
+ForecastView::SetCityName(BString city)
+{
 	fCity = city;
     fCityView->TruncateString(&city, B_TRUNCATE_END, 150);
     if (city != fCity)
@@ -532,22 +531,34 @@ void ForecastView::SetCityName(BString city){
 	fCityView->SetText(city);
 }
 
-BString ForecastView::CityName(){
+
+BString
+ForecastView::CityName()
+{
 	return fCity;
 }
 
-void ForecastView::SetUpdateDelay(int32 delay){
-	if (fUpdateDelay != delay){
+
+void
+ForecastView::SetUpdateDelay(int32 delay)
+{
+	if (fUpdateDelay != delay) {
 		fUpdateDelay = delay;
 		fAutoUpdate->SetInterval((bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
 	}
 }
 
-int32	ForecastView::UpdateDelay(){
+
+int32
+ForecastView::UpdateDelay()
+{
 	return fUpdateDelay;
 }
 
-void ForecastView::SetFahrenheit(bool fahrenheit){
+
+void
+ForecastView::SetFahrenheit(bool fahrenheit)
+{
 	BString tempString;
 	fFahrenheit = fahrenheit;
 	if (fFahrenheit)
@@ -563,46 +574,45 @@ void ForecastView::SetFahrenheit(bool fahrenheit){
 	}
 }
 
-bool ForecastView::IsFahrenheit(){
+
+bool
+ForecastView::IsFahrenheit()
+{
 	return fFahrenheit;
 }
 
+
 // TODO replace this function when the localekit one is available
-bool ForecastView::IsFahrenheitDefault(){
-	BMessage availableLanguages;
-	if (BLocaleRoster::Default()->GetPreferredLanguages(&availableLanguages)
-			== B_OK) {
-		BString currentID;
-		for (int i = 0; availableLanguages.FindString("language", i, &currentID)
-				== B_OK; i++) {
-
-			BLanguage currentLanguage(currentID.String());
-
-			if (currentLanguage.CountryCode() == NULL)
-				continue;
-			if (strcmp(currentLanguage.CountryCode(), "US") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "BS") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "BZ") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "PW") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "KY") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "GU") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "PR") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "VI") == 0)
-				return true;
-			break;
-		}
+bool
+ForecastView::IsFahrenheitDefault()
+{
+	BFormattingConventions conventions;
+	if (BLocale::Default()->GetFormattingConventions(&conventions)
+			== B_OK && conventions.CountryCode() != NULL) {
+		if (strcmp(conventions.CountryCode(), "US") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "BS") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "BZ") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "PW") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "KY") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "GU") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "PR") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "VI") == 0)
+			return true;
 	}
 	return false;
 }
 
-void ForecastView::SetCondition(BString condition){
+
+void
+ForecastView::SetCondition(BString condition)
+{
 	BString conditionTruncated(condition);
 	fConditionView->TruncateString(&conditionTruncated, B_TRUNCATE_END, 196);
     if (conditionTruncated != condition)
@@ -612,15 +622,24 @@ void ForecastView::SetCondition(BString condition){
 	fConditionView->SetText(conditionTruncated);
 }
 
-void ForecastView::SetShowForecast(bool showForecast){
+
+void
+ForecastView::SetShowForecast(bool showForecast)
+{
 	_ShowForecast(showForecast);
 }
 
-bool ForecastView::ShowForecast(){
+
+bool
+ForecastView::ShowForecast()
+{
 	return fShowForecast;
 }
 
-void ForecastView::Reload(bool forcedForecast) {
+
+void
+ForecastView::Reload(bool forcedForecast)
+{
 	StopReload();
 
 	fForcedForecast = forcedForecast;
@@ -631,21 +650,29 @@ void ForecastView::Reload(bool forcedForecast) {
 		resume_thread(fDownloadThread);
 }
 
-void ForecastView::StopReload() {
+
+void
+ForecastView::StopReload()
+{
 	if (fDownloadThread < 0)
 		return;
 	wait_for_thread(fDownloadThread, NULL);
 	fDownloadThread = -1;
 }
 
-int32 ForecastView::_DownloadDataFunc(void *cookie) {
+
+int32
+ForecastView::_DownloadDataFunc(void *cookie)
+{
 	ForecastView* forecastView = static_cast<ForecastView*>(cookie);
 	forecastView->_DownloadData();
 	return 0;
 }
 
-void ForecastView::_DownloadData() {
 
+void
+ForecastView::_DownloadData()
+{
 	BString urlString("https://query.yahooapis.com/v1/public/yql");
 	if (fShowForecast || fForcedForecast)
 		urlString << "?q=select+*+from+weather.forecast+";
@@ -664,7 +691,10 @@ void ForecastView::_DownloadData() {
 	delete request;
 }
 
-void ForecastView::_ShowForecast(bool show) {
+
+void
+ForecastView::_ShowForecast(bool show)
+{
 	if (fShowForecast == show)
 		return;
 	fShowForecast = show;
@@ -675,7 +705,9 @@ void ForecastView::_ShowForecast(bool show) {
 		fForecastView->Hide();
 }
 
-void ForecastView::SetTextColor(rgb_color color)
+
+void
+ForecastView::SetTextColor(rgb_color color)
 {
 	fTextColor = color;
 	SetHighColor(color);
@@ -699,11 +731,16 @@ void ForecastView::SetTextColor(rgb_color color)
 	fCityView->Invalidate();
 	fForecastView->Invalidate();
 }
-void ForecastView::SetBackgroundColor(rgb_color color)
+
+
+void
+ForecastView::SetBackgroundColor(rgb_color color)
 {
 	fBackgroundColor = color;
 	SetViewColor(color);
 	SetLowColor(color);
+	fDragger->SetViewColor(fBackgroundColor);
+	fDragger->SetLowColor(fBackgroundColor);
 	fView->SetViewColor(color);
 	fInfoView->SetViewColor(color);
 	fConditionButton->SetLowColor(color);
@@ -727,7 +764,9 @@ void ForecastView::SetBackgroundColor(rgb_color color)
 	fDragger->Invalidate();
 }
 
-bool ForecastView::IsDefaultColor() const
+
+bool
+ForecastView::IsDefaultColor() const
 {
 	return fBackgroundColor == ui_color(B_PANEL_BACKGROUND_COLOR)
 		&& fTextColor == ui_color(B_PANEL_TEXT_COLOR);

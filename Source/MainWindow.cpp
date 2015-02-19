@@ -26,7 +26,9 @@
 #include "SelectionWindow.h"
 
 
-BMenuBar* MainWindow::_PrepareMenuBar(void) {
+BMenuBar*
+MainWindow::_PrepareMenuBar(void)
+{
 	BMenuBar *menubar = new BMenuBar("menu");
 	BMenu *menu = new BMenu("Edit");
 	menu->AddItem(new BMenuItem("Change location" B_UTF8_ELLIPSIS,
@@ -69,13 +71,14 @@ MainWindow::MainWindow()
 	AddChild(fForecastView);
 	// Enable when works
 //	fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
-
 }
 
-void MainWindow::MessageReceived(BMessage *msg) {
 
+void
+MainWindow::MessageReceived(BMessage *msg)
+{
 	switch (msg->what) {
-	case kUpdateCityMessage:{
+	case kUpdateCityMessage: {
 
 		BString cityName, cityId;
 		
@@ -92,23 +95,16 @@ void MainWindow::MessageReceived(BMessage *msg) {
 		}
 		}
 		break;
-
-
 	case kUpdatePrefMessage:
-		int32 updateDelay;
 		bool fahrenheit;
-
-		//msg->FindInt32("delay", &updateDelay);
 		msg->FindBool("fahrenheit", &fahrenheit);
-
 		fForecastView->SetFahrenheit(fahrenheit);
-		//fForecastView->SetUpdateDelay(updateDelay);
 		break;
 	case kUpdateMessage:
 		fForecastView->SetCondition("Loading" B_UTF8_ELLIPSIS);
 		fForecastView->Reload();
 		break;
-	case kShowForecastMessage:{
+	case kShowForecastMessage: {
 		bool show = !fForecastView->ShowForecast();
 		fForecastView->SetShowForecast(show);
 		fShowForecastMenuItem->SetMarked(show);
@@ -151,10 +147,12 @@ void MainWindow::MessageReceived(BMessage *msg) {
 	default:
 		BWindow::MessageReceived(msg);
 	}
-
 }
 
-status_t MainWindow::_LoadSettings(BMessage& m) {
+
+status_t
+MainWindow::_LoadSettings(BMessage& m)
+{
 	BPath p;
 	BFile f;
 
@@ -181,7 +179,9 @@ status_t MainWindow::_LoadSettings(BMessage& m) {
 }
 
 
-status_t MainWindow::_SaveSettings() {
+status_t
+MainWindow::_SaveSettings()
+{
 	BPath p;
 	BFile f;
 	BMessage m(kSettingsMessage);

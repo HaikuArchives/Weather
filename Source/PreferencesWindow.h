@@ -34,7 +34,6 @@ private:
 	int32			fUpdateDelay;
 	bool			fFahrenheit;
 	
-	BSlider*	 	fUpdateDelaySlider;
 	BCheckBox*	 	fFahrenheitBox;
 };
 
