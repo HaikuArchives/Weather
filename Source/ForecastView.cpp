@@ -32,12 +32,10 @@ const char* kSettingsFileName = "HaikuWeather settings";
 
 const char* kDefaultCityName = "Menlo Park, CA";
 const char* kDefaultCityId = "2449435";
-const int32	kDefaultUpdateDelay = 60;
 const bool	kDefaultShowForecast = true;
+const int32	kMaxUpdateDelay = 240;
 
 const int32 kMaxForecastDay = 5;
-
-const bool	kReplicantEnabled = true; // NOT Completed Yet
 
 extern const char* kSignature;
 
@@ -45,7 +43,8 @@ ForecastView::ForecastView(BRect frame, BMessage* settings)
 	:
 	BView(frame, "HaikuWeather", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
 	fDownloadThread(-1),
-	fReplicated(false)
+	fReplicated(false),
+	fUpdateDelay(kMaxUpdateDelay)
 {
 
 	_ApplyState(settings);
@@ -110,7 +109,7 @@ void ForecastView::_Init() {
 	BGroupLayout* forecastLayout = fForecastView->GroupLayout();
 	forecastLayout->SetInsets(0, 2, 0, 0);
 	forecastLayout->SetSpacing(2);
-	//this->AddChild(fForecastView);
+
 	fLayout->AddView(fForecastView, (int32) 0, (int32) 1, (int32) 2);
 	for (int32 i = 0; i < kMaxForecastDay; i++)
 	{
@@ -124,16 +123,15 @@ void ForecastView::_Init() {
 		fForecastView->Hide();
 	}
 
-	if (kReplicantEnabled) {
-		BRect rect(Bounds());
-		rect.top = rect.bottom - kDraggerSize;
-		rect.left = rect.right - kDraggerSize;
-		fDragger = new BDragger(rect, this,
-			B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+	BRect rect(Bounds());
+	rect.top = rect.bottom - kDraggerSize;
+	rect.left = rect.right - kDraggerSize;
+	fDragger = new BDragger(rect, this,
+		B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
 
-		SetViewColor(fBackgroundColor);
-		AddChild(fDragger);
-	}
+	SetViewColor(fBackgroundColor);
+	AddChild(fDragger);
+
 	root->SetExplicitMinSize(BSize(332,228));
 	root->SetExplicitMaxSize(BSize(332,228));
 }
@@ -151,7 +149,8 @@ ForecastView::ForecastView(BMessage* archive)
 	BView(archive),
 	fDownloadThread(-1),
 	fForcedForecast(false),
-	fReplicated(true)
+	fReplicated(true),
+	fUpdateDelay(kMaxUpdateDelay)
 {
 
 	_ApplyState(archive);
@@ -167,9 +166,6 @@ status_t ForecastView::_ApplyState(BMessage* archive) {
 
 	if (archive->FindString("cityId", &fCityId)!= B_OK)
 		fCityId = kDefaultCityId;
-
-	if (archive->FindInt32("updateDelay", &fUpdateDelay)!= B_OK)
-		fUpdateDelay = kDefaultUpdateDelay;
 
 	if (archive->FindBool("fahrenheit", &fFahrenheit) != B_OK)
 		fFahrenheit = IsFahrenheitDefault();
@@ -189,21 +185,6 @@ status_t ForecastView::_ApplyState(BMessage* archive) {
 
 	return B_OK;
 }
-
-void ForecastView::_BindView(){
-
-	_LoadBitmaps();
-
-	fConditionButton = dynamic_cast<BButton*>(FindView("condition"));
-
-	fConditionView = dynamic_cast<BStringView*>(FindView("description"));
-
-	fTemperatureView = dynamic_cast<BStringView*>(FindView("temperature"));
-
-	fCityView = dynamic_cast<BStringView*>(FindView("city"));
-
-}
-
 
 status_t
 ForecastView::Archive(BMessage* into, bool deep) const
@@ -234,9 +215,6 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	if (status != B_OK)
 		return status;
 	status = into->AddString("cityId", fCityId);
-	if (status != B_OK)
-		return status;
-	status = into->AddInt32("updateDelay", fUpdateDelay);
 	if (status != B_OK)
 		return status;
 	status = into->AddBool("fahrenheit", fFahrenheit);
@@ -273,10 +251,6 @@ void ForecastView::AttachedToWindow() {
 
 
 void	ForecastView::AllAttached() {
-	/* Doesn't Work
-	if (fReplicated)
-		_BindView();
-	*/
 	SetBackgroundColor(fBackgroundColor);
 	SetTextColor(fTextColor);
 }
@@ -316,7 +290,6 @@ void ForecastView::MessageReceived(BMessage *msg) {
 			}
 			return;
 		}
-
 	}
 
 	switch (msg->what) {
@@ -356,7 +329,7 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		fForecastDayView[forecastNum]->SetHighTemp(high);
 		fForecastDayView[forecastNum]->SetLowTemp(low);
 
-		BString toolTip = text; // << "\n" << " (" << condition << ")"; // USE FOR TEST
+		BString toolTip = text;
 		fForecastDayView[forecastNum]->SetToolTip(toolTip);
 		break;
 	}
@@ -382,7 +355,7 @@ void ForecastView::MessageReceived(BMessage *msg) {
 	case kUpdateTTLMessage: {
 		int32 ttl;
 		msg->FindInt32("ttl", &ttl);
-		SetUpdateDelay(ttl < 240 ? ttl : 240);
+		SetUpdateDelay(ttl < kMaxUpdateDelay ? ttl : kMaxUpdateDelay);
 		}
 		break;
 	case B_ABOUT_REQUESTED:
@@ -396,7 +369,6 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		BView::MessageReceived(msg);
 	}
 }
-
 
 void ForecastView::_LoadBitmaps() {
 	_LoadIcons(fAlert, 'rGFX', "Artwork/weather_alert.hvif");

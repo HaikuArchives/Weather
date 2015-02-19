@@ -76,7 +76,6 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	bool			IsDefaultColor() const;
 private:
 	void			_Init();
-	void			_BindView();
 	void			_DownloadData();
 	static int32	_DownloadDataFunc(void *cookie);
 	void 			_LoadBitmaps();
