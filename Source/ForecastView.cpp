@@ -33,8 +33,8 @@ const char* kSettingsFileName = "HaikuWeather settings";
 const char* kDefaultCityName = "Menlo Park, CA";
 const char* kDefaultCityId = "2449435";
 const bool	kDefaultShowForecast = true;
-const int32	kMaxUpdateDelay = 240;
 
+const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
 
 extern const char* kSignature;
@@ -250,7 +250,7 @@ void ForecastView::AttachedToWindow() {
 }
 
 
-void	ForecastView::AllAttached() {
+void ForecastView::AllAttached() {
 	SetBackgroundColor(fBackgroundColor);
 	SetTextColor(fTextColor);
 }
@@ -328,9 +328,7 @@ void ForecastView::MessageReceived(BMessage *msg) {
 		fForecastDayView[forecastNum]->SetIcon(_GetWeatherIcon(condition, SMALL_ICON));
 		fForecastDayView[forecastNum]->SetHighTemp(high);
 		fForecastDayView[forecastNum]->SetLowTemp(low);
-
-		BString toolTip = text;
-		fForecastDayView[forecastNum]->SetToolTip(toolTip);
+		fForecastDayView[forecastNum]->SetToolTip(text);
 		break;
 	}
 	case kFailureMessage:
@@ -361,7 +359,7 @@ void ForecastView::MessageReceived(BMessage *msg) {
 	case B_ABOUT_REQUESTED:
 		{
 			BAlert *alert = new BAlert("About HaikuWeather",
-				"HaikuWeather (The Replicant version)\n\nUnder Development", "OK");
+				"HaikuWeather (The Replicant version)", "OK");
 			alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
 			alert->Go();
 		}	break;
