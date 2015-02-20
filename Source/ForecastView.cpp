@@ -39,6 +39,7 @@ const int32 kMaxForecastDay = 5;
 
 extern const char* kSignature;
 
+
 ForecastView::ForecastView(BRect frame, BMessage* settings)
 	:
 	BView(frame, "HaikuWeather", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
@@ -55,6 +56,7 @@ ForecastView::~ForecastView()
 {
 	StopReload();
 }
+
 
 void
 ForecastView::_Init()
@@ -146,6 +148,7 @@ ForecastView::Instantiate(BMessage* archive)
 	return new ForecastView(archive);
 }
 
+
 ForecastView::ForecastView(BMessage* archive)
 	:
 	BView(archive),
@@ -154,11 +157,9 @@ ForecastView::ForecastView(BMessage* archive)
 	fReplicated(true),
 	fUpdateDelay(kMaxUpdateDelay)
 {
-
 	_ApplyState(archive);
 	// Use _Init to rebuild the View with deep = false in Archive
 	_Init();
-
 }
 
 
@@ -210,6 +211,7 @@ ForecastView::Archive(BMessage* into, bool deep) const
 
 	return B_OK;
 }
+
 
 status_t
 ForecastView::SaveState(BMessage* into, bool deep) const
@@ -263,6 +265,7 @@ ForecastView::AllAttached()
 	SetTextColor(fTextColor);
 	BView::AllAttached();
 }
+
 
 void
 ForecastView::MessageReceived(BMessage *msg)
@@ -400,6 +403,7 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fThunder, 'rGFX', "Artwork/weather_thunder.hvif");
 }
 
+
 void
 ForecastView::_LoadIcons(BBitmap* bitmap[2], uint32 type, const char* name)
 {
@@ -438,6 +442,7 @@ dummy_label:
 		bitmap[1] = largeBitmap;
 	};
 }
+
 
 BBitmap*
 ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
@@ -628,17 +633,20 @@ ForecastView::SetCondition(BString condition)
 	fConditionView->SetText(conditionTruncated);
 }
 
+
 void
 ForecastView::SetShowForecast(bool showForecast)
 {
 	_ShowForecast(showForecast);
 }
 
+
 bool
 ForecastView::ShowForecast()
 {
 	return fShowForecast;
 }
+
 
 void
 ForecastView::Reload(bool forcedForecast)
@@ -764,6 +772,7 @@ ForecastView::SetBackgroundColor(rgb_color color)
 	fForecastView->Invalidate();
 	fDragger->Invalidate();
 }
+
 
 bool
 ForecastView::IsDefaultColor() const
