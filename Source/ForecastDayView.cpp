@@ -7,14 +7,17 @@
 #define CEL(T) (5.0 / 9.0) * (T - 32.0)
 	// Macro converting a Fahrenheit value to a Celsius value
 
+
 ForecastDayView::ForecastDayView(BRect frame)
-:BView(frame, "ForecastDayView", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
-fHigh(0),
-fLow(0),
-fIcon(NULL)
+	:
+	BView(frame, "ForecastDayView", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
+	fHigh(0),
+	fLow(0),
+	fIcon(NULL)
 {
 	fTextColor = ui_color(B_PANEL_TEXT_COLOR);
 }
+
 
 BArchivable*
 ForecastDayView::Instantiate(BMessage* archive)
@@ -25,10 +28,11 @@ ForecastDayView::Instantiate(BMessage* archive)
 	return new ForecastDayView(archive);
 }
 
-ForecastDayView::ForecastDayView(BMessage* archive)
-	: BView(archive)
-{
 
+ForecastDayView::ForecastDayView(BMessage* archive)
+	:
+	BView(archive)
+{
 	if (archive->FindString("dayLabel", &fDayLabel)!= B_OK)
 		fDayLabel = "";
 
@@ -37,10 +41,11 @@ ForecastDayView::ForecastDayView(BMessage* archive)
 
 	if (archive->FindInt32("low", &fLow)!= B_OK)
 		fLow = 0;
-
 }
 
-status_t ForecastDayView::Archive(BMessage* into, bool deep) const
+
+status_t
+ForecastDayView::Archive(BMessage* into, bool deep) const
 {
 	status_t status;
 
@@ -55,7 +60,9 @@ status_t ForecastDayView::Archive(BMessage* into, bool deep) const
 	return B_OK;
 }
 
-status_t ForecastDayView::SaveState(BMessage* into, bool deep) const
+
+status_t
+ForecastDayView::SaveState(BMessage* into, bool deep) const
 {
 	status_t status;
 
@@ -72,25 +79,31 @@ status_t ForecastDayView::SaveState(BMessage* into, bool deep) const
 		return status;
 
 	return B_OK;
-
 }
 
-void ForecastDayView::AttachedToWindow()
+
+void
+ForecastDayView::AttachedToWindow()
 {
 	if (Parent() != NULL)
 		SetViewColor(Parent()->ViewColor());
 }
 
+
 ForecastDayView::~ForecastDayView(void)
 {
 }
 
-void ForecastDayView::FrameResized(float width, float height)
+
+void
+ForecastDayView::FrameResized(float width, float height)
 {
 	Draw(Bounds());
 }
 
-void ForecastDayView::Draw(BRect urect)
+
+void
+ForecastDayView::Draw(BRect urect)
 {
 	BFont labelFont = be_bold_font;
 	font_height finfo;
@@ -164,44 +177,64 @@ void ForecastDayView::Draw(BRect urect)
 	}
 }
 
-void ForecastDayView::SetIcon(BBitmap *icon)
+
+void
+ForecastDayView::SetIcon(BBitmap *icon)
 {
 	fIcon = icon;
 	Invalidate();
 }
 
-void ForecastDayView::SetDayLabel(BString& dayLabel)
+
+void
+ForecastDayView::SetDayLabel(BString& dayLabel)
 {
 	fDayLabel = dayLabel;
 	Invalidate();
 }
 
-void ForecastDayView::SetTemp(BString& temp)
+
+void
+ForecastDayView::SetTemp(BString& temp)
 {
 	fTemp = temp;
 	Invalidate();
 }
 
-void ForecastDayView::SetHighTemp(int32 temp)
+
+void
+ForecastDayView::SetHighTemp(int32 temp)
 {
 	fHigh = temp;
 	Invalidate();
 }
-void ForecastDayView::SetLowTemp(int32 temp)
+
+
+void
+ForecastDayView::SetLowTemp(int32 temp)
 {
 	fLow = temp;
 	Invalidate();
 }
-void ForecastDayView::SetFahrenheit(bool fahrenheit){
+
+
+void
+ForecastDayView::SetFahrenheit(bool fahrenheit)
+{
 	fFahrenheit = fahrenheit;
 	Invalidate();
 }
 
-bool ForecastDayView::IsFahrenheit(){
+
+bool
+ForecastDayView::IsFahrenheit()
+{
 	return fFahrenheit;
 }
 
-void ForecastDayView::SetTextColor(rgb_color color)
+
+void
+ForecastDayView::SetTextColor(rgb_color color)
 {
 	fTextColor = color;
 	Invalidate();

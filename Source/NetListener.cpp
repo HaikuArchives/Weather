@@ -16,15 +16,20 @@ NetListener::NetListener(BHandler* handler, RequestType requestType)
 {
 }
 
+
 NetListener::~NetListener()
 {
 }
 
-void NetListener::ResponseStarted(BUrlRequest* caller) {
+
+void
+NetListener::ResponseStarted(BUrlRequest* caller)
+{
 }
 
 
-void NetListener::DataReceived(BUrlRequest* caller, const char* data,
+void
+NetListener::DataReceived(BUrlRequest* caller, const char* data,
 	off_t position, ssize_t size) {
 
 	fResponseData.Write(data, size);
@@ -32,7 +37,8 @@ void NetListener::DataReceived(BUrlRequest* caller, const char* data,
 }
 
 
-void NetListener::RequestCompleted(BUrlRequest* caller,
+void
+NetListener::RequestCompleted(BUrlRequest* caller,
 	bool success) {
 
 	if (fRequestType == WEATHER_REQUEST)
@@ -43,7 +49,9 @@ void NetListener::RequestCompleted(BUrlRequest* caller,
 
 }
 
-void NetListener::_ProcessWeatherData(bool success)
+
+void
+NetListener::_ProcessWeatherData(bool success)
 {
 	BMessenger messenger(fHandler);
 	BString jsonString;
@@ -164,7 +172,9 @@ void NetListener::_ProcessWeatherData(bool success)
 	}
 }
 
-void NetListener::_ProcessCityData(bool success)
+
+void
+NetListener::_ProcessCityData(bool success)
 {
 	BMessenger messenger(fHandler);
 	BString jsonString;
@@ -205,5 +215,4 @@ void NetListener::_ProcessCityData(bool success)
 		BMessage* message = new BMessage(kFailureMessage);
 		messenger.SendMessage(message);
 	}
-
 }
