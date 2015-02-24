@@ -19,10 +19,11 @@ const uint32 kDataMessage = 'Data';
 const uint32 kForecastDataMessage = 'FDta';
 const uint32 kFailureMessage = 'Fail';
 const uint32 kUpdateCityName = 'UpCN';
+const uint32 kUpdateTTLMessage = 'TTLm';
 
 class NetListener : public BUrlProtocolListener {
 public:
-						NetListener(BLooper* parent, RequestType requestType);
+						NetListener(BHandler* fHandler, RequestType requestType);
 	virtual				~NetListener();
 	virtual	void		ResponseStarted(BUrlRequest* caller);
 	virtual	void		DataReceived(BUrlRequest* caller, const char* data,
@@ -32,7 +33,7 @@ public:
 private:
 			void		_ProcessWeatherData(bool success);
 			void		_ProcessCityData(bool success);
-			BLooper*	fParent;
+			BHandler*	fHandler;
 			RequestType fRequestType;
 			BMallocIO	fResponseData;
 };

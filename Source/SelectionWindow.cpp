@@ -13,17 +13,19 @@
 #include <UrlProtocolRoster.h>
 #include <UrlRequest.h>
 #include <Window.h>
-#include <stdio.h>
 
 #include "MainWindow.h"
 #include "NetListener.h"
 #include "SelectionWindow.h"
 
-SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent,
-	BString city, BString cityId)
-:
-BWindow(rect, "Change location",
-	B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS| B_AUTO_UPDATE_SIZE_LIMITS) {
+
+SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city,
+	BString cityId)
+	:
+	BWindow(rect, "Change location", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS 
+		| B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS),
+		fDownloadThread(-1)
+ {
 	fParent = parent;
 	fCity = city;
 	fCityId = cityId;
@@ -47,10 +49,12 @@ BWindow(rect, "Change location",
 }
 
 
-void SelectionWindow::MessageReceived(BMessage *msg) {
+void
+SelectionWindow::MessageReceived(BMessage *msg)
+{
 	switch (msg->what) {
 	case kSearchMessage:
-		_FindId();
+		_StartSearch();
 		Hide();
 		break;
 	case kDataMessage:
@@ -68,7 +72,10 @@ void SelectionWindow::MessageReceived(BMessage *msg) {
 	}
 }
 
-bool SelectionWindow::QuitRequested() {
+
+bool
+SelectionWindow::QuitRequested()
+{
 	BMessenger messenger(fParent);
 	BMessage* message = new BMessage(kCloseCitySelectionWindowMessage);
 	messenger.SendMessage(message);
@@ -76,26 +83,64 @@ bool SelectionWindow::QuitRequested() {
 }
 
 
-void SelectionWindow::_UpdateCity() {
-	BMessenger* messenger = new BMessenger(fParent);
+void
+SelectionWindow::_UpdateCity()
+{
+	BMessenger messenger(fParent);
 	BMessage* message = new BMessage(kUpdateCityMessage);
 	
 	message->AddString("city", fCityControl->Text());
 	message->AddString("id", fCityId);
 	
-	messenger->SendMessage(message);
+	messenger.SendMessage(message);
 }
 
 
-void SelectionWindow::_FindId() {
+void
+SelectionWindow::_StartSearch()
+{
+	_StopSearch();
+
+	fDownloadThread = spawn_thread(&_FindIdFunc,
+		"Download Data", B_NORMAL_PRIORITY, this);
+	if (fDownloadThread >= 0)
+		resume_thread(fDownloadThread);
+}
+
+
+void
+SelectionWindow::_StopSearch()
+{
+	if (fDownloadThread < 0)
+		return;
+	wait_for_thread(fDownloadThread, NULL);
+	fDownloadThread = -1;
+}
+
+
+int32
+SelectionWindow::_FindIdFunc(void *cookie)
+{
+	SelectionWindow* selectionWindow = static_cast<SelectionWindow*>(cookie);
+	selectionWindow->_FindId();
+	return 0;
+}
+
+
+void
+SelectionWindow::_FindId()
+{
 	BString urlString("https://query.yahooapis.com/v1/public/yql");
 	urlString << "?q=select+woeid+from+geo.places(1)+"
 		<< "where+text+=\"" << fCityControl->Text() << "\"&format=json";
 	urlString.ReplaceAll(" ", "+");
 	
+	NetListener listener(this, CITY_REQUEST);
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
-		new NetListener(this, CITY_REQUEST));
-	status_t err = request->Run();
-	if (err != B_OK) ; // TODO Send error message
+		&listener);
+
+	thread_id thread = request->Run();
+	wait_for_thread(thread, NULL);
+	delete request;
 }

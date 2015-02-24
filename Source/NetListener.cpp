@@ -4,29 +4,32 @@
  */
 #include <Json.h>
 #include <Messenger.h>
+#include <stdio.h>
 
 #include "NetListener.h"
 
-
-#include <stdio.h>
-
-NetListener::NetListener(BLooper* parent, RequestType requestType)
+NetListener::NetListener(BHandler* handler, RequestType requestType)
 	:
 	BUrlProtocolListener(),
-	fParent(parent),
+	fHandler(handler),
 	fRequestType(requestType)
 {
 }
+
 
 NetListener::~NetListener()
 {
 }
 
-void NetListener::ResponseStarted(BUrlRequest* caller) {
+
+void
+NetListener::ResponseStarted(BUrlRequest* caller)
+{
 }
 
 
-void NetListener::DataReceived(BUrlRequest* caller, const char* data,
+void
+NetListener::DataReceived(BUrlRequest* caller, const char* data,
 	off_t position, ssize_t size) {
 
 	fResponseData.Write(data, size);
@@ -34,7 +37,8 @@ void NetListener::DataReceived(BUrlRequest* caller, const char* data,
 }
 
 
-void NetListener::RequestCompleted(BUrlRequest* caller,
+void
+NetListener::RequestCompleted(BUrlRequest* caller,
 	bool success) {
 
 	if (fRequestType == WEATHER_REQUEST)
@@ -45,13 +49,17 @@ void NetListener::RequestCompleted(BUrlRequest* caller,
 
 }
 
-void NetListener::_ProcessWeatherData(bool success)
+
+void
+NetListener::_ProcessWeatherData(bool success)
 {
-	BMessenger messenger(fParent);
+	BMessenger messenger(fHandler);
 	BString jsonString;
 		
-	if (!success)
+	if (!success) {
 		messenger.SendMessage(new BMessage(kFailureMessage));
+		return;
+	}
 
 	jsonString.SetTo(static_cast<const char*>(fResponseData.Buffer()),
 		fResponseData.BufferLength());
@@ -90,6 +98,17 @@ void NetListener::_ProcessWeatherData(bool success)
 
 			BMessage* message = new BMessage(kUpdateCityName);
 			message->AddString("city", city);
+			messenger.SendMessage(message);
+		}
+
+		// TTL: Retrieve Time To live
+		BString timeToLive;
+		if (channelMessage.FindString("ttl", &timeToLive) == B_OK)
+		{
+			int ttl;
+			sscanf(timeToLive.String(), "%d", &ttl);
+			BMessage* message = new BMessage(kUpdateTTLMessage);
+			message->AddInt32("ttl", ttl);
 			messenger.SendMessage(message);
 		}
 
@@ -153,12 +172,17 @@ void NetListener::_ProcessWeatherData(bool success)
 	}
 }
 
-void NetListener::_ProcessCityData(bool success)
+
+void
+NetListener::_ProcessCityData(bool success)
 {
-	BMessenger messenger(fParent);
+	BMessenger messenger(fHandler);
 	BString jsonString;
-	if (!success)
+
+	if (!success) {
 		messenger.SendMessage(new BMessage(kFailureMessage));
+		return;
+	}
 
 	BMessage parsedData;
 	BJson parser;
@@ -191,5 +215,4 @@ void NetListener::_ProcessCityData(bool success)
 		BMessage* message = new BMessage(kFailureMessage);
 		messenger.SendMessage(message);
 	}
-
 }
