@@ -8,11 +8,11 @@
 #include <Bitmap.h>
 #include <FindDirectory.h>
 #include <Font.h>
+#include <FormattingConventions.h>
 #include <GroupLayout.h>
 #include <LayoutBuilder.h>
 #include <IconUtils.h>
-#include <Language.h>
-#include <LocaleRoster.h>
+#include <Locale.h>
 #include <Menu.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
@@ -133,7 +133,6 @@ ForecastView::_Init()
 
 	SetViewColor(fBackgroundColor);
 	AddChild(fDragger);
-
 	root->SetExplicitMinSize(BSize(332,228));
 	root->SetExplicitMaxSize(BSize(332,228));
 }
@@ -587,35 +586,25 @@ ForecastView::IsFahrenheit()
 bool
 ForecastView::IsFahrenheitDefault()
 {
-	BMessage availableLanguages;
-	if (BLocaleRoster::Default()->GetPreferredLanguages(&availableLanguages)
-			== B_OK) {
-		BString currentID;
-		for (int i = 0; availableLanguages.FindString("language", i, &currentID)
-				== B_OK; i++) {
-
-			BLanguage currentLanguage(currentID.String());
-
-			if (currentLanguage.CountryCode() == NULL)
-				continue;
-			if (strcmp(currentLanguage.CountryCode(), "US") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "BS") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "BZ") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "PW") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "KY") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "GU") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "PR") == 0)
-				return true;
-			if (strcmp(currentLanguage.CountryCode(), "VI") == 0)
-				return true;
-			break;
-		}
+	BFormattingConventions conventions;
+	if (BLocale::Default()->GetFormattingConventions(&conventions)
+			== B_OK && conventions.CountryCode() != NULL) {
+		if (strcmp(conventions.CountryCode(), "US") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "BS") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "BZ") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "PW") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "KY") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "GU") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "PR") == 0)
+			return true;
+		if (strcmp(conventions.CountryCode(), "VI") == 0)
+			return true;
 	}
 	return false;
 }
@@ -750,6 +739,8 @@ ForecastView::SetBackgroundColor(rgb_color color)
 	fBackgroundColor = color;
 	SetViewColor(color);
 	SetLowColor(color);
+	fDragger->SetViewColor(fBackgroundColor);
+	fDragger->SetLowColor(fBackgroundColor);
 	fView->SetViewColor(color);
 	fInfoView->SetViewColor(color);
 	fConditionButton->SetLowColor(color);
