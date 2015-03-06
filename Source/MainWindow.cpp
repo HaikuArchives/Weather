@@ -52,7 +52,7 @@ MainWindow::_PrepareMenuBar(void)
 
 MainWindow::MainWindow()
 	:
-	BWindow(BRect(150, 150, 0, 0), "HaikuWeather",  B_TITLED_WINDOW, B_NOT_RESIZABLE
+	BWindow(BRect(150, 150, 0, 0), "Weather",  B_TITLED_WINDOW, B_NOT_RESIZABLE
 		| B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_QUIT_ON_WINDOW_CLOSE
 		| B_AUTO_UPDATE_SIZE_LIMITS),
 		fSelectionWindow(NULL),
