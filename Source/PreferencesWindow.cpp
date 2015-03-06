@@ -31,7 +31,7 @@ PreferencesWindow::PreferencesWindow(BRect frame, MainWindow* parent,
 	layout->SetInsets(16);
 	this->AddChild(view);
 
-	fFahrenheitBox = new BCheckBox("fahrenheit", "Use Fahrenheit degrees", NULL);
+	fFahrenheitBox = new BCheckBox("fahrenheit", "Use degrees Fahrenheit", NULL);
 	fFahrenheitBox->SetValue(fFahrenheit);
 	
 	layout->AddView(fFahrenheitBox);
