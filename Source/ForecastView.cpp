@@ -372,7 +372,7 @@ ForecastView::MessageReceived(BMessage *msg)
 	}
 	case B_ABOUT_REQUESTED: {
 		BAlert *alert = new BAlert("About Weather",
-			"HaikuWeather (The Replicant version)", "OK");
+			"Weather (The Replicant version)", "OK");
 		alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
 		alert->Go();
 		break;
