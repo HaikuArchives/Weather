@@ -28,7 +28,7 @@
 #include "SelectionWindow.h"
 
 const float kDraggerSize = 7;
-const char* kSettingsFileName = "HaikuWeather settings";
+const char* kSettingsFileName = "Weather settings";
 
 const char* kDefaultCityName = "Menlo Park, CA";
 const char* kDefaultCityId = "2449435";
@@ -42,7 +42,7 @@ extern const char* kSignature;
 
 ForecastView::ForecastView(BRect frame, BMessage* settings)
 	:
-	BView(frame, "HaikuWeather", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
+	BView(frame, "Weather", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
 	fDownloadThread(-1),
 	fReplicated(false),
 	fUpdateDelay(kMaxUpdateDelay)
@@ -371,7 +371,7 @@ ForecastView::MessageReceived(BMessage *msg)
 		break;
 	}
 	case B_ABOUT_REQUESTED: {
-		BAlert *alert = new BAlert("About HaikuWeather",
+		BAlert *alert = new BAlert("About Weather",
 			"HaikuWeather (The Replicant version)", "OK");
 		alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
 		alert->Go();
