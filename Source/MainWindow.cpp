@@ -38,7 +38,7 @@ MainWindow::_PrepareMenuBar(void)
 	menu->AddSeparatorItem();
 	menu->AddItem(new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED), 'Q'));
 	menubar->AddItem(menu);
-	
+
 	menu = new BMenu("View");
 	// Remove Show Forecast until it works properly
 //	menu->AddItem(fShowForecastMenuItem = new BMenuItem("Show Forecast", new BMessage(kShowForecastMessage)));
@@ -81,7 +81,7 @@ MainWindow::MessageReceived(BMessage *msg)
 	case kUpdateCityMessage: {
 
 		BString cityName, cityId;
-		
+
 		msg->FindString("city", &cityName);
 		msg->FindString("id", &cityId);
 
@@ -96,9 +96,9 @@ MainWindow::MessageReceived(BMessage *msg)
 		}
 		break;
 	case kUpdatePrefMessage:
-		bool fahrenheit;
-		msg->FindBool("fahrenheit", &fahrenheit);
-		fForecastView->SetFahrenheit(fahrenheit);
+		int32 unit;
+		msg->FindInt32("displayUnit", &unit);
+		fForecastView->SetDisplayUnit((DisplayUnit)unit);
 		break;
 	case kUpdateMessage:
 		fForecastView->SetCondition("Loading" B_UTF8_ELLIPSIS);
@@ -131,7 +131,7 @@ MainWindow::MessageReceived(BMessage *msg)
 	case kOpenPreferencesMessage:
 		if (fPreferencesWindow == NULL){
 			fPreferencesWindow = new PreferencesWindow(BRect(200,200,400,200), this,
-				fForecastView->UpdateDelay(), fForecastView->IsFahrenheit());
+				fForecastView->UpdateDelay(), fForecastView->Unit());
 			fPreferencesWindow->Show();
 		}
 		else {

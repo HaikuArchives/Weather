@@ -1,4 +1,5 @@
 /*
+ * Copyright 2015 Adrián Arroyo Calle <adrian.arroyocalle@gmail.com>
  * Copyright 2015 Przemysław Buczkowski <przemub@przemub.pl>
  * Copyright 2014 George White
  * All rights reserved. Distributed under the terms of the MIT license.
@@ -23,10 +24,6 @@
 #include "ForecastDayView.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
-
-#define CEL(T) (5.0 / 9.0) * (T - 32.0)
-	// Macro converting a Fahrenheit value to a Celsius value
-
 
 const uint32 kAutoUpdateMessage = 'AutU';
 const uint32 kUpdateMessage = 'Upda';
@@ -57,6 +54,7 @@ public:
 virtual status_t	Archive(BMessage* into, bool deep = true) const;
 static	BArchivable* Instantiate(BMessage* archive);
 status_t			SaveState(BMessage* into, bool deep = true) const;
+	void			SetDisplayUnit(DisplayUnit unit);
 	void			Reload(bool forcedForecast = false);
 	void			StopReload();
 	void			SetCityName(BString city);
@@ -66,8 +64,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	void 			SetCondition(BString condition);
 	void			SetUpdateDelay(int32 delay);
 	int32			UpdateDelay();
-	void			SetFahrenheit(bool fahrenheit);
-	bool			IsFahrenheit();
+	DisplayUnit		Unit();
 	bool			IsFahrenheitDefault();
 	void			SetShowForecast(bool showForecast);
 	bool			ShowForecast();
@@ -82,7 +79,7 @@ private:
 	BBitmap* 		_GetWeatherIcon(int32 condition, weatherIconSize size);
 
 	status_t		_ApplyState(BMessage *settings);
-	
+
 	void			_ShowForecast(bool);
 	void			_LoadIcons(BBitmap*	bitmap[2], uint32 type, const char* name);
 
@@ -91,11 +88,11 @@ private:
 	BGridView* 		fView;
 	BGridLayout* 	fLayout;
 	bool			fReplicated;
-	
+
 	BString			fCity;
 	BString			fCityId;
 	int32			fUpdateDelay;
-	bool			fFahrenheit;
+	DisplayUnit		fDisplayUnit;
 	bool			fShowForecast;
 
 	int32			fTemperature;
@@ -104,7 +101,7 @@ private:
 	SelectionWindow*	fSelectionWindow;
 	PreferencesWindow* fPreferencesWindow;
 	BMessageRunner*	fAutoUpdate;
-	
+
 	BBitmap* 		fAlert[2];
 	BBitmap* 		fClearNight[2];
 	BBitmap* 		fClear[2];
@@ -132,5 +129,7 @@ private:
 	rgb_color		fBackgroundColor;
 	rgb_color		fTextColor;
 };
+
+BString FormatString(DisplayUnit unit, int32 temp);
 
 #endif // _FORECASTVIEW_H_
