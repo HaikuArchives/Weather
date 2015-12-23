@@ -174,14 +174,24 @@ ForecastView::_ApplyState(BMessage* archive)
 
 	int32 unit;
 	if (archive->FindInt32("displayUnit", &unit) != B_OK) {
-		if (IsFahrenheitDefault()) {
-			fDisplayUnit = FAHRENHEIT;
+		bool fahrenheit;
+		if (archive->FindBool("fahrenheit", &fahrenheit) == B_OK) {
+			if (fahrenheit) {
+				fDisplayUnit = FAHRENHEIT;
+			} else {
+				fDisplayUnit = CELSIUS;
+			}
 		} else {
-			fDisplayUnit = CELSIUS;
+			if (IsFahrenheitDefault()) {
+				fDisplayUnit = FAHRENHEIT;
+			} else {
+				fDisplayUnit = CELSIUS;
+			}
 		}
 	} else {
 		fDisplayUnit = (DisplayUnit) unit;
 	}
+
 	if (archive->FindBool("showForecast", &fShowForecast) != B_OK)
 		fShowForecast = kDefaultShowForecast;
 
@@ -799,7 +809,7 @@ FormatString(DisplayUnit unit, int32 temp)
 			break;
 		}
 		default: {
-			tempString << unit << "Check your settings!";
+			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "ºC";
 			break;
 		}
 	}
