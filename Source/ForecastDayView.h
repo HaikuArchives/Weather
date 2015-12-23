@@ -1,7 +1,7 @@
 #ifndef _FORECASTDAYVIEW_H_
 #define _FORECASTDAYVIEW_H_
 
-
+#include "PreferencesWindow.h"
 #include <Bitmap.h>
 #include <String.h>
 #include <View.h>
@@ -25,14 +25,14 @@ static BArchivable*	Instantiate(BMessage* archive);
 			void	SetTemp(BString& temp);
 			void	SetHighTemp(int32 high);
 			void	SetLowTemp(int32 low);
-			void	SetFahrenheit(bool fahrenheit);
-			bool	IsFahrenheit();
+			void	SetDisplayUnit(DisplayUnit unit);
+			DisplayUnit		Unit();
 			void	SetTextColor(rgb_color color);
 
 private:
-			bool	fFahrenheit;
-			int32	fHigh;
-			int32	fLow;
+	DisplayUnit		fDisplayUnit;
+	int32			fHigh;
+	int32			fLow;
 	BString			fDayLabel;
 	BString			fTemp;
 	BBitmap*		fIcon;

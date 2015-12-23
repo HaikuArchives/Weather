@@ -2,11 +2,9 @@
 	Licensed under the MIT license.
 	Made for Haiku.
 */
+#include <String.h>
 #include "ForecastDayView.h"
-
-#define CEL(T) (5.0 / 9.0) * (T - 32.0)
-	// Macro converting a Fahrenheit value to a Celsius value
-
+#include "ForecastView.h"
 
 ForecastDayView::ForecastDayView(BRect frame)
 	:
@@ -133,18 +131,9 @@ ForecastDayView::Draw(BRect urect)
 	SetFont(&tempFont);
 	SetLowColor(tint_color(ViewColor(), 0.7));
 
-	BString highString = "";
+	BString highString = FormatString(fDisplayUnit,fHigh);
 
-	if (fFahrenheit)
-		highString << fHigh << "℉";
-	else
-		highString << static_cast<int>(floor(CEL(fHigh))) << "℃";
-
-	BString lowString = "";
-	if (fFahrenheit)
-		lowString << fLow << "℉";
-	else
-		lowString << static_cast<int>(floor(CEL(fLow))) << "℃";
+	BString lowString = FormatString(fDisplayUnit,fLow);
 
 	float space = 7;
 	if (fDayLabel == "") {
@@ -219,17 +208,17 @@ ForecastDayView::SetLowTemp(int32 temp)
 
 
 void
-ForecastDayView::SetFahrenheit(bool fahrenheit)
+ForecastDayView::SetDisplayUnit(DisplayUnit unit)
 {
-	fFahrenheit = fahrenheit;
+	fDisplayUnit = unit;
 	Invalidate();
 }
 
 
-bool
-ForecastDayView::IsFahrenheit()
+DisplayUnit
+ForecastDayView::Unit()
 {
-	return fFahrenheit;
+	return fDisplayUnit;
 }
 
 

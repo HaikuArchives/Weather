@@ -1,4 +1,5 @@
 /*
+ * Copyright 2015 Adrián Arroyo Calle <adrian.arroyocalle@gmail.com>
  * Copyright 2015 Przemysław Buczkowski <przemub@przemub.pl>
  * Copyright 2014 George White
  * All rights reserved. Distributed under the terms of the MIT license.
@@ -82,7 +83,7 @@ ForecastView::_Init()
 	BGroupLayout *infoLayout = fInfoView->GroupLayout();
 	infoLayout->SetInsets(16);
 	fLayout->AddView(fInfoView, (int32) 1, (int32) 0);
-	
+
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
 	BFont bold_font(be_bold_font);
 	bold_font.SetSize(18);
@@ -94,20 +95,20 @@ ForecastView::_Init()
 	fNumberView = new BGroupView(B_HORIZONTAL);
 	BGroupLayout* numberLayout = fNumberView->GroupLayout();
 	infoLayout->AddView(fNumberView);
-	
+
 	BFont plain_font(be_plain_font);
 	plain_font.SetSize(16);
 	// Temperature (e.g. high 32 degrees C)
 	fTemperatureView = new BStringView("temperature", "--");
 	fTemperatureView->SetFont(&plain_font);
 	numberLayout->AddView(fTemperatureView);
-	
+
 	// City
 	fCityView = new BStringView("city", "--");
 	fCityView->SetFont(&plain_font);
 	numberLayout->AddView(fCityView);
 	SetCityName(fCity);
-	
+
 	fForecastView = new BGroupView(B_HORIZONTAL);
 	BGroupLayout* forecastLayout = fForecastView->GroupLayout();
 	forecastLayout->SetInsets(0, 2, 0, 0);
@@ -117,7 +118,7 @@ ForecastView::_Init()
 	for (int32 i = 0; i < kMaxForecastDay; i++) {
 		fForecastDayView[i] = new ForecastDayView(BRect(0, 0, 62, 112));
 		fForecastDayView[i]->SetIcon(fFewClouds[SMALL_ICON]);
-		fForecastDayView[i]->SetFahrenheit(fFahrenheit);
+		fForecastDayView[i]->SetDisplayUnit(fDisplayUnit);
 		forecastLayout->AddView(fForecastDayView[i]);
 	}
 
@@ -171,8 +172,25 @@ ForecastView::_ApplyState(BMessage* archive)
 	if (archive->FindString("cityId", &fCityId)!= B_OK)
 		fCityId = kDefaultCityId;
 
-	if (archive->FindBool("fahrenheit", &fFahrenheit) != B_OK)
-		fFahrenheit = IsFahrenheitDefault();
+	int32 unit;
+	if (archive->FindInt32("displayUnit", &unit) != B_OK) {
+		bool fahrenheit;
+		if (archive->FindBool("fahrenheit", &fahrenheit) == B_OK) {
+			if (fahrenheit) {
+				fDisplayUnit = FAHRENHEIT;
+			} else {
+				fDisplayUnit = CELSIUS;
+			}
+		} else {
+			if (IsFahrenheitDefault()) {
+				fDisplayUnit = FAHRENHEIT;
+			} else {
+				fDisplayUnit = CELSIUS;
+			}
+		}
+	} else {
+		fDisplayUnit = (DisplayUnit) unit;
+	}
 
 	if (archive->FindBool("showForecast", &fShowForecast) != B_OK)
 		fShowForecast = kDefaultShowForecast;
@@ -223,7 +241,7 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	status = into->AddString("cityId", fCityId);
 	if (status != B_OK)
 		return status;
-	status = into->AddBool("fahrenheit", fFahrenheit);
+	status = into->AddInt32("displayUnit", (int32)fDisplayUnit);
 	if (status != B_OK)
 		return status;
 	status = into->AddBool("showForecast", fShowForecast);
@@ -305,18 +323,13 @@ ForecastView::MessageReceived(BMessage *msg)
 	switch (msg->what) {
 	case kDataMessage: {
 		BString text("");
-		BString tempString("");
 
 		msg->FindInt32("temp", &fTemperature);
 		msg->FindInt32("code", &fCondition);
 		msg->FindString("text", &text);
 
-		if (fFahrenheit)
-			tempString << fTemperature << "℉";
-		else
-			tempString << static_cast<int>(floor(CEL(fTemperature))) << "℃";
-
-		fTemperatureView->SetText(tempString);
+		BString tempText = FormatString(fDisplayUnit,fTemperature);
+		fTemperatureView->SetText(tempText.String());
 		SetCondition(text);
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
 		break;
@@ -460,7 +473,7 @@ ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 10: return fRaining[iconSize];				// freezing rain
 												// 11 - 12 It isn't an error repeated
 		case 11:										// showers
-		case 12: return fRainingScattered[iconSize];	// showers  
+		case 12: return fRainingScattered[iconSize];	// showers
 		case 13:										// snow flurries
 		case 14:										// light snow showers
 		case 15:										// blowing snow
@@ -478,7 +491,7 @@ ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 27:										// mostly cloudy (night)
 		case 28: return fClouds[iconSize];				// mostly cloudy (day)
 		case 29: return fNightFewClouds[iconSize];		// partly cloudy (night)
-		case 30: return fFewClouds[iconSize];			// partly cloudy (day)	
+		case 30: return fFewClouds[iconSize];			// partly cloudy (day)
 		case 31: return fClearNight[iconSize];			// clear (night)
 		case 32: return fClear[iconSize];				// sunny
 		case 33: return fClearNight[iconSize];			// fair (night)
@@ -498,8 +511,8 @@ ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 45: return fStorm[iconSize];				// thundershowers
 		case 46: return fSnow[iconSize];				// snow showers
 		case 47: return fThunder[iconSize];				// isolated thundershowers
-		case 3200: break;								//*not available		
-		
+		case 3200: break;								//*not available
+
 	}
 	return NULL; // Change to N/A
 }
@@ -557,28 +570,26 @@ ForecastView::UpdateDelay()
 
 
 void
-ForecastView::SetFahrenheit(bool fahrenheit)
+ForecastView::SetDisplayUnit(DisplayUnit unit)
 {
 	BString tempString;
-	fFahrenheit = fahrenheit;
-	if (fFahrenheit)
-		tempString << fTemperature << "℉";
-	else
-		tempString << static_cast<int>(floor(CEL(fTemperature))) << "℃";
-		
+	fDisplayUnit = unit;
+
+	tempString = FormatString(fDisplayUnit,fTemperature);
+
 	fTemperatureView->SetText(tempString);
-	
+
 	for (int32 i = 0; i < kMaxForecastDay; i++)
 	{
-		fForecastDayView[i]->SetFahrenheit(fFahrenheit);
+		fForecastDayView[i]->SetDisplayUnit(fDisplayUnit);
 	}
 }
 
 
-bool
-ForecastView::IsFahrenheit()
+DisplayUnit
+ForecastView::Unit()
 {
-	return fFahrenheit;
+	return fDisplayUnit;
 }
 
 
@@ -770,4 +781,37 @@ ForecastView::IsDefaultColor() const
 {
 	return fBackgroundColor == ui_color(B_PANEL_BACKGROUND_COLOR)
 		&& fTextColor == ui_color(B_PANEL_TEXT_COLOR);
+}
+
+BString
+FormatString(DisplayUnit unit, int32 temp)
+{
+	BString tempString="";
+	switch (unit) {
+		case CELSIUS : {
+			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "ºC";
+			break;
+		}
+		case FAHRENHEIT : {
+			tempString << temp << "ºF";
+			break;
+		}
+		case KELVIN : {
+			tempString << static_cast<int>(floor((temp + 459.67) * 5/9)) << "K";
+			break;
+		}
+		case RANKINE : {
+			tempString << static_cast<int>(floor(temp + 459.67)) << "ºR";
+			break;
+		}
+		case DELISLE : {
+			tempString << static_cast<int>(floor((212 - temp) * 5/6)) << "ºD";
+			break;
+		}
+		default: {
+			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "ºC";
+			break;
+		}
+	}
+	return tempString;
 }
