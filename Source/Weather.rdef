@@ -1,0 +1,62 @@
+
+resource app_signature "application/x-vnd.przemub.Weather";
+
+resource app_version {
+	major  = 0,
+	middle = 1,
+	minor  = 0,
+
+	variety = B_APPV_BETA,
+	internal = 0,
+
+	short_info = "A simple weather application",
+	long_info = "An application showing the weather forecast"
+};
+
+resource(2, "Artwork/Day.hvif")							#'rGFX' import "../Artwork/Day.hvif" ;
+resource(3, "Artwork/Evening.hvif")						#'rGFX' import "../Artwork/Evening.hvif" ;
+resource(4, "Artwork/Night.hvif")						#'rGFX' import "../Artwork/Night.hvif" ;
+
+resource(5, "Artwork/weather_alert.hvif")				#'rGFX' import "../Artwork/weather_alert.hvif" ;
+resource(6, "Artwork/weather_clear_night.hvif")			#'rGFX' import "../Artwork/weather_clear_night.hvif" ;
+resource(7, "Artwork/weather_clear.hvif")				#'rGFX' import "../Artwork/weather_clear.hvif" ;
+resource(8, "Artwork/weather_clouds.hvif")				#'rGFX' import "../Artwork/weather_clouds.hvif" ;
+resource(9, "Artwork/weather_few_clouds.hvif")			#'rGFX' import "../Artwork/weather_few_clouds.hvif" ;
+resource(10, "Artwork/weather_fog.hvif")				#'rGFX' import "../Artwork/weather_fog.hvif" ;
+resource(11, "Artwork/weather_night_few_clouds.hvif")	#'rGFX' import "../Artwork/weather_night_few_clouds.hvif" ;
+resource(12, "Artwork/weather_raining_scattered.hvif")	#'rGFX' import "../Artwork/weather_raining_scattered.hvif" ;
+resource(13, "Artwork/weather_raining.hvif")			#'rGFX' import "../Artwork/weather_raining.hvif" ;
+resource(14, "Artwork/weather_shining.hvif")			#'rGFX' import "../Artwork/weather_shining.hvif" ;
+resource(15, "Artwork/weather_shiny.hvif")				#'rGFX' import "../Artwork/weather_shiny.hvif" ;
+resource(16, "Artwork/weather_snow.hvif")				#'rGFX' import "../Artwork/weather_snow.hvif" ;
+resource(17, "Artwork/weather_storm.hvif")				#'rGFX' import "../Artwork/weather_storm.hvif" ;
+resource(18, "Artwork/weather_thunder.hvif")			#'rGFX' import "../Artwork/weather_thunder.hvif" ;
+
+
+resource vector_icon {
+	$"6E6369660704006603BF5000020006020000003C6000C000000000004C000048"
+	$"A00000FDFF80FFFFD50004EDE304006E057605EC0802044030C34530BC3A3030"
+	$"4030BC3A30C3454050BC3A50C34550504050C34550BC3A0A043F243F2B412B41"
+	$"240A043F293F2B462B46290A044C294D2A522551240A045025552A5629512402"
+	$"04482BC6752BBF6A2B264B26C09C26C7A72859B2AA59B9B5594A314ABD4B4AB6"
+	$"4002082C542A542F544C544C544F5450505053504D4C4C4F4C4C48444C444744"
+	$"4538403F4031402C4C2C452A4C2850284E28520208493B493B4C3B4D374D3A4D"
+	$"3449334C33492F4133412E412C35273C272E272933292C273325372535253929"
+	$"3B273B2C3B200A00010012401AF2000000000000401AF2BE86B6BE86B6011783"
+	$"22040A00010130222101178100040A00010130225201178100040A0001023006"
+	$"3801178100040A00010230373801178100040A00010330252901178100040A00"
+	$"010330014D01178100040A00010430A4A82901178100040A00010430204C0117"
+	$"8100040A01010012401AF2000000000000401AF2C2BCA0C2BCA001178322040A"
+	$"02010002401AF2000000000000401AF2C2BCA0C2BCA00A01010130201F011781"
+	$"00040A02010120201F0A01010230043601178100040A0201022004360A010102"
+	$"30353601178100040A0201022035360A01010330232701178100040A02010302"
+	$"3FFFFC30D02AB0D02A3FFFFC430A07455EF50A01010330A5DA4B01178100040A"
+	$"02010320A5DA4B0A01010430A3DC2701178100040A02010420A3DC270A010104"
+	$"301E4A01178100040A020104201E4A0A030105023B00000000000000003B0000"
+	$"4800004800000A0401061240559D0000000000004050AA42B754C45A18011784"
+	$"00040A040107123EBA000000000000003EB4384168594A88D101178600040A05"
+	$"01061240559D0000000000004050AA3D0DB2C5826D01178400040A0601060240"
+	$"559D0000000000004050AA3D0DB2C5826D0A050107123EBA000000000000003E"
+	$"B438B9A5154A6BFA01178600040A060107023EBA000000000000003EB438B9A5"
+	$"154A6BFA"
+};

@@ -2,7 +2,8 @@
 	Licensed under the MIT license.
 	Made for Haiku.
 */
-const char* kSignature = "application/x-vnd.przemub.HaikuWeather";
+
+const char* kSignature = "application/x-vnd.przemub.Weather";
 
 #include "App.h"
 #include "MainWindow.h"
