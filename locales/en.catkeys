@@ -1,0 +1,25 @@
+1	English	x-vnd.przemub.Weather	1043933091
+Loading…	ForecastView		Loading…
+About Weather	ForecastView		About Weather
+Weather	System name		Weather
+Use degrees Celsius	PreferencesWindow		Use degrees Celsius
+View	MainWindow		View
+Preferences	PreferencesWindow		Preferences
+Use degrees Rankine	PreferencesWindow		Use degrees Rankine
+Preferences…	MainWindow		Preferences…
+Change location	SelectionWindow		Change location
+Quit	MainWindow		Quit
+OK	ForecastView		OK
+City:	SelectionWindow		City:
+Edit	MainWindow		Edit
+Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
+OK	PreferencesWindow		OK
+OK	SelectionWindow		OK
+Refresh	MainWindow		Refresh
+Loading…	MainWindow		Loading…
+Change location…	MainWindow		Change location…
+Use degrees Fahrenheit	PreferencesWindow		Use degrees Fahrenheit
+Use degrees Delisle	PreferencesWindow		Use degrees Delisle
+Use units Kelvin	PreferencesWindow		Use units Kelvin
+Select city: city, country, region	SelectionWindow		Select city: city, country, region
+Connection error	ForecastView		Connection error

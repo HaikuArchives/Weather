@@ -5,6 +5,9 @@
  */
 
 #include <Button.h>
+#include <Catalog.h>
+
+#include <ControlLook.h>
 #include <GroupLayout.h>
 #include <GroupView.h>
 #include <ListView.h>
@@ -18,12 +21,14 @@
 #include "NetListener.h"
 #include "SelectionWindow.h"
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "SelectionWindow"
 
 SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city,
 	BString cityId)
 	:
-	BWindow(rect, "Change location", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS 
-		| B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS),
+	BWindow(rect, B_TRANSLATE("Change location"), B_TITLED_WINDOW,
+		B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS),
 		fDownloadThread(-1)
  {
 	fParent = parent;
@@ -35,15 +40,18 @@ SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city,
 	
 	BGroupView *view = new BGroupView(B_HORIZONTAL);
 	BGroupLayout *layout = view->GroupLayout();
-	layout->SetInsets(16);
+
+	static const float spacing = be_control_look->DefaultItemSpacing();
+	layout->SetInsets(spacing / 2);
 	this->AddChild(view);
 	
-	fCityControl = new BTextControl(NULL, "City:", fCity, NULL);
-	fCityControl->SetToolTip("Select city: city, country, region");
+	fCityControl = new BTextControl(NULL, B_TRANSLATE("City:"), fCity, NULL);
+	fCityControl->SetToolTip(B_TRANSLATE("Select city: city, country, region"));
 
 	layout->AddView(fCityControl);
 	BButton* button;
-	layout->AddView(button = new BButton("search", "Go", new BMessage(kSearchMessage)));
+	layout->AddView(button = new BButton("search", B_TRANSLATE("OK"),
+		new BMessage(kSearchMessage)));
 	fCityControl->MakeFocus(true);
 	button->MakeDefault(true);
 }
@@ -132,8 +140,11 @@ SelectionWindow::_FindId()
 {
 	BString urlString("https://query.yahooapis.com/v1/public/yql");
 	urlString << "?q=select+woeid+from+geo.places(1)+"
-		<< "where+text+=\"" << fCityControl->Text() << "\"&format=json";
+		<< "where+text+=%22" << fCityControl->Text() << "%22&format=json";
 	urlString.ReplaceAll(" ", "+");
+	urlString.ReplaceAll("<", "");	// Filter out characters that trip up BUrl
+	urlString.ReplaceAll(">", "");
+	urlString.ReplaceAll("\"", "");
 	
 	NetListener listener(this, CITY_REQUEST);
 	BUrlRequest* request =
