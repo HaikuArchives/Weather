@@ -5,6 +5,7 @@
  */
 
 #include <Button.h>
+#include <ControlLook.h>
 #include <GroupLayout.h>
 #include <GroupView.h>
 #include <StringView.h>
@@ -29,7 +30,9 @@ PreferencesWindow::PreferencesWindow(BRect frame, MainWindow* parent,
 
 	BGroupView *view = new BGroupView(B_VERTICAL);
 	BGroupLayout *layout = view->GroupLayout();
-	layout->SetInsets(16);
+
+	static const float spacing = be_control_look->DefaultItemSpacing();
+	layout->SetInsets(spacing / 2);
 	this->AddChild(view);
 
 	fCelsiusButton = new BRadioButton("Use degrees Celsius",NULL);
@@ -43,7 +46,7 @@ PreferencesWindow::PreferencesWindow(BRect frame, MainWindow* parent,
 	layout->AddView(fKelvinButton);
 	layout->AddView(fRankineButton);
 	layout->AddView(fDelisleButton);
-	layout->AddView(new BButton("save", "Save", new BMessage(kSavePrefMessage)));
+	layout->AddView(new BButton("ok", "OK", new BMessage(kSavePrefMessage)));
 
 	switch (unit) {
 		case CELSIUS: fCelsiusButton->SetValue(1);break;

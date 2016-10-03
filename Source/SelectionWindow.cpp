@@ -5,6 +5,7 @@
  */
 
 #include <Button.h>
+#include <ControlLook.h>
 #include <GroupLayout.h>
 #include <GroupView.h>
 #include <ListView.h>
@@ -35,7 +36,9 @@ SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city,
 	
 	BGroupView *view = new BGroupView(B_HORIZONTAL);
 	BGroupLayout *layout = view->GroupLayout();
-	layout->SetInsets(16);
+
+	static const float spacing = be_control_look->DefaultItemSpacing();
+	layout->SetInsets(spacing / 2);
 	this->AddChild(view);
 	
 	fCityControl = new BTextControl(NULL, "City:", fCity, NULL);
@@ -43,7 +46,7 @@ SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city,
 
 	layout->AddView(fCityControl);
 	BButton* button;
-	layout->AddView(button = new BButton("search", "Go", new BMessage(kSearchMessage)));
+	layout->AddView(button = new BButton("search", "OK", new BMessage(kSearchMessage)));
 	fCityControl->MakeFocus(true);
 	button->MakeDefault(true);
 }

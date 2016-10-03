@@ -789,11 +789,11 @@ FormatString(DisplayUnit unit, int32 temp)
 	BString tempString="";
 	switch (unit) {
 		case CELSIUS : {
-			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "ºC";
+			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "°C";
 			break;
 		}
 		case FAHRENHEIT : {
-			tempString << temp << "ºF";
+			tempString << temp << "°F";
 			break;
 		}
 		case KELVIN : {
@@ -801,15 +801,15 @@ FormatString(DisplayUnit unit, int32 temp)
 			break;
 		}
 		case RANKINE : {
-			tempString << static_cast<int>(floor(temp + 459.67)) << "ºR";
+			tempString << static_cast<int>(floor(temp + 459.67)) << "°R";
 			break;
 		}
 		case DELISLE : {
-			tempString << static_cast<int>(floor((212 - temp) * 5/6)) << "ºD";
+			tempString << static_cast<int>(floor((212 - temp) * 5/6)) << "°D";
 			break;
 		}
 		default: {
-			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "ºC";
+			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "°C";
 			break;
 		}
 	}
