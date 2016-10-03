@@ -5,6 +5,7 @@
  */
 
 #include <Button.h>
+#include <Catalog.h>
 #include <ControlLook.h>
 #include <GroupLayout.h>
 #include <GroupView.h>
@@ -14,12 +15,14 @@
 #include "MainWindow.h"
 #include "PreferencesWindow.h"
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "PreferencesWindow"
 
 PreferencesWindow::PreferencesWindow(BRect frame, MainWindow* parent,
 	int32 updateDelay, DisplayUnit unit)
 	:
-	BWindow(frame, "Preferences", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS
-		| B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS)
+	BWindow(frame, B_TRANSLATE("Preferences"), B_TITLED_WINDOW,
+		B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	fParent = parent;
 	fUpdateDelay = updateDelay;
@@ -35,18 +38,19 @@ PreferencesWindow::PreferencesWindow(BRect frame, MainWindow* parent,
 	layout->SetInsets(spacing / 2);
 	this->AddChild(view);
 
-	fCelsiusButton = new BRadioButton("Use degrees Celsius",NULL);
-	fFahrenheitButton = new BRadioButton("Use degrees Fahrenheit", NULL);
-	fKelvinButton = new BRadioButton("Use units Kelvin",NULL);
-	fRankineButton = new BRadioButton("Use degrees Rankine",NULL);
-	fDelisleButton = new BRadioButton("Use degrees Delisle",NULL);
+	fCelsiusButton = new BRadioButton(B_TRANSLATE("Use degrees Celsius"), NULL);
+	fFahrenheitButton = new BRadioButton(B_TRANSLATE("Use degrees Fahrenheit"), NULL);
+	fKelvinButton = new BRadioButton(B_TRANSLATE("Use units Kelvin"), NULL);
+	fRankineButton = new BRadioButton(B_TRANSLATE("Use degrees Rankine"), NULL);
+	fDelisleButton = new BRadioButton(B_TRANSLATE("Use degrees Delisle"), NULL);
 
 	layout->AddView(fCelsiusButton);
 	layout->AddView(fFahrenheitButton);
 	layout->AddView(fKelvinButton);
 	layout->AddView(fRankineButton);
 	layout->AddView(fDelisleButton);
-	layout->AddView(new BButton("ok", "OK", new BMessage(kSavePrefMessage)));
+	layout->AddView(new BButton("ok", B_TRANSLATE("OK"),
+		new BMessage(kSavePrefMessage)));
 
 	switch (unit) {
 		case CELSIUS: fCelsiusButton->SetValue(1);break;

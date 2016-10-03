@@ -7,6 +7,7 @@
 #include <Alert.h>
 #include <AppKit.h>
 #include <Bitmap.h>
+#include <Catalog.h>
 #include <FindDirectory.h>
 #include <Font.h>
 #include <FormattingConventions.h>
@@ -40,10 +41,13 @@ const int32 kMaxForecastDay = 5;
 
 extern const char* kSignature;
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "ForecastView"
 
 ForecastView::ForecastView(BRect frame, BMessage* settings)
 	:
-	BView(frame, "Weather", B_FOLLOW_NONE, B_WILL_DRAW | B_FRAME_EVENTS),
+	BView(frame, B_TRANSLATE_SYSTEM_NAME("Weather"), B_FOLLOW_NONE,
+		B_WILL_DRAW | B_FRAME_EVENTS),
 	fDownloadThread(-1),
 	fReplicated(false),
 	fUpdateDelay(kMaxUpdateDelay)
@@ -87,7 +91,8 @@ ForecastView::_Init()
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
 	BFont bold_font(be_bold_font);
 	bold_font.SetSize(18);
-	fConditionView = new BStringView("description", "Loading" B_UTF8_ELLIPSIS);
+	fConditionView = new BStringView("description",
+		B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 	fConditionView->SetFont(&bold_font);
 	infoLayout->AddView(fConditionView);
 
@@ -359,10 +364,10 @@ ForecastView::MessageReceived(BMessage *msg)
 		break;
 	}
 	case kFailureMessage:
-		SetCondition("Connection error");
+		SetCondition(B_TRANSLATE("Connection error"));
 		break;
 	case kUpdateMessage:
-		SetCondition("Loading" B_UTF8_ELLIPSIS);
+		SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 	case kAutoUpdateMessage:
 		Reload();
 		break;
@@ -384,8 +389,9 @@ ForecastView::MessageReceived(BMessage *msg)
 		break;
 	}
 	case B_ABOUT_REQUESTED: {
-		BAlert *alert = new BAlert("About Weather",
-			"Weather (The Replicant version)", "OK");
+		BAlert *alert = new BAlert(B_TRANSLATE("About Weather"),
+			B_TRANSLATE("Weather (The Replicant version)"),
+			B_TRANSLATE("OK"));
 		alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
 		alert->Go();
 		break;

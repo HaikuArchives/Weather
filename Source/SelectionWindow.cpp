@@ -5,6 +5,8 @@
  */
 
 #include <Button.h>
+#include <Catalog.h>
+
 #include <ControlLook.h>
 #include <GroupLayout.h>
 #include <GroupView.h>
@@ -19,12 +21,14 @@
 #include "NetListener.h"
 #include "SelectionWindow.h"
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "SelectionWindow"
 
 SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city,
 	BString cityId)
 	:
-	BWindow(rect, "Change location", B_TITLED_WINDOW, B_ASYNCHRONOUS_CONTROLS 
-		| B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS),
+	BWindow(rect, B_TRANSLATE("Change location"), B_TITLED_WINDOW,
+		B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS),
 		fDownloadThread(-1)
  {
 	fParent = parent;
@@ -41,12 +45,13 @@ SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city,
 	layout->SetInsets(spacing / 2);
 	this->AddChild(view);
 	
-	fCityControl = new BTextControl(NULL, "City:", fCity, NULL);
-	fCityControl->SetToolTip("Select city: city, country, region");
+	fCityControl = new BTextControl(NULL, B_TRANSLATE("City:"), fCity, NULL);
+	fCityControl->SetToolTip(B_TRANSLATE("Select city: city, country, region"));
 
 	layout->AddView(fCityControl);
 	BButton* button;
-	layout->AddView(button = new BButton("search", "OK", new BMessage(kSearchMessage)));
+	layout->AddView(button = new BButton("search", B_TRANSLATE("OK"),
+		new BMessage(kSearchMessage)));
 	fCityControl->MakeFocus(true);
 	button->MakeDefault(true);
 }

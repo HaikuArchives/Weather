@@ -6,6 +6,7 @@
 
 #include <AppKit.h>
 #include <Bitmap.h>
+#include <Catalog.h>
 
 #include <FindDirectory.h>
 #include <Font.h>
@@ -25,25 +26,30 @@
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "MainWindow"
 
 BMenuBar*
 MainWindow::_PrepareMenuBar(void)
 {
 	BMenuBar *menubar = new BMenuBar("menu");
-	BMenu *menu = new BMenu("Edit");
-	menu->AddItem(new BMenuItem("Change location" B_UTF8_ELLIPSIS,
+	BMenu *menu = new BMenu(B_TRANSLATE("Edit"));
+	menu->AddItem(new BMenuItem(B_TRANSLATE("Change location" B_UTF8_ELLIPSIS),
 		new BMessage(kCitySelectionMessage),'L'));
-	menu->AddItem(new BMenuItem("Preferences" B_UTF8_ELLIPSIS,
+	menu->AddItem(new BMenuItem(B_TRANSLATE("Preferences" B_UTF8_ELLIPSIS),
 		new BMessage(kOpenPreferencesMessage), ',' ));
 	menu->AddSeparatorItem();
-	menu->AddItem(new BMenuItem("Quit", new BMessage(B_QUIT_REQUESTED), 'Q'));
+	menu->AddItem(new BMenuItem(B_TRANSLATE("Quit"),
+		new BMessage(B_QUIT_REQUESTED), 'Q'));
 	menubar->AddItem(menu);
 
-	menu = new BMenu("View");
+	menu = new BMenu(B_TRANSLATE("View"));
 	// Remove Show Forecast until it works properly
-//	menu->AddItem(fShowForecastMenuItem = new BMenuItem("Show Forecast", new BMessage(kShowForecastMessage)));
+//	menu->AddItem(fShowForecastMenuItem = new BMenuItem("Show Forecast",
+//		new BMessage(kShowForecastMessage)));
 //	menu->AddSeparatorItem();
-	menu->AddItem(new BMenuItem("Refresh", new BMessage(kUpdateMessage), 'R'));
+	menu->AddItem(new BMenuItem(B_TRANSLATE("Refresh"),
+		new BMessage(kUpdateMessage), 'R'));
 	menubar->AddItem(menu);
 
 	return menubar;
@@ -52,7 +58,8 @@ MainWindow::_PrepareMenuBar(void)
 
 MainWindow::MainWindow()
 	:
-	BWindow(BRect(150, 150, 0, 0), "Weather",  B_TITLED_WINDOW, B_NOT_RESIZABLE
+	BWindow(BRect(150, 150, 0, 0), B_TRANSLATE_SYSTEM_NAME("Weather"),
+		B_TITLED_WINDOW, B_NOT_RESIZABLE
 		| B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_QUIT_ON_WINDOW_CLOSE
 		| B_AUTO_UPDATE_SIZE_LIMITS),
 		fSelectionWindow(NULL),
@@ -88,7 +95,7 @@ MainWindow::MessageReceived(BMessage *msg)
 		if (fForecastView->CityId() != cityId) {
 			fForecastView->SetCityName(cityName);
 			fForecastView->SetCityId(cityId);
-			fForecastView->SetCondition("Loading" B_UTF8_ELLIPSIS);
+			fForecastView->SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 			// forcedForecast use forecast request to retrieve full city name
 			// In the condition respond the isn't the full city name
 			fForecastView->Reload(true);
@@ -101,7 +108,7 @@ MainWindow::MessageReceived(BMessage *msg)
 		fForecastView->SetDisplayUnit((DisplayUnit)unit);
 		break;
 	case kUpdateMessage:
-		fForecastView->SetCondition("Loading" B_UTF8_ELLIPSIS);
+		fForecastView->SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 		fForecastView->Reload();
 		break;
 	case kShowForecastMessage: {
@@ -115,7 +122,8 @@ MainWindow::MessageReceived(BMessage *msg)
 		if (fSelectionWindow == NULL){
 			BRect frame(Frame().LeftTop(),BSize(400,200));
 			frame.OffsetBy(30,30);
-			fSelectionWindow = new SelectionWindow(frame, this, fForecastView->CityName(), fForecastView->CityId());
+			fSelectionWindow = new SelectionWindow(frame, this,
+				fForecastView->CityName(), fForecastView->CityId());
 			fSelectionWindow->Show();
 		}
 		else {
@@ -130,8 +138,8 @@ MainWindow::MessageReceived(BMessage *msg)
 		break;
 	case kOpenPreferencesMessage:
 		if (fPreferencesWindow == NULL){
-			fPreferencesWindow = new PreferencesWindow(BRect(200,200,400,200), this,
-				fForecastView->UpdateDelay(), fForecastView->Unit());
+			fPreferencesWindow = new PreferencesWindow(BRect(200,200,400,200),
+				this, fForecastView->UpdateDelay(), fForecastView->Unit());
 			fPreferencesWindow->Show();
 		}
 		else {
