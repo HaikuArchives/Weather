@@ -132,8 +132,11 @@ SelectionWindow::_FindId()
 {
 	BString urlString("https://query.yahooapis.com/v1/public/yql");
 	urlString << "?q=select+woeid+from+geo.places(1)+"
-		<< "where+text+=\"" << fCityControl->Text() << "\"&format=json";
+		<< "where+text+=%22" << fCityControl->Text() << "%22&format=json";
 	urlString.ReplaceAll(" ", "+");
+	urlString.ReplaceAll("<", "");	// Filter out characters that trip up BUrl
+	urlString.ReplaceAll(">", "");
+	urlString.ReplaceAll("\"", "");
 	
 	NetListener listener(this, CITY_REQUEST);
 	BUrlRequest* request =
