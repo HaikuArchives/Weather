@@ -1,0 +1,25 @@
+1	Spanish	x-vnd.przemub.Weather	1043933091
+Loading…	ForecastView		Cargando…
+About Weather	ForecastView		Acerca de Clima
+Weather	System name		Clima
+Use degrees Celsius	PreferencesWindow		Usar grados Celsius
+View	MainWindow		Ver
+Preferences	PreferencesWindow		Preferencias
+Use degrees Rankine	PreferencesWindow		Usar grados Rankine
+Preferences…	MainWindow		Preferencias…
+Change location	SelectionWindow		Cambiar ubicación
+Quit	MainWindow		Salir
+OK	ForecastView		OK
+City:	SelectionWindow		Ciudad:
+Edit	MainWindow		Editar
+Weather (The Replicant version)	ForecastView		Clima (versión replicante)
+OK	PreferencesWindow		OK
+OK	SelectionWindow		OK
+Refresh	MainWindow		Actualizar
+Loading…	MainWindow		Cargando…
+Change location…	MainWindow		Cambiar ubicación…
+Use degrees Fahrenheit	PreferencesWindow		Usar grados Fahrenheit
+Use degrees Delisle	PreferencesWindow		Usar grados Delisle
+Use units Kelvin	PreferencesWindow		Usar grados Kelvin
+Select city: city, country, region	SelectionWindow		Seleccionar ciudad: ciudad, país, región
+Connection error	ForecastView		Error de conexión
