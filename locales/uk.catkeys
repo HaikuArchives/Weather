@@ -1,0 +1,25 @@
+1	Ukrainian	x-vnd.przemub.Weather	1043933091
+Loading…	ForecastView		Завантаження…
+About Weather	ForecastView		Про Погоду
+Weather	System name		Погода
+Use degrees Celsius	PreferencesWindow		Градуси Цельсія
+View	MainWindow		Вигляд
+Preferences	PreferencesWindow		Налаштування
+Use degrees Rankine	PreferencesWindow		Градуси Ранкіна
+Preferences…	MainWindow		Налаштування…
+Change location	SelectionWindow		Змінити розташування
+Quit	MainWindow		Вийти
+OK	ForecastView		OK
+City:	SelectionWindow		Місто:
+Edit	MainWindow		Редагувати
+Weather (The Replicant version)	ForecastView		Погода (реплікант)
+OK	PreferencesWindow		OK
+OK	SelectionWindow		OK
+Refresh	MainWindow		Оновити
+Loading…	MainWindow		Завантаження…
+Change location…	MainWindow		Змінити розташування…
+Use degrees Fahrenheit	PreferencesWindow		Градуси Фаренгейта
+Use degrees Delisle	PreferencesWindow		Градуси Деліля
+Use units Kelvin	PreferencesWindow		Градуси Кельвіна
+Select city: city, country, region	SelectionWindow		Вибрати місто: місто, країна, регіон
+Connection error	ForecastView		Помилка підключення
