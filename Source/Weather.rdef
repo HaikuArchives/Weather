@@ -21,17 +21,24 @@ resource(5, "Artwork/weather_alert.hvif")				#'rGFX' import "../Artwork/weather_
 resource(6, "Artwork/weather_clear_night.hvif")			#'rGFX' import "../Artwork/weather_clear_night.hvif" ;
 resource(7, "Artwork/weather_clear.hvif")				#'rGFX' import "../Artwork/weather_clear.hvif" ;
 resource(8, "Artwork/weather_clouds.hvif")				#'rGFX' import "../Artwork/weather_clouds.hvif" ;
-resource(9, "Artwork/weather_few_clouds.hvif")			#'rGFX' import "../Artwork/weather_few_clouds.hvif" ;
-resource(10, "Artwork/weather_fog.hvif")				#'rGFX' import "../Artwork/weather_fog.hvif" ;
-resource(11, "Artwork/weather_night_few_clouds.hvif")	#'rGFX' import "../Artwork/weather_night_few_clouds.hvif" ;
-resource(12, "Artwork/weather_raining_scattered.hvif")	#'rGFX' import "../Artwork/weather_raining_scattered.hvif" ;
-resource(13, "Artwork/weather_raining.hvif")			#'rGFX' import "../Artwork/weather_raining.hvif" ;
-resource(14, "Artwork/weather_shining.hvif")			#'rGFX' import "../Artwork/weather_shining.hvif" ;
-resource(15, "Artwork/weather_shiny.hvif")				#'rGFX' import "../Artwork/weather_shiny.hvif" ;
-resource(16, "Artwork/weather_snow.hvif")				#'rGFX' import "../Artwork/weather_snow.hvif" ;
-resource(17, "Artwork/weather_storm.hvif")				#'rGFX' import "../Artwork/weather_storm.hvif" ;
-resource(18, "Artwork/weather_thunder.hvif")			#'rGFX' import "../Artwork/weather_thunder.hvif" ;
-
+resource(9, "Artwork/weather_cold.hvif")				#'rGFX' import "../Artwork/weather_cold.hvif" ;
+resource(10, "Artwork/weather_drizzle.hvif")			#'rGFX' import "../Artwork/weather_drizzle.hvif" ;
+resource(11, "Artwork/weather_few_clouds.hvif")			#'rGFX' import "../Artwork/weather_few_clouds.hvif" ;
+resource(12, "Artwork/weather_fog.hvif")				#'rGFX' import "../Artwork/weather_fog.hvif" ;
+resource(13, "Artwork/weather_freezing_drizzle.hvif")	#'rGFX' import "../Artwork/weather_freezing_drizzle.hvif" ;
+resource(14, "Artwork/weather_light_snow.hvif")			#'rGFX' import "../Artwork/weather_light_snow.hvif" ;
+resource(15, "Artwork/weather_mixed_snow_rain.hvif")	#'rGFX' import "../Artwork/weather_mixed_snow_rain.hvif" ;
+resource(16, "Artwork/weather_mostly_cloudy_night.hvif") #'rGFX' import "../Artwork/weather_mostly_cloudy_night.hvif" ;
+resource(17, "Artwork/weather_night_few_clouds.hvif")	#'rGFX' import "../Artwork/weather_night_few_clouds.hvif" ;
+resource(18, "Artwork/weather_raining_scattered.hvif")	#'rGFX' import "../Artwork/weather_raining_scattered.hvif" ;
+resource(19, "Artwork/weather_raining.hvif")			#'rGFX' import "../Artwork/weather_raining.hvif" ;
+resource(20, "Artwork/weather_severe_thunderstorm.hvif") #'rGFX' import "../Artwork/weather_severe_thunderstorm.hvif" ;
+resource(21, "Artwork/weather_shining.hvif")			#'rGFX' import "../Artwork/weather_shining.hvif" ;
+resource(22, "Artwork/weather_shiny.hvif")				#'rGFX' import "../Artwork/weather_shiny.hvif" ;
+resource(23, "Artwork/weather_snow.hvif")				#'rGFX' import "../Artwork/weather_snow.hvif" ;
+resource(24, "Artwork/weather_storm.hvif")				#'rGFX' import "../Artwork/weather_storm.hvif" ;
+resource(25, "Artwork/weather_thunder.hvif")			#'rGFX' import "../Artwork/weather_thunder.hvif" ;
+resource(26, "Artwork/weather_tropical_storm.hvif")		#'rGFX' import "../Artwork/weather_tropical_storm.hvif" ;
 
 resource vector_icon {
 	$"6E6369660704006603BF5000020006020000003C6000C000000000004C000048"

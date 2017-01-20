@@ -409,16 +409,24 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fClearNight, 'rGFX',	"Artwork/weather_clear_night.hvif");
 	_LoadIcons(fClear, 'rGFX', "Artwork/weather_clear.hvif");
 	_LoadIcons(fClouds, 'rGFX',	"Artwork/weather_clouds.hvif");
+	_LoadIcons(fCold, 'rGFX',	"Artwork/weather_cold.hvif");
+	_LoadIcons(fDrizzle, 'rGFX',	"Artwork/weather_drizzle.hvif");
 	_LoadIcons(fFewClouds, 'rGFX', "Artwork/weather_few_clouds.hvif");
 	_LoadIcons(fFog, 'rGFX', "Artwork/weather_fog.hvif");
+	_LoadIcons(fFreezingDrizzle, 'rGFX', "Artwork/weather_freezing_drizzle.hvif");
+	_LoadIcons(fLightSnow, 'rGFX', "Artwork/weather_light_snow.hvif");
+	_LoadIcons(fMixedSnowRain, 'rGFX', "Artwork/weather_mixed_snow_rain.hvif");
+	_LoadIcons(fMostlyCloudyNight, 'rGFX', "Artwork/weather_mostly_cloudy_night.hvif");
 	_LoadIcons(fNightFewClouds, 'rGFX', "Artwork/weather_night_few_clouds.hvif");
 	_LoadIcons(fRainingScattered, 'rGFX', "Artwork/weather_raining_scattered.hvif");
 	_LoadIcons(fRaining, 'rGFX', "Artwork/weather_raining.hvif");
+	_LoadIcons(fSevereThunderstorm, 'rGFX', "Artwork/weather_severe_thunderstorm.hvif");
 	_LoadIcons(fShining, 'rGFX', "Artwork/weather_shining.hvif");
 	_LoadIcons(fShiny, 'rGFX', "Artwork/weather_shiny.hvif");
 	_LoadIcons(fSnow, 'rGFX', "Artwork/weather_snow.hvif");
 	_LoadIcons(fStorm, 'rGFX', "Artwork/weather_storm.hvif");
 	_LoadIcons(fThunder, 'rGFX', "Artwork/weather_thunder.hvif");
+	_LoadIcons(fTropicalStorm, 'rGFX', "Artwork/weather_tropical_storm.hvif");
 }
 
 
@@ -467,21 +475,21 @@ ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
 	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
 		case 0:											// tornado
-		case 1:											// tropical storm
+		case 1:	return fTropicalStorm[iconSize];		// tropical storm
 		case 2:	return fAlert[iconSize];				// hurricane
-		case 3:											// severe thunderstorms
+		case 3:	return fSevereThunderstorm[iconSize];	// severe thunderstorms
 		case 4:	return fStorm[iconSize];				// thunderstorms
-		case 5:											// mixed rain and snow
+		case 5:	return fMixedSnowRain[iconSize];		// mixed rain and snow
 		case 6:											// mixed rain and sleet
 		case 7: return fSnow[iconSize];					// mixed snow and sleet
-		case 8:											// freezing drizzle
-		case 9:											// drizzle
+		case 8:	return fFreezingDrizzle[iconSize];		// freezing drizzle
+		case 9:	return fDrizzle[iconSize];				// drizzle
 		case 10: return fRaining[iconSize];				// freezing rain
 												// 11 - 12 It isn't an error repeated
 		case 11:										// showers
 		case 12: return fRainingScattered[iconSize];	// showers
 		case 13:										// snow flurries
-		case 14:										// light snow showers
+		case 14: return fLightSnow[iconSize];			// light snow showers
 		case 15:										// blowing snow
 		case 16:										// snow
 		case 17:										// hail
@@ -492,9 +500,9 @@ ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 22: break;									//*smoky
 		case 23: break;									//*blustery
 		case 24: break;									//*windy
-		case 25: break;									//*cold
+		case 25: return fCold[iconSize];				//*cold
 		case 26:										// cloudy
-		case 27:										// mostly cloudy (night)
+		case 27: return fMostlyCloudyNight[iconSize];	// mostly cloudy (night)
 		case 28: return fClouds[iconSize];				// mostly cloudy (day)
 		case 29: return fNightFewClouds[iconSize];		// partly cloudy (night)
 		case 30: return fFewClouds[iconSize];			// partly cloudy (day)
