@@ -6,4 +6,4 @@ Weather displays daily highs/lows and presence/absence of clouds, precipitation,
 
 Built during Google Code In 2014-2015.
 
-![Weather Screenshot](https://github.com/dash102/Weather/blob/master/Weather.png?"Weather")
+![Weather Screenshot](Weather.png "Weather")
