@@ -67,7 +67,7 @@ NetListener::_ProcessWeatherData(bool success)
 	BMessage parsedData;
 	BJson parser;
 
-	status_t status = parser.Parse(parsedData, jsonString);
+	status_t status = parser.Parse(jsonString, parsedData);
 	if (status == B_BAD_DATA) {
 		printf("JSON Parser error for data:\n%s\n", jsonString.String());
 		BMessage* message = new BMessage(kFailureMessage);
@@ -189,7 +189,7 @@ NetListener::_ProcessCityData(bool success)
 	jsonString.SetTo(static_cast<const char*>(fResponseData.Buffer()),
 		fResponseData.BufferLength());
 
-	status_t status = parser.Parse(parsedData, jsonString);
+	status_t status = parser.Parse(jsonString, parsedData);
 
 	if (status == B_BAD_DATA) {
 		printf("JSON Parser error for data:\n%s\n", jsonString.String());
