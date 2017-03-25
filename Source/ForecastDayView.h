@@ -2,6 +2,7 @@
 #define _FORECASTDAYVIEW_H_
 
 #include "PreferencesWindow.h"
+
 #include <Bitmap.h>
 #include <String.h>
 #include <View.h>
