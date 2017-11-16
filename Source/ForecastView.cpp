@@ -8,6 +8,7 @@
 #include <AppKit.h>
 #include <Bitmap.h>
 #include <Catalog.h>
+#include <ControlLook.h>
 #include <FindDirectory.h>
 #include <Font.h>
 #include <FormattingConventions.h>
@@ -44,10 +45,51 @@ extern const char* kSignature;
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "ForecastView"
 
+
+class TransparentButton : public BButton {
+	public:
+		TransparentButton(const char* name, const char* label, BMessage* message);
+		virtual void Draw (BRect updateRect);
+};
+
+
+TransparentButton::TransparentButton(const char* name, const char* label, BMessage* message)
+	:
+	BButton(name, label, message, B_DRAW_ON_CHILDREN)
+{
+}
+
+
+void
+TransparentButton::Draw(BRect updateRect)
+{
+	BRect rect(Bounds());
+	rgb_color background = ViewColor();
+	rgb_color base = LowColor();
+	rgb_color textColor = ui_color(B_CONTROL_TEXT_COLOR);
+
+	uint32 flags = be_control_look->Flags(this);
+
+	flags |= BControlLook::B_FLAT;
+
+	const float kLabelMargin = 8;
+	// always leave some room around the label
+	rect.InsetBy(kLabelMargin, kLabelMargin);
+
+	const BBitmap* icon = IconBitmap(
+		(Value() == B_CONTROL_OFF
+				? B_INACTIVE_ICON_BITMAP : B_ACTIVE_ICON_BITMAP)
+			| (IsEnabled() ? 0 : B_DISABLED_ICON_BITMAP));
+
+	be_control_look->DrawLabel(this, Label(), icon, rect, updateRect, base,
+		flags, BAlignment(B_ALIGN_CENTER, B_ALIGN_MIDDLE), &textColor);
+}
+
+
 ForecastView::ForecastView(BRect frame, BMessage* settings)
 	:
 	BView(frame, B_TRANSLATE_SYSTEM_NAME("Weather"), B_FOLLOW_NONE,
-		B_WILL_DRAW | B_FRAME_EVENTS),
+		B_WILL_DRAW | B_FRAME_EVENTS | B_DRAW_ON_CHILDREN),
 	fDownloadThread(-1),
 	fReplicated(false),
 	fUpdateDelay(kMaxUpdateDelay)
@@ -77,7 +119,7 @@ ForecastView::_Init()
 	this->AddChild(fView);
 
 	// Icon for weather
-	fConditionButton = new BButton("condition", "",
+	fConditionButton = new TransparentButton("condition", "",
 		new BMessage(kUpdateMessage));
 
 	fConditionButton->SetIcon(fFewClouds[LARGE_ICON]);
@@ -277,15 +319,17 @@ ForecastView::AttachedToWindow()
 	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, (bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
 	view.SendMessage(new BMessage(kUpdateMessage));
 	BView::AttachedToWindow();
+	SetTextColor(fTextColor);
+	SetBackgroundColor(fBackgroundColor);
 }
 
 
 void
 ForecastView::AllAttached()
 {
-	SetBackgroundColor(fBackgroundColor);
-	SetTextColor(fTextColor);
 	BView::AllAttached();
+	SetTextColor(fTextColor);
+	SetBackgroundColor(fBackgroundColor);
 }
 
 
@@ -308,6 +352,10 @@ ForecastView::MessageReceived(BMessage *msg)
 			popup->AddSeparatorItem();
 			popup->AddItem(item = new BMenuItem("Default", new BMessage('DEFT')));
 			item->SetEnabled(!IsDefaultColor());
+			if (fReplicated) {
+				popup->AddItem(item = new BMenuItem("Transparent", new BMessage('TRAS')));
+				item->SetEnabled(ViewColor() != B_TRANSPARENT_COLOR);
+			}
 			ConvertToScreen(&point);
 			item = popup->Go(point);
 
@@ -320,6 +368,9 @@ ForecastView::MessageReceived(BMessage *msg)
 			if (item && item->Message()->what == 'DEFT') {
 				SetBackgroundColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 				SetTextColor(ui_color(B_PANEL_TEXT_COLOR));
+			}
+			if (item && item->Message()->what == 'TRAS') {
+				SetBackgroundColor(B_TRANSPARENT_COLOR);
 			}
 			return;
 		}
@@ -337,6 +388,9 @@ ForecastView::MessageReceived(BMessage *msg)
 		fTemperatureView->SetText(tempText.String());
 		SetCondition(text);
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
+		// workaround for some problems with the new UI color live update
+		// remove when fixed 
+		SetBackgroundColor(fBackgroundColor);
 		break;
 	}
 	case kForecastDataMessage: {
@@ -763,12 +817,10 @@ ForecastView::SetBackgroundColor(rgb_color color)
 {
 	fBackgroundColor = color;
 	SetViewColor(color);
-	SetLowColor(color);
 	fDragger->SetViewColor(fBackgroundColor);
-	fDragger->SetLowColor(fBackgroundColor);
 	fView->SetViewColor(color);
 	fInfoView->SetViewColor(color);
-	fConditionButton->SetLowColor(color);
+	fConditionButton->SetViewColor(color);
 	fConditionView->SetViewColor(color);
 	fTemperatureView->SetViewColor(color);
 	fCityView->SetViewColor(color);
@@ -788,8 +840,6 @@ ForecastView::SetBackgroundColor(rgb_color color)
 	fForecastView->Invalidate();
 	fDragger->Invalidate();
 }
-
-
 bool
 ForecastView::IsDefaultColor() const
 {

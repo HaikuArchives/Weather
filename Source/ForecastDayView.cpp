@@ -96,7 +96,7 @@ ForecastDayView::~ForecastDayView(void)
 void
 ForecastDayView::FrameResized(float width, float height)
 {
-	Draw(Bounds());
+	Invalidate();
 }
 
 
@@ -109,16 +109,38 @@ ForecastDayView::Draw(BRect urect)
 	labelFont.GetHeight(&finfo);
 	SetFont(&labelFont);
 	BRect boxRect = Bounds();
-
 	// Full Box
-	SetHighColor(tint_color(ViewColor(), 0.7));
+	if (ViewColor() == B_TRANSPARENT_COLOR) {
+		SetDrawingMode(B_OP_ALPHA);
+		rgb_color boxColor = make_color(255,255,255);
+		boxColor.alpha = 86;
+		// TODO add full transparency option
+		// boxColor.alpha = 0;
+		SetHighColor(boxColor);
+	} else {
+		SetDrawingMode(B_OP_COPY);
+		SetHighColor(tint_color(ViewColor(), 0.7));
+	}
 	FillRect(Bounds());
-
 	// Header Box
-	SetHighColor(tint_color(ViewColor(), 1.1));
+	if (ViewColor() == B_TRANSPARENT_COLOR) {
+		SetDrawingMode(B_OP_ALPHA);
+		rgb_color boxColor = make_color(255,255,255);
+		boxColor.alpha = 66;
+		// boxColor.alpha = 0;
+		SetHighColor(boxColor);
+	} else {
+		SetDrawingMode(B_OP_COPY);
+		SetHighColor(tint_color(ViewColor(), 1.1));
+	}
+
 	BRect boxBRect = Bounds();
 	boxBRect.bottom = boxBRect.top + finfo.ascent + finfo.descent + finfo.leading + 10;
 	FillRect(boxBRect);
+	if (ViewColor() == B_TRANSPARENT_COLOR) 
+		SetDrawingMode(B_OP_ALPHA);
+	else
+		SetDrawingMode(B_OP_COPY);
 	MovePenTo((Bounds().Width() - StringWidth(fDayLabel))/2,
 		20 + boxRect.top + (finfo.descent + finfo.leading) - 5) ;
 	SetHighColor(fTextColor);
@@ -140,6 +162,8 @@ ForecastDayView::Draw(BRect urect)
 		lowString = highString = "--";
 	}
 
+	SetHighColor(fTextColor);
+
 	MovePenTo((Bounds().Width() - StringWidth(highString))/2,
 		boxRect.bottom - (finfo.descent + finfo.leading + space) * 2 - 5);
 
@@ -150,7 +174,6 @@ ForecastDayView::Draw(BRect urect)
 
 	tempFont.SetSize(14);
 	SetFont(&tempFont);
-	SetHighColor(tint_color(fTextColor, 0.7));
 
 	DrawString(lowString);
 
