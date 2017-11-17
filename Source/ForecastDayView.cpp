@@ -2,6 +2,7 @@
 	Licensed under the MIT license.
 	Made for Haiku.
 */
+#include <Screen.h>
 #include <String.h>
 #include "ForecastDayView.h"
 #include "ForecastView.h"
@@ -108,14 +109,23 @@ ForecastDayView::Draw(BRect urect)
 	labelFont.SetSize(12);
 	labelFont.GetHeight(&finfo);
 	SetFont(&labelFont);
+	rgb_color boxColor;
+	rgb_color color = fTextColor;
+	if (ViewColor() == B_TRANSPARENT_COLOR) {
+		rgb_color low =  BScreen(Window()).DesktopColor();
+		if (low.red + low.green + low.blue > 128 * 3) {
+			color = tint_color(low, B_DARKEN_MAX_TINT);
+			boxColor = make_color(255,255,255);
+		} else {
+			color = tint_color(low, B_LIGHTEN_MAX_TINT);
+			boxColor = make_color(55,55,55);
+		}
+	}
 	BRect boxRect = Bounds();
 	// Full Box
 	if (ViewColor() == B_TRANSPARENT_COLOR) {
 		SetDrawingMode(B_OP_ALPHA);
-		rgb_color boxColor = make_color(255,255,255);
 		boxColor.alpha = 86;
-		// TODO add full transparency option
-		// boxColor.alpha = 0;
 		SetHighColor(boxColor);
 	} else {
 		SetDrawingMode(B_OP_COPY);
@@ -125,9 +135,7 @@ ForecastDayView::Draw(BRect urect)
 	// Header Box
 	if (ViewColor() == B_TRANSPARENT_COLOR) {
 		SetDrawingMode(B_OP_ALPHA);
-		rgb_color boxColor = make_color(255,255,255);
 		boxColor.alpha = 66;
-		// boxColor.alpha = 0;
 		SetHighColor(boxColor);
 	} else {
 		SetDrawingMode(B_OP_COPY);
@@ -143,7 +151,7 @@ ForecastDayView::Draw(BRect urect)
 		SetDrawingMode(B_OP_COPY);
 	MovePenTo((Bounds().Width() - StringWidth(fDayLabel))/2,
 		20 + boxRect.top + (finfo.descent + finfo.leading) - 5) ;
-	SetHighColor(fTextColor);
+	SetHighColor(color);
 	SetLowColor(tint_color(ViewColor(), 1.1));
 	DrawString(fDayLabel);
 
@@ -162,7 +170,7 @@ ForecastDayView::Draw(BRect urect)
 		lowString = highString = "--";
 	}
 
-	SetHighColor(fTextColor);
+	SetHighColor(color);
 
 	MovePenTo((Bounds().Width() - StringWidth(highString))/2,
 		boxRect.bottom - (finfo.descent + finfo.leading + space) * 2 - 5);

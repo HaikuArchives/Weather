@@ -22,6 +22,7 @@
 #include <Window.h>
 
 #include "ForecastDayView.h"
+#include "LabelView.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 
@@ -130,9 +131,9 @@ private:
 	BMenuItem*		fShowForecastMenuItem;
 	BButton*		fConditionButton;
 	ForecastDayView*		fForecastDayView[5];
-	BStringView*	fConditionView;
-	BStringView*	fTemperatureView;
-	BStringView*	fCityView;
+	LabelView*		fConditionView;
+	LabelView*		fTemperatureView;
+	LabelView*		fCityView;
 	BDragger* 		fDragger;
 	rgb_color		fBackgroundColor;
 	rgb_color		fTextColor;

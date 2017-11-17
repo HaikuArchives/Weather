@@ -133,7 +133,7 @@ ForecastView::_Init()
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
 	BFont bold_font(be_bold_font);
 	bold_font.SetSize(18);
-	fConditionView = new BStringView("description",
+	fConditionView = new LabelView("description",
 		B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 	fConditionView->SetFont(&bold_font);
 	infoLayout->AddView(fConditionView);
@@ -146,12 +146,12 @@ ForecastView::_Init()
 	BFont plain_font(be_plain_font);
 	plain_font.SetSize(16);
 	// Temperature (e.g. high 32 degrees C)
-	fTemperatureView = new BStringView("temperature", "--");
+	fTemperatureView = new LabelView("temperature", "--");
 	fTemperatureView->SetFont(&plain_font);
 	numberLayout->AddView(fTemperatureView);
 
 	// City
-	fCityView = new BStringView("city", "--");
+	fCityView = new LabelView("city", "--");
 	fCityView->SetFont(&plain_font);
 	numberLayout->AddView(fCityView);
 	SetCityName(fCity);
@@ -247,7 +247,7 @@ ForecastView::_ApplyState(BMessage* archive)
 	status_t status;
 
 	status = archive->FindData("backgroundColor", B_RGB_COLOR_TYPE, (const void **)&color, &colorsize);
-	fBackgroundColor = (status == B_NO_ERROR) ? *color : ui_color(B_PANEL_BACKGROUND_COLOR);
+	fBackgroundColor = (status == B_NO_ERROR) ? *color : (fReplicated ? B_TRANSPARENT_COLOR : ui_color(B_PANEL_BACKGROUND_COLOR));
 
 	status = archive->FindData("textColor", B_RGB_COLOR_TYPE, (const void **)&color, &colorsize);
 	fTextColor = (status == B_NO_ERROR) ? *color : ui_color(B_PANEL_TEXT_COLOR);
@@ -295,7 +295,7 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	if (status != B_OK)
 		return status;
 
-	if (!IsDefaultColor()) {
+	if (!IsDefaultColor() || fReplicated) {
 		status = into->AddData("textColor", B_RGB_COLOR_TYPE, &fTextColor, sizeof(rgb_color));
 		if (status != B_OK)
 			return status;
@@ -319,8 +319,6 @@ ForecastView::AttachedToWindow()
 	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, (bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
 	view.SendMessage(new BMessage(kUpdateMessage));
 	BView::AttachedToWindow();
-	SetTextColor(fTextColor);
-	SetBackgroundColor(fBackgroundColor);
 }
 
 
@@ -347,13 +345,13 @@ ForecastView::MessageReceived(BMessage *msg)
 			GetMouse(&point, &buttons, true);
 			BMenuItem* item;
 			BPopUpMenu* popup = new BPopUpMenu("PopUp", false);
-			popup->AddItem(item = new BMenuItem("Background", new BMessage('BACC')));
-			popup->AddItem(item = new BMenuItem("Text", new BMessage('TEXC')));
+			popup->AddItem(item = new BMenuItem(B_TRANSLATE("Background"), new BMessage('BACC')));
+			popup->AddItem(item = new BMenuItem(B_TRANSLATE("Text"), new BMessage('TEXC')));
 			popup->AddSeparatorItem();
-			popup->AddItem(item = new BMenuItem("Default", new BMessage('DEFT')));
+			popup->AddItem(item = new BMenuItem(B_TRANSLATE("Default"), new BMessage('DEFT')));
 			item->SetEnabled(!IsDefaultColor());
 			if (fReplicated) {
-				popup->AddItem(item = new BMenuItem("Transparent", new BMessage('TRAS')));
+				popup->AddItem(item = new BMenuItem(B_TRANSLATE("Transparent"), new BMessage('TRAS')));
 				item->SetEnabled(ViewColor() != B_TRANSPARENT_COLOR);
 			}
 			ConvertToScreen(&point);
@@ -388,9 +386,6 @@ ForecastView::MessageReceived(BMessage *msg)
 		fTemperatureView->SetText(tempText.String());
 		SetCondition(text);
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
-		// workaround for some problems with the new UI color live update
-		// remove when fixed 
-		SetBackgroundColor(fBackgroundColor);
 		break;
 	}
 	case kForecastDataMessage: {
