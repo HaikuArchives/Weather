@@ -327,10 +327,8 @@ ForecastView::AllAttached()
 {
 	BView::AllAttached();
 	SetTextColor(fTextColor);
-	if (!_SupportTransparent()) {
-		if (fBackgroundColor == B_TRANSPARENT_COLOR)
+	if (!_SupportTransparent() && fBackgroundColor == B_TRANSPARENT_COLOR)
 			fBackgroundColor = ui_color(B_PANEL_BACKGROUND_COLOR);
-	}
 	SetBackgroundColor(fBackgroundColor);
 }
 
