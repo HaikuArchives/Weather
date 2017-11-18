@@ -5,14 +5,10 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
-#include <Catalog.h>
-#include <Locale.h>
 #include <Screen.h>
 
 #include "LabelView.h"
 
-#undef B_TRANSLATION_CONTEXT
-#define B_TRANSLATION_CONTEXT "LabelView"
 
 LabelView::LabelView(const char* name, const char* text, uint32 flags)
 	:
