@@ -2,6 +2,7 @@
 	Licensed under the MIT license.
 	Made for Haiku.
 */
+#include <Screen.h>
 #include <String.h>
 #include "ForecastDayView.h"
 #include "ForecastView.h"
@@ -96,7 +97,7 @@ ForecastDayView::~ForecastDayView(void)
 void
 ForecastDayView::FrameResized(float width, float height)
 {
-	Draw(Bounds());
+	Invalidate();
 }
 
 
@@ -108,20 +109,49 @@ ForecastDayView::Draw(BRect urect)
 	labelFont.SetSize(12);
 	labelFont.GetHeight(&finfo);
 	SetFont(&labelFont);
+	rgb_color boxColor;
+	rgb_color color = fTextColor;
+	if (ViewColor() == B_TRANSPARENT_COLOR) {
+		rgb_color low =  BScreen(Window()).DesktopColor();
+		if (low.red + low.green + low.blue > 128 * 3) {
+			color = tint_color(low, B_DARKEN_MAX_TINT);
+			boxColor = make_color(255,255,255);
+		} else {
+			color = tint_color(low, B_LIGHTEN_MAX_TINT);
+			boxColor = make_color(55,55,55);
+		}
+	}
 	BRect boxRect = Bounds();
-
 	// Full Box
-	SetHighColor(tint_color(ViewColor(), 0.7));
+	if (ViewColor() == B_TRANSPARENT_COLOR) {
+		SetDrawingMode(B_OP_ALPHA);
+		boxColor.alpha = 86;
+		SetHighColor(boxColor);
+	} else {
+		SetDrawingMode(B_OP_COPY);
+		SetHighColor(tint_color(ViewColor(), 0.7));
+	}
 	FillRect(Bounds());
-
 	// Header Box
-	SetHighColor(tint_color(ViewColor(), 1.1));
+	if (ViewColor() == B_TRANSPARENT_COLOR) {
+		SetDrawingMode(B_OP_ALPHA);
+		boxColor.alpha = 66;
+		SetHighColor(boxColor);
+	} else {
+		SetDrawingMode(B_OP_COPY);
+		SetHighColor(tint_color(ViewColor(), 1.1));
+	}
+
 	BRect boxBRect = Bounds();
 	boxBRect.bottom = boxBRect.top + finfo.ascent + finfo.descent + finfo.leading + 10;
 	FillRect(boxBRect);
+	if (ViewColor() == B_TRANSPARENT_COLOR) 
+		SetDrawingMode(B_OP_ALPHA);
+	else
+		SetDrawingMode(B_OP_COPY);
 	MovePenTo((Bounds().Width() - StringWidth(fDayLabel))/2,
 		20 + boxRect.top + (finfo.descent + finfo.leading) - 5) ;
-	SetHighColor(fTextColor);
+	SetHighColor(color);
 	SetLowColor(tint_color(ViewColor(), 1.1));
 	DrawString(fDayLabel);
 
@@ -140,6 +170,8 @@ ForecastDayView::Draw(BRect urect)
 		lowString = highString = "--";
 	}
 
+	SetHighColor(color);
+
 	MovePenTo((Bounds().Width() - StringWidth(highString))/2,
 		boxRect.bottom - (finfo.descent + finfo.leading + space) * 2 - 5);
 
@@ -150,7 +182,6 @@ ForecastDayView::Draw(BRect urect)
 
 	tempFont.SetSize(14);
 	SetFont(&tempFont);
-	SetHighColor(tint_color(fTextColor, 0.7));
 
 	DrawString(lowString);
 
