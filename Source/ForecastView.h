@@ -84,6 +84,8 @@ private:
 	void			_ShowForecast(bool);
 	void			_LoadIcons(BBitmap*	bitmap[2], uint32 type, const char* name);
 
+	bool			_SupportTransparent();
+
 	thread_id		fDownloadThread;
 	bool 			fForcedForecast;
 	BGridView* 		fView;

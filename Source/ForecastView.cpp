@@ -327,9 +327,18 @@ ForecastView::AllAttached()
 {
 	BView::AllAttached();
 	SetTextColor(fTextColor);
+	if (!_SupportTransparent()) {
+		if (fBackgroundColor == B_TRANSPARENT_COLOR)
+			fBackgroundColor = ui_color(B_PANEL_BACKGROUND_COLOR);
+	}
 	SetBackgroundColor(fBackgroundColor);
 }
 
+
+bool
+ForecastView::_SupportTransparent() {
+	return 	fReplicated && Parent() && (Parent()->Flags() & B_DRAW_ON_CHILDREN) != 0;
+}
 
 void
 ForecastView::MessageReceived(BMessage *msg)
@@ -350,7 +359,7 @@ ForecastView::MessageReceived(BMessage *msg)
 			popup->AddSeparatorItem();
 			popup->AddItem(item = new BMenuItem(B_TRANSLATE("Default"), new BMessage('DEFT')));
 			item->SetEnabled(!IsDefaultColor());
-			if (fReplicated) {
+			if (_SupportTransparent()) {
 				popup->AddItem(item = new BMenuItem(B_TRANSLATE("Transparent"), new BMessage('TRAS')));
 				item->SetEnabled(ViewColor() != B_TRANSPARENT_COLOR);
 			}
