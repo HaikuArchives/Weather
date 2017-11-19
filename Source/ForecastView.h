@@ -77,7 +77,9 @@ private:
 	void			_DownloadData();
 	static int32	_DownloadDataFunc(void *cookie);
 	void 			_LoadBitmaps();
+	const char *    _GetWeatherMessage(int32 condition);
 	BBitmap* 		_GetWeatherIcon(int32 condition, weatherIconSize size);
+	const char *    _GetDayText(const char* day);
 
 	status_t		_ApplyState(BMessage *settings);
 

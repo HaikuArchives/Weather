@@ -391,7 +391,7 @@ ForecastView::MessageReceived(BMessage *msg)
 
 		BString tempText = FormatString(fDisplayUnit,fTemperature);
 		fTemperatureView->SetText(tempText.String());
-		SetCondition(text);
+		SetCondition(_GetWeatherMessage(fCondition));
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
 		break;
 	}
@@ -408,6 +408,9 @@ ForecastView::MessageReceived(BMessage *msg)
 		msg->FindInt32("code", &condition);
 		msg->FindString("text", &text);
 		msg->FindString("day", &day);
+
+		text = _GetWeatherMessage(condition);
+		day = _GetDayText(day);
 
 		if (forecastNum < 0 || forecastNum >= kMaxForecastDay)
 			break;
@@ -525,12 +528,72 @@ dummy_label:
 	};
 }
 
+const char *
+ForecastView::_GetWeatherMessage(int32 condition)
+{
+	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
+		case 0:	return B_TRANSLATE("Tornado");
+		case 1:	return B_TRANSLATE("Tropical storm");
+		case 2:	return B_TRANSLATE("Hurricane");
+		case 3:	return B_TRANSLATE("Severe Thunderstorms");
+		case 4:	return B_TRANSLATE("Thunderstorms");
+		case 5:	return B_TRANSLATE("Mixed Rain and Snow");
+		case 6:	return B_TRANSLATE("Mixed Rain and Sleet");
+		case 7: return B_TRANSLATE("Mixed Snow and Sleet");
+		case 8:	return B_TRANSLATE("Freezing Drizzle");
+		case 9:	return B_TRANSLATE("Drizzle");
+		case 10: return B_TRANSLATE("Freezing Rain");
+												// 11 - 12 It isn't an error repeated
+		case 11: return B_TRANSLATE("Showers");
+		case 12: return B_TRANSLATE("Showers");
+		case 13: return B_TRANSLATE("Snow Flurries");
+		case 14: return B_TRANSLATE("Light Snow Showers");
+		case 15: return B_TRANSLATE("Blowing Snow");
+		case 16: return B_TRANSLATE("Snow");
+		case 17: return B_TRANSLATE("Hail");
+		case 18: return B_TRANSLATE("Sleet");
+		case 19: return B_TRANSLATE("Dust");
+		case 20: return B_TRANSLATE("Fog");
+		case 21: return B_TRANSLATE("Haze");
+		case 22: return B_TRANSLATE("Smoky");
+		case 23: return B_TRANSLATE("Blustery");
+		case 24: return B_TRANSLATE("Windy");
+		case 25: return B_TRANSLATE("Cold");
+		case 26: return B_TRANSLATE("Cloudy");
+		case 27: return B_TRANSLATE("Mostly Cloudy");
+		case 28: return B_TRANSLATE("Mostly Cloudy");
+		case 29: return B_TRANSLATE("Partly Cloudy");
+		case 30: return B_TRANSLATE("Partly Cloudy");
+		case 31: return B_TRANSLATE("Clear");
+		case 32: return B_TRANSLATE("Sunny");
+		case 33: return B_TRANSLATE("Fair");
+		case 34: return B_TRANSLATE("Fair");
+		case 35: return B_TRANSLATE("Mixed Rain and Hail");
+		case 36: return B_TRANSLATE("Hot");
+		case 37: return B_TRANSLATE("Isolated Thunderstorms");
+											// 38 - 39  It isn't an error repeated
+							// 39 is PM Showers, Probably a documentation error
+		case 38: return B_TRANSLATE("Scattered Thunderstorms");
+		case 39: return B_TRANSLATE("Scattered Thunderstorms");
+		case 40: return B_TRANSLATE("Scattered Showers");
+		case 41: return B_TRANSLATE("Heavy Snow");
+		case 42: return B_TRANSLATE("Scattered Snow Showers");
+		case 43: return B_TRANSLATE("Heavy Snow");
+		case 44: return B_TRANSLATE("Partly Cloudy");
+		case 45: return B_TRANSLATE("Thundershowers");
+		case 46: return B_TRANSLATE("Snow Showers");
+		case 47: return B_TRANSLATE("Isolated Thundershowers");
+		case 3200: return B_TRANSLATE("Not Available");
+
+	}
+	return B_TRANSLATE("Not Available");
+}
 
 BBitmap*
 ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
 	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
-		case 0:											// tornado
+		case 0:	 										// tornado
 		case 1:	return fTropicalStorm[iconSize];		// tropical storm
 		case 2:	return fAlert[iconSize];				// hurricane
 		case 3:	return fSevereThunderstorm[iconSize];	// severe thunderstorms
@@ -587,7 +650,16 @@ ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 	return NULL; // Change to N/A
 }
 
-
+const char *ForecastView::_GetDayText(const char* day)
+{
+	if (strcmp(day, "Sun") == 0) return B_TRANSLATE("Sun");
+	if (strcmp(day, "Mon") == 0) return B_TRANSLATE("Mon");
+	if (strcmp(day, "Tue") == 0) return B_TRANSLATE("Tue");
+	if (strcmp(day, "Wed") == 0) return B_TRANSLATE("Wed");
+	if (strcmp(day, "Thu") == 0) return B_TRANSLATE("Thu");
+	if (strcmp(day, "Fri") == 0) return B_TRANSLATE("Fri");
+	if (strcmp(day, "Sat") == 0) return B_TRANSLATE("Sat");
+}
 void
 ForecastView::SetCityId(BString cityId)
 {
