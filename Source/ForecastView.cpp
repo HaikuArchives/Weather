@@ -436,12 +436,18 @@ ForecastView::MessageReceived(BMessage *msg)
 		break;
 	}
 	case kFailureMessage:
-		SetCondition(B_TRANSLATE("Connection error"));
-		fNumReconnection++;
-		if (fNumReconnection > kMaxReconnection) 
-			SetUpdateDelay(kMaxUpdateDelay);
-		else
-			SetUpdateDelay(fNumReconnection); // increase delay
+		if (!_NetworkConnected()) {
+			SetCondition(B_TRANSLATE("Connecting" B_UTF8_ELLIPSIS));
+			start_watching_network(
+				B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
+		} else {
+			SetCondition(B_TRANSLATE("Connection error"));
+			fNumReconnection++;
+			if (fNumReconnection > kMaxReconnection)
+				SetUpdateDelay(kMaxUpdateDelay);
+			else
+				SetUpdateDelay(fNumReconnection); // increase delay
+		}
 		break;
 	case kUpdateMessage:
 		SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
