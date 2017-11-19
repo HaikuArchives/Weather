@@ -79,7 +79,7 @@ private:
 	void 			_LoadBitmaps();
 	const char *    _GetWeatherMessage(int32 condition);
 	BBitmap* 		_GetWeatherIcon(int32 condition, weatherIconSize size);
-	const char *    _GetDayText(const char* day);
+	BString			_GetDayText(const BString& day) const;
 
 	status_t		_ApplyState(BMessage *settings);
 
@@ -97,6 +97,7 @@ private:
 	BString			fCity;
 	BString			fCityId;
 	int32			fUpdateDelay;
+	int32			fNumReconnection;
 	DisplayUnit		fDisplayUnit;
 	bool			fShowForecast;
 

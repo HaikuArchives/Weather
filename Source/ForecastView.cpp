@@ -9,6 +9,7 @@
 #include <Bitmap.h>
 #include <Catalog.h>
 #include <ControlLook.h>
+#include <DateFormat.h>
 #include <FindDirectory.h>
 #include <Font.h>
 #include <FormattingConventions.h>
@@ -39,6 +40,7 @@ const bool  kDefaultShowForecast = true;
 
 const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
+const int32 kMaxReconnection = 3;
 
 extern const char* kSignature;
 
@@ -202,7 +204,8 @@ ForecastView::ForecastView(BMessage* archive)
 	fDownloadThread(-1),
 	fForcedForecast(false),
 	fReplicated(true),
-	fUpdateDelay(kMaxUpdateDelay)
+	fUpdateDelay(kMaxUpdateDelay),
+	fNumReconnection(0)
 {
 	_ApplyState(archive);
 	// Use _Init to rebuild the View with deep = false in Archive
@@ -393,6 +396,7 @@ ForecastView::MessageReceived(BMessage *msg)
 		fTemperatureView->SetText(tempText.String());
 		SetCondition(_GetWeatherMessage(fCondition));
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
+		fNumReconnection = 0;
 		break;
 	}
 	case kForecastDataMessage: {
@@ -424,6 +428,11 @@ ForecastView::MessageReceived(BMessage *msg)
 	}
 	case kFailureMessage:
 		SetCondition(B_TRANSLATE("Connection error"));
+		fNumReconnection++;
+		if (fNumReconnection > kMaxReconnection) 
+			SetUpdateDelay(kMaxUpdateDelay);
+		else
+			SetUpdateDelay(fNumReconnection); // increase delay
 		break;
 	case kUpdateMessage:
 		SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
@@ -535,20 +544,20 @@ ForecastView::_GetWeatherMessage(int32 condition)
 		case 0:	return B_TRANSLATE("Tornado");
 		case 1:	return B_TRANSLATE("Tropical storm");
 		case 2:	return B_TRANSLATE("Hurricane");
-		case 3:	return B_TRANSLATE("Severe Thunderstorms");
+		case 3:	return B_TRANSLATE("Severe thunderstorms");
 		case 4:	return B_TRANSLATE("Thunderstorms");
-		case 5:	return B_TRANSLATE("Mixed Rain and Snow");
-		case 6:	return B_TRANSLATE("Mixed Rain and Sleet");
-		case 7: return B_TRANSLATE("Mixed Snow and Sleet");
-		case 8:	return B_TRANSLATE("Freezing Drizzle");
+		case 5:	return B_TRANSLATE("Mixed rain and snow");
+		case 6:	return B_TRANSLATE("Mixed rain and sleet");
+		case 7: return B_TRANSLATE("Mixed snow and sleet");
+		case 8:	return B_TRANSLATE("Freezing drizzle");
 		case 9:	return B_TRANSLATE("Drizzle");
-		case 10: return B_TRANSLATE("Freezing Rain");
+		case 10: return B_TRANSLATE("Freezing rain");
 												// 11 - 12 It isn't an error repeated
 		case 11: return B_TRANSLATE("Showers");
 		case 12: return B_TRANSLATE("Showers");
-		case 13: return B_TRANSLATE("Snow Flurries");
-		case 14: return B_TRANSLATE("Light Snow Showers");
-		case 15: return B_TRANSLATE("Blowing Snow");
+		case 13: return B_TRANSLATE("Snow flurries");
+		case 14: return B_TRANSLATE("Light snow showers");
+		case 15: return B_TRANSLATE("Blowing snow");
 		case 16: return B_TRANSLATE("Snow");
 		case 17: return B_TRANSLATE("Hail");
 		case 18: return B_TRANSLATE("Sleet");
@@ -560,33 +569,33 @@ ForecastView::_GetWeatherMessage(int32 condition)
 		case 24: return B_TRANSLATE("Windy");
 		case 25: return B_TRANSLATE("Cold");
 		case 26: return B_TRANSLATE("Cloudy");
-		case 27: return B_TRANSLATE("Mostly Cloudy");
-		case 28: return B_TRANSLATE("Mostly Cloudy");
-		case 29: return B_TRANSLATE("Partly Cloudy");
-		case 30: return B_TRANSLATE("Partly Cloudy");
+		case 27: return B_TRANSLATE("Mostly cloudy");
+		case 28: return B_TRANSLATE("Mostly cloudy");
+		case 29: return B_TRANSLATE("Partly cloudy");
+		case 30: return B_TRANSLATE("Partly cloudy");
 		case 31: return B_TRANSLATE("Clear");
 		case 32: return B_TRANSLATE("Sunny");
 		case 33: return B_TRANSLATE("Fair");
 		case 34: return B_TRANSLATE("Fair");
-		case 35: return B_TRANSLATE("Mixed Rain and Hail");
+		case 35: return B_TRANSLATE("Mixed rain and hail");
 		case 36: return B_TRANSLATE("Hot");
-		case 37: return B_TRANSLATE("Isolated Thunderstorms");
+		case 37: return B_TRANSLATE("Isolated thunderstorms");
 											// 38 - 39  It isn't an error repeated
 							// 39 is PM Showers, Probably a documentation error
-		case 38: return B_TRANSLATE("Scattered Thunderstorms");
-		case 39: return B_TRANSLATE("Scattered Thunderstorms");
-		case 40: return B_TRANSLATE("Scattered Showers");
-		case 41: return B_TRANSLATE("Heavy Snow");
-		case 42: return B_TRANSLATE("Scattered Snow Showers");
-		case 43: return B_TRANSLATE("Heavy Snow");
-		case 44: return B_TRANSLATE("Partly Cloudy");
+		case 38: return B_TRANSLATE("Scattered thunderstorms");
+		case 39: return B_TRANSLATE("Scattered thunderstorms");
+		case 40: return B_TRANSLATE("Scattered showers");
+		case 41: return B_TRANSLATE("Heavy snow");
+		case 42: return B_TRANSLATE("Scattered snow showers");
+		case 43: return B_TRANSLATE("Heavy snow");
+		case 44: return B_TRANSLATE("Partly cloudy");
 		case 45: return B_TRANSLATE("Thundershowers");
-		case 46: return B_TRANSLATE("Snow Showers");
-		case 47: return B_TRANSLATE("Isolated Thundershowers");
-		case 3200: return B_TRANSLATE("Not Available");
+		case 46: return B_TRANSLATE("Snow showers");
+		case 47: return B_TRANSLATE("Isolated thundershowers");
+		case 3200: return B_TRANSLATE("Not available");
 
 	}
-	return B_TRANSLATE("Not Available");
+	return B_TRANSLATE("Not available");
 }
 
 BBitmap*
@@ -650,16 +659,23 @@ ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 	return NULL; // Change to N/A
 }
 
-const char *ForecastView::_GetDayText(const char* day)
+BString
+ForecastView::_GetDayText(const BString& dayName) const
 {
-	if (strcmp(day, "Sun") == 0) return B_TRANSLATE("Sun");
-	if (strcmp(day, "Mon") == 0) return B_TRANSLATE("Mon");
-	if (strcmp(day, "Tue") == 0) return B_TRANSLATE("Tue");
-	if (strcmp(day, "Wed") == 0) return B_TRANSLATE("Wed");
-	if (strcmp(day, "Thu") == 0) return B_TRANSLATE("Thu");
-	if (strcmp(day, "Fri") == 0) return B_TRANSLATE("Fri");
-	if (strcmp(day, "Sat") == 0) return B_TRANSLATE("Sat");
+	BWeekday day;
+	if (strcmp(dayName.String(), "Mon") == 0) day = B_WEEKDAY_MONDAY;
+	if (strcmp(dayName.String(), "Tue") == 0) day = B_WEEKDAY_TUESDAY;
+	if (strcmp(dayName.String(), "Wed") == 0) day = B_WEEKDAY_WEDNESDAY;
+	if (strcmp(dayName.String(), "Thu") == 0) day = B_WEEKDAY_THURSDAY;
+	if (strcmp(dayName.String(), "Fri") == 0) day = B_WEEKDAY_FRIDAY;
+	if (strcmp(dayName.String(), "Sat") == 0) day = B_WEEKDAY_SATURDAY;
+	if (strcmp(dayName.String(), "Sun") == 0) day = B_WEEKDAY_SUNDAY;
+	BString translateDayName;
+	BDateFormat dateFormat;
+	status_t result = dateFormat.GetDayName(day, translateDayName, B_LONG_DATE_FORMAT);
+	return result == B_OK  ? translateDayName : dayName;
 }
+
 void
 ForecastView::SetCityId(BString cityId)
 {
