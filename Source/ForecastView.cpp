@@ -20,6 +20,9 @@
 #include <Menu.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
+#include <NetworkDevice.h>
+#include <NetworkInterface.h>
+#include <NetworkRoster.h>
 #include <PopUpMenu.h>
 #include <TranslationUtils.h>
 #include <Url.h>
@@ -320,7 +323,13 @@ ForecastView::AttachedToWindow()
 	BMessenger view(this);
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
 	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, (bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
-	view.SendMessage(new BMessage(kUpdateMessage));
+	if (!_NetworkConnected()) {
+		SetCondition(B_TRANSLATE("Connecting" B_UTF8_ELLIPSIS));
+		start_watching_network(
+		B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
+	}
+	else
+		view.SendMessage(new BMessage(kUpdateMessage));
 	BView::AttachedToWindow();
 }
 
@@ -454,6 +463,14 @@ ForecastView::MessageReceived(BMessage *msg)
 		int32 ttl;
 		msg->FindInt32("ttl", &ttl);
 		SetUpdateDelay(ttl < kMaxUpdateDelay ? ttl : kMaxUpdateDelay);
+		break;
+	}
+	case B_NETWORK_MONITOR:{
+		if (_NetworkConnected()) {
+			BMessenger view(this);
+			view.SendMessage(new BMessage(kUpdateMessage));
+			stop_watching_network(this);
+		}
 		break;
 	}
 	case B_ABOUT_REQUESTED: {
@@ -968,4 +985,22 @@ FormatString(DisplayUnit unit, int32 temp)
 		}
 	}
 	return tempString;
+}
+
+
+bool
+ForecastView::_NetworkConnected()
+{
+	BNetworkRoster& roster = BNetworkRoster::Default();
+	BNetworkInterface interface;
+	uint32 cookie = 0;
+	while (roster.GetNextInterface(&cookie, interface) == B_OK) {
+		uint32 flags = interface.Flags();
+		if ((flags & IFF_LOOPBACK) == 0) {
+			if ((flags & (IFF_UP | IFF_LINK)) == (IFF_UP | IFF_LINK)) {
+				return true;
+			}
+		}
+	}
+	return false;
 }

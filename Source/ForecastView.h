@@ -88,6 +88,8 @@ private:
 
 	bool			_SupportTransparent();
 
+	bool			_NetworkConnected();
+
 	thread_id		fDownloadThread;
 	bool 			fForcedForecast;
 	BGridView* 		fView;
