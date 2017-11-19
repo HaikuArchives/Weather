@@ -1,25 +1,29 @@
-1	Ukrainian	x-vnd.przemub.Weather	1043933091
-Loading…	ForecastView		Завантаження…
+1	Ukrainian	x-vnd.przemub.Weather	954571015
 About Weather	ForecastView		Про Погоду
-Weather	System name		Погода
-Use degrees Celsius	PreferencesWindow		Градуси Цельсія
-View	MainWindow		Вигляд
-Preferences	PreferencesWindow		Налаштування
-Use degrees Rankine	PreferencesWindow		Градуси Ранкіна
-Preferences…	MainWindow		Налаштування…
-Change location	SelectionWindow		Змінити розташування
-Quit	MainWindow		Вийти
-OK	ForecastView		OK
-City:	SelectionWindow		Місто:
-Edit	MainWindow		Редагувати
-Weather (The Replicant version)	ForecastView		Погода (реплікант)
-OK	PreferencesWindow		OK
-OK	SelectionWindow		OK
-Refresh	MainWindow		Оновити
-Loading…	MainWindow		Завантаження…
-Change location…	MainWindow		Змінити розташування…
-Use degrees Fahrenheit	PreferencesWindow		Градуси Фаренгейта
-Use degrees Delisle	PreferencesWindow		Градуси Деліля
-Use units Kelvin	PreferencesWindow		Градуси Кельвіна
-Select city: city, country, region	SelectionWindow		Вибрати місто: місто, країна, регіон
+Background	ForecastView		Background
 Connection error	ForecastView		Помилка підключення
+Default	ForecastView		Default
+Loading…	ForecastView		Завантаження…
+OK	ForecastView		OK
+Text	ForecastView		Text
+Transparent	ForecastView		Transparent
+Weather (The Replicant version)	ForecastView		Погода (реплікант)
+Change location…	MainWindow		Змінити розташування…
+Edit	MainWindow		Редагувати
+Loading…	MainWindow		Завантаження…
+Preferences…	MainWindow		Налаштування…
+Quit	MainWindow		Вийти
+Refresh	MainWindow		Оновити
+View	MainWindow		Вигляд
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Налаштування
+Use degrees Celsius	PreferencesWindow		Градуси Цельсія
+Use degrees Delisle	PreferencesWindow		Градуси Деліля
+Use degrees Fahrenheit	PreferencesWindow		Градуси Фаренгейта
+Use degrees Rankine	PreferencesWindow		Градуси Ранкіна
+Use units Kelvin	PreferencesWindow		Градуси Кельвіна
+Change location	SelectionWindow		Змінити розташування
+City:	SelectionWindow		Місто:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Вибрати місто: місто, країна, регіон
+Weather	System name		Погода

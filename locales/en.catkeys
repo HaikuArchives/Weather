@@ -1,25 +1,29 @@
-1	English	x-vnd.przemub.Weather	1043933091
-Loading…	ForecastView		Loading…
+1	English	x-vnd.przemub.Weather	954571015
 About Weather	ForecastView		About Weather
-Weather	System name		Weather
-Use degrees Celsius	PreferencesWindow		Use degrees Celsius
-View	MainWindow		View
-Preferences	PreferencesWindow		Preferences
-Use degrees Rankine	PreferencesWindow		Use degrees Rankine
-Preferences…	MainWindow		Preferences…
-Change location	SelectionWindow		Change location
-Quit	MainWindow		Quit
-OK	ForecastView		OK
-City:	SelectionWindow		City:
-Edit	MainWindow		Edit
-Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
-OK	PreferencesWindow		OK
-OK	SelectionWindow		OK
-Refresh	MainWindow		Refresh
-Loading…	MainWindow		Loading…
-Change location…	MainWindow		Change location…
-Use degrees Fahrenheit	PreferencesWindow		Use degrees Fahrenheit
-Use degrees Delisle	PreferencesWindow		Use degrees Delisle
-Use units Kelvin	PreferencesWindow		Use units Kelvin
-Select city: city, country, region	SelectionWindow		Select city: city, country, region
+Background	ForecastView		Background
 Connection error	ForecastView		Connection error
+Default	ForecastView		Default
+Loading…	ForecastView		Loading…
+OK	ForecastView		OK
+Text	ForecastView		Text
+Transparent	ForecastView		Transparent
+Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
+Change location…	MainWindow		Change location…
+Edit	MainWindow		Edit
+Loading…	MainWindow		Loading…
+Preferences…	MainWindow		Preferences…
+Quit	MainWindow		Quit
+Refresh	MainWindow		Refresh
+View	MainWindow		View
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Preferences
+Use degrees Celsius	PreferencesWindow		Use degrees Celsius
+Use degrees Delisle	PreferencesWindow		Use degrees Delisle
+Use degrees Fahrenheit	PreferencesWindow		Use degrees Fahrenheit
+Use degrees Rankine	PreferencesWindow		Use degrees Rankine
+Use units Kelvin	PreferencesWindow		Use units Kelvin
+Change location	SelectionWindow		Change location
+City:	SelectionWindow		City:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Select city: city, country, region
+Weather	System name		Weather

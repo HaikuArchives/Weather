@@ -1,25 +1,29 @@
-1	Spanish	x-vnd.przemub.Weather	1043933091
-Loading…	ForecastView		Cargando…
+1	Spanish	x-vnd.przemub.Weather	954571015
 About Weather	ForecastView		Acerca de Clima
-Weather	System name		Clima
-Use degrees Celsius	PreferencesWindow		Usar grados Celsius
-View	MainWindow		Ver
-Preferences	PreferencesWindow		Preferencias
-Use degrees Rankine	PreferencesWindow		Usar grados Rankine
-Preferences…	MainWindow		Preferencias…
-Change location	SelectionWindow		Cambiar ubicación
-Quit	MainWindow		Salir
-OK	ForecastView		OK
-City:	SelectionWindow		Ciudad:
-Edit	MainWindow		Editar
-Weather (The Replicant version)	ForecastView		Clima (versión replicante)
-OK	PreferencesWindow		OK
-OK	SelectionWindow		OK
-Refresh	MainWindow		Actualizar
-Loading…	MainWindow		Cargando…
-Change location…	MainWindow		Cambiar ubicación…
-Use degrees Fahrenheit	PreferencesWindow		Usar grados Fahrenheit
-Use degrees Delisle	PreferencesWindow		Usar grados Delisle
-Use units Kelvin	PreferencesWindow		Usar grados Kelvin
-Select city: city, country, region	SelectionWindow		Seleccionar ciudad: ciudad, país, región
+Background	ForecastView		Background
 Connection error	ForecastView		Error de conexión
+Default	ForecastView		Default
+Loading…	ForecastView		Cargando…
+OK	ForecastView		OK
+Text	ForecastView		Text
+Transparent	ForecastView		Transparent
+Weather (The Replicant version)	ForecastView		Clima (versión replicante)
+Change location…	MainWindow		Cambiar ubicación…
+Edit	MainWindow		Editar
+Loading…	MainWindow		Cargando…
+Preferences…	MainWindow		Preferencias…
+Quit	MainWindow		Salir
+Refresh	MainWindow		Actualizar
+View	MainWindow		Ver
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Preferencias
+Use degrees Celsius	PreferencesWindow		Usar grados Celsius
+Use degrees Delisle	PreferencesWindow		Usar grados Delisle
+Use degrees Fahrenheit	PreferencesWindow		Usar grados Fahrenheit
+Use degrees Rankine	PreferencesWindow		Usar grados Rankine
+Use units Kelvin	PreferencesWindow		Usar grados Kelvin
+Change location	SelectionWindow		Cambiar ubicación
+City:	SelectionWindow		Ciudad:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Seleccionar ciudad: ciudad, país, región
+Weather	System name		Clima
