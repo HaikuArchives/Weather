@@ -108,8 +108,10 @@ MainWindow::MessageReceived(BMessage *msg)
 		fForecastView->SetDisplayUnit((DisplayUnit)unit);
 		break;
 	case kUpdateMessage:
-		fForecastView->SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
-		fForecastView->Reload();
+		if (fForecastView->IsConnected()) {
+			fForecastView->SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+			fForecastView->Reload();
+		}
 		break;
 	case kShowForecastMessage: {
 		bool show = !fForecastView->ShowForecast();

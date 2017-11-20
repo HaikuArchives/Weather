@@ -43,7 +43,6 @@ const bool  kDefaultShowForecast = true;
 
 const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
-const int32 kMaxReconnection = 3;
 const int32 kReconnectionDelay = 5;
 
 extern const char* kSignature;
@@ -99,8 +98,8 @@ ForecastView::ForecastView(BRect frame, BMessage* settings)
 	fDownloadThread(-1),
 	fReplicated(false),
 	fUpdateDelay(kMaxUpdateDelay),
-	fNumReconnection(0),
-	fDelayUpdateAfterReconnection(NULL)
+	fDelayUpdateAfterReconnection(NULL),
+	fConnected(false)
 {
 	_ApplyState(settings);
 	_Init();
@@ -211,7 +210,8 @@ ForecastView::ForecastView(BMessage* archive)
 	fForcedForecast(false),
 	fReplicated(true),
 	fUpdateDelay(kMaxUpdateDelay),
-	fDelayUpdateAfterReconnection(NULL)
+	fDelayUpdateAfterReconnection(NULL),
+	fConnected(false)
 {
 	_ApplyState(archive);
 	// Use _Init to rebuild the View with deep = false in Archive
@@ -326,7 +326,8 @@ ForecastView::AttachedToWindow()
 	BMessenger view(this);
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
 	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, (bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
-	if (!_NetworkConnected()) {
+	fConnected = _NetworkConnected();
+	if (!fConnected) {
 		SetCondition(B_TRANSLATE("No network"));
 		start_watching_network(
 		B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
@@ -408,7 +409,6 @@ ForecastView::MessageReceived(BMessage *msg)
 		fTemperatureView->SetText(tempText.String());
 		SetCondition(_GetWeatherMessage(fCondition));
 		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
-		fNumReconnection = 0;
 		break;
 	}
 	case kForecastDataMessage: {
@@ -438,22 +438,21 @@ ForecastView::MessageReceived(BMessage *msg)
 		fForecastDayView[forecastNum]->SetToolTip(text);
 		break;
 	}
-	case kFailureMessage:
-		if (!_NetworkConnected()) {
+	case kFailureMessage: {
+		fConnected = _NetworkConnected();
+		if (!fConnected) {
 			SetCondition(B_TRANSLATE("No network"));
 			start_watching_network(
 				B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
 		} else {
 			SetCondition(B_TRANSLATE("Connection error"));
-			fNumReconnection++;
-			if (fNumReconnection > kMaxReconnection)
-				SetUpdateDelay(kMaxUpdateDelay);
-			else
-				SetUpdateDelay(fNumReconnection); // increase delay
 		}
 		break;
+	}
 	case kUpdateMessage:
-		SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+		if (fConnected) {
+			SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+		}
 	case kAutoUpdateMessage:
 		Reload();
 		break;
@@ -475,11 +474,13 @@ ForecastView::MessageReceived(BMessage *msg)
 		break;
 	}
 	case B_NETWORK_MONITOR:{
-		if (_NetworkConnected()) {
+		fConnected = _NetworkConnected();
+		if (fConnected) {
+			SetCondition(B_TRANSLATE("Connecting" B_UTF8_ELLIPSIS));
 			BMessenger view(this);
 			BMessage updateMessage(kUpdateMessage);
 			delete fDelayUpdateAfterReconnection;
-			fDelayUpdateAfterReconnection = new BMessageRunner(view, &updateMessage, (bigtime_t) kReconnectionDelay  *1000 * 1000,1);
+			fDelayUpdateAfterReconnection = new BMessageRunner(view, &updateMessage, (bigtime_t) kReconnectionDelay  *1000 * 1000, 1);
 			stop_watching_network(this);
 		}
 		break;
@@ -837,6 +838,9 @@ ForecastView::ShowForecast()
 void
 ForecastView::Reload(bool forcedForecast)
 {
+	if (!fConnected)
+		return;
+
 	StopReload();
 
 	fForcedForecast = forcedForecast;
@@ -958,12 +962,22 @@ ForecastView::SetBackgroundColor(rgb_color color)
 	fForecastView->Invalidate();
 	fDragger->Invalidate();
 }
+
+
 bool
 ForecastView::IsDefaultColor() const
 {
 	return fBackgroundColor == ui_color(B_PANEL_BACKGROUND_COLOR)
 		&& fTextColor == ui_color(B_PANEL_TEXT_COLOR);
 }
+
+
+bool
+ForecastView::IsConnected() const
+{
+	return fConnected;
+}
+
 
 BString
 FormatString(DisplayUnit unit, int32 temp)
