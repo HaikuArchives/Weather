@@ -72,6 +72,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	void			SetTextColor(rgb_color color);
 	void			SetBackgroundColor(rgb_color color);
 	bool			IsDefaultColor() const;
+	bool			IsConnected() const;
 private:
 	void			_Init();
 	void			_DownloadData();
@@ -99,7 +100,6 @@ private:
 	BString			fCity;
 	BString			fCityId;
 	int32			fUpdateDelay;
-	int32			fNumReconnection;
 	DisplayUnit		fDisplayUnit;
 	bool			fShowForecast;
 
@@ -110,6 +110,7 @@ private:
 	PreferencesWindow* fPreferencesWindow;
 	BMessageRunner*	fAutoUpdate;
 	BMessageRunner*	fDelayUpdateAfterReconnection;
+	bool			fConnected;
 
 	BBitmap* 		fAlert[2];
 	BBitmap* 		fClearNight[2];
