@@ -109,6 +109,7 @@ private:
 	SelectionWindow*	fSelectionWindow;
 	PreferencesWindow* fPreferencesWindow;
 	BMessageRunner*	fAutoUpdate;
+	BMessageRunner*	fDelayUpdateAfterReconnection;
 
 	BBitmap* 		fAlert[2];
 	BBitmap* 		fClearNight[2];

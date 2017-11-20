@@ -44,6 +44,7 @@ const bool  kDefaultShowForecast = true;
 const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
 const int32 kMaxReconnection = 3;
+const int32 kReconnectionDelay = 5;
 
 extern const char* kSignature;
 
@@ -97,7 +98,9 @@ ForecastView::ForecastView(BRect frame, BMessage* settings)
 		B_WILL_DRAW | B_FRAME_EVENTS | B_DRAW_ON_CHILDREN),
 	fDownloadThread(-1),
 	fReplicated(false),
-	fUpdateDelay(kMaxUpdateDelay)
+	fUpdateDelay(kMaxUpdateDelay),
+	fNumReconnection(0),
+	fDelayUpdateAfterReconnection(NULL)
 {
 	_ApplyState(settings);
 	_Init();
@@ -208,7 +211,7 @@ ForecastView::ForecastView(BMessage* archive)
 	fForcedForecast(false),
 	fReplicated(true),
 	fUpdateDelay(kMaxUpdateDelay),
-	fNumReconnection(0)
+	fDelayUpdateAfterReconnection(NULL)
 {
 	_ApplyState(archive);
 	// Use _Init to rebuild the View with deep = false in Archive
@@ -324,7 +327,7 @@ ForecastView::AttachedToWindow()
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
 	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, (bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
 	if (!_NetworkConnected()) {
-		SetCondition(B_TRANSLATE("Connecting" B_UTF8_ELLIPSIS));
+		SetCondition(B_TRANSLATE("No network"));
 		start_watching_network(
 		B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
 	}
@@ -437,7 +440,7 @@ ForecastView::MessageReceived(BMessage *msg)
 	}
 	case kFailureMessage:
 		if (!_NetworkConnected()) {
-			SetCondition(B_TRANSLATE("Connecting" B_UTF8_ELLIPSIS));
+			SetCondition(B_TRANSLATE("No network"));
 			start_watching_network(
 				B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
 		} else {
@@ -474,7 +477,9 @@ ForecastView::MessageReceived(BMessage *msg)
 	case B_NETWORK_MONITOR:{
 		if (_NetworkConnected()) {
 			BMessenger view(this);
-			view.SendMessage(new BMessage(kUpdateMessage));
+			BMessage updateMessage(kUpdateMessage);
+			delete fDelayUpdateAfterReconnection;
+			fDelayUpdateAfterReconnection = new BMessageRunner(view, &updateMessage, (bigtime_t) kReconnectionDelay  *1000 * 1000,1);
 			stop_watching_network(this);
 		}
 		break;
