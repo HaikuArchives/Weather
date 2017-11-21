@@ -10,7 +10,9 @@
 
 #include <Bitmap.h>
 #include <Button.h>
+#include <DateFormat.h>
 #include <Dragger.h>
+#include <FormattingConventions.h>
 #include <GridLayout.h>
 #include <GridView.h>
 #include <GroupView.h>
@@ -105,6 +107,8 @@ private:
 
 	int32			fTemperature;
 	int32			fCondition;
+
+	BDateFormat 	fDateFormat;
 
 	SelectionWindow*	fSelectionWindow;
 	PreferencesWindow* fPreferencesWindow;

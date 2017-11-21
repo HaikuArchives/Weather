@@ -9,10 +9,8 @@
 #include <Bitmap.h>
 #include <Catalog.h>
 #include <ControlLook.h>
-#include <DateFormat.h>
 #include <FindDirectory.h>
 #include <Font.h>
-#include <FormattingConventions.h>
 #include <GroupLayout.h>
 #include <LayoutBuilder.h>
 #include <IconUtils.h>
@@ -700,8 +698,7 @@ ForecastView::_GetDayText(const BString& dayName) const
 	if (strcmp(dayName.String(), "Sat") == 0) day = B_WEEKDAY_SATURDAY;
 	if (strcmp(dayName.String(), "Sun") == 0) day = B_WEEKDAY_SUNDAY;
 	BString translateDayName;
-	BDateFormat dateFormat;
-	status_t result = dateFormat.GetDayName(day, translateDayName, B_LONG_DATE_FORMAT);
+	status_t result = fDateFormat.GetDayName(day, translateDayName, B_LONG_DATE_FORMAT);
 	return result == B_OK  ? translateDayName : dayName;
 }
 
