@@ -1,13 +1,57 @@
-1	English	x-vnd.przemub.Weather	954571015
+1	English	x-vnd.przemub.Weather	3662372937
 About Weather	ForecastView		About Weather
 Background	ForecastView		Background
+Blowing snow	ForecastView		Blowing snow
+Blustery	ForecastView		Blustery
+Clear	ForecastView		Clear
+Cloudy	ForecastView		Cloudy
+Cold	ForecastView		Cold
+Connecting…	ForecastView		Connecting…
 Connection error	ForecastView		Connection error
 Default	ForecastView		Default
+Drizzle	ForecastView		Drizzle
+Dust	ForecastView		Dust
+Fair	ForecastView		Fair
+Fog	ForecastView		Fog
+Freezing drizzle	ForecastView		Freezing drizzle
+Freezing rain	ForecastView		Freezing rain
+Hail	ForecastView		Hail
+Haze	ForecastView		Haze
+Heavy snow	ForecastView		Heavy snow
+Hot	ForecastView		Hot
+Hurricane	ForecastView		Hurricane
+Isolated thundershowers	ForecastView		Isolated thundershowers
+Isolated thunderstorms	ForecastView		Isolated thunderstorms
+Light snow showers	ForecastView		Light snow showers
 Loading…	ForecastView		Loading…
+Mixed rain and hail	ForecastView		Mixed rain and hail
+Mixed rain and sleet	ForecastView		Mixed rain and sleet
+Mixed rain and snow	ForecastView		Mixed rain and snow
+Mixed snow and sleet	ForecastView		Mixed snow and sleet
+Mostly cloudy	ForecastView		Mostly cloudy
+No network	ForecastView		No network
+Not available	ForecastView		Not available
 OK	ForecastView		OK
+Partly cloudy	ForecastView		Partly cloudy
+Scattered showers	ForecastView		Scattered showers
+Scattered snow showers	ForecastView		Scattered snow showers
+Scattered thunderstorms	ForecastView		Scattered thunderstorms
+Severe thunderstorms	ForecastView		Severe thunderstorms
+Showers	ForecastView		Showers
+Sleet	ForecastView		Sleet
+Smoky	ForecastView		Smoky
+Snow	ForecastView		Snow
+Snow flurries	ForecastView		Snow flurries
+Snow showers	ForecastView		Snow showers
+Sunny	ForecastView		Sunny
 Text	ForecastView		Text
+Thundershowers	ForecastView		Thundershowers
+Thunderstorms	ForecastView		Thunderstorms
+Tornado	ForecastView		Tornado
 Transparent	ForecastView		Transparent
+Tropical storm	ForecastView		Tropical storm
 Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
+Windy	ForecastView		Windy
 Change location…	MainWindow		Change location…
 Edit	MainWindow		Edit
 Loading…	MainWindow		Loading…
