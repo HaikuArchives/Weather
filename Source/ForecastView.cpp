@@ -522,6 +522,7 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fStorm, 'rGFX', "Artwork/weather_storm.hvif");
 	_LoadIcons(fThunder, 'rGFX', "Artwork/weather_thunder.hvif");
 	_LoadIcons(fTropicalStorm, 'rGFX', "Artwork/weather_tropical_storm.hvif");
+	_LoadIcons(fCloud, 'rGFX', "Artwork/weather_cloud.hvif");
 }
 
 
@@ -656,7 +657,7 @@ ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 23: break;									//*blustery
 		case 24: break;									//*windy
 		case 25: return fCold[iconSize];				//*cold
-		case 26:										// cloudy
+		case 26: return	fCloud[iconSize];				// cloudy
 		case 27: return fMostlyCloudyNight[iconSize];	// mostly cloudy (night)
 		case 28: return fClouds[iconSize];				// mostly cloudy (day)
 		case 29: return fNightFewClouds[iconSize];		// partly cloudy (night)
