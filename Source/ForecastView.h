@@ -138,6 +138,7 @@ private:
 	BBitmap* 		fStorm[2];
 	BBitmap* 		fThunder[2];
 	BBitmap* 		fTropicalStorm[2];
+	BBitmap* 		fCloud[2];
 	BGroupView*		fInfoView;
 	BGroupView*		fNumberView;
 	BGroupView* 	fForecastView;
