@@ -1,0 +1,73 @@
+1	Italiano	x-vnd.przemub.Weather	3662372937
+About Weather	ForecastView		Informazioni su Meteo
+Background	ForecastView		Sfondo
+Blowing snow	ForecastView		Bufera di neve
+Blustery	ForecastView		Tempestoso
+Clear	ForecastView		Sereno
+Cloudy	ForecastView		Nuvoloso
+Cold	ForecastView		Freddo
+Connecting…	ForecastView		Connettendo…
+Connection error	ForecastView		Errore di connessione
+Default	ForecastView		Predefinito
+Drizzle	ForecastView		Pioviggine
+Dust	ForecastView		Polvere
+Fair	ForecastView		Bel tempo
+Fog	ForecastView		Nebbia
+Freezing drizzle	ForecastView		Pioviggine sopraffusa
+Freezing rain	ForecastView		Pioggia sopraffusa
+Hail	ForecastView		Grandine
+Haze	ForecastView		Caligine
+Heavy snow	ForecastView		Forti nevicate
+Hot	ForecastView		Caldo
+Hurricane	ForecastView		Uragano
+Isolated thundershowers	ForecastView		Isolati rovesci temporaleschi
+Isolated thunderstorms	ForecastView		Temporali isolati
+Light snow showers	ForecastView		Leggere nevicate
+Loading…	ForecastView		Caricamento…
+Mixed rain and hail	ForecastView		Pioggia e grandine
+Mixed rain and sleet	ForecastView		Pioggia e nevischio
+Mixed rain and snow	ForecastView		Pioggia e neve
+Mixed snow and sleet	ForecastView		Neve e nevischio
+Mostly cloudy	ForecastView		Molto nuvoloso
+No network	ForecastView		Rete assente
+Not available	ForecastView		Non disponibile
+OK	ForecastView		OK
+Partly cloudy	ForecastView		Poco nuvoloso
+Scattered showers	ForecastView		Acquazzoni sparsi
+Scattered snow showers	ForecastView		Nevicate sparse
+Scattered thunderstorms	ForecastView		Temporali sparsi
+Severe thunderstorms	ForecastView		Forti temporali
+Showers	ForecastView		Acquazzoni
+Sleet	ForecastView		Nevischio
+Smoky	ForecastView		Foschia
+Snow	ForecastView		Neve
+Snow flurries	ForecastView		Raffiche di neve
+Snow showers	ForecastView		Nevicate
+Sunny	ForecastView		Soleggiato
+Text	ForecastView		Testo
+Thundershowers	ForecastView		Rovesci temporaleschi
+Thunderstorms	ForecastView		Temporali
+Tornado	ForecastView		Tornado
+Transparent	ForecastView		Trasparente
+Tropical storm	ForecastView		Tempesta tropicale
+Weather (The Replicant version)	ForecastView		Meteo (versione replicante)
+Windy	ForecastView		Ventoso
+Change location…	MainWindow		Cambia località…
+Edit	MainWindow		Modifica
+Loading…	MainWindow		Caricamento…
+Preferences…	MainWindow		Preferenze…
+Quit	MainWindow		Esci
+Refresh	MainWindow		Aggiorna
+View	MainWindow		Vista
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Preferenze
+Use degrees Celsius	PreferencesWindow		Usa gradi Centigradi
+Use degrees Delisle	PreferencesWindow		Usa gradi Delisle
+Use degrees Fahrenheit	PreferencesWindow		Usa gradi Fahrenheit
+Use degrees Rankine	PreferencesWindow		Usa gradi Rankine
+Use units Kelvin	PreferencesWindow		Usa unità Kelvin
+Change location	SelectionWindow		Cambia  località
+City:	SelectionWindow		Città:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Seleziona città: città, paese, regione
+Weather	System name		Meteo
