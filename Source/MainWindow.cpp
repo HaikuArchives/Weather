@@ -44,10 +44,9 @@ MainWindow::_PrepareMenuBar(void)
 	menubar->AddItem(menu);
 
 	menu = new BMenu(B_TRANSLATE("View"));
-	// Remove Show Forecast until it works properly
-//	menu->AddItem(fShowForecastMenuItem = new BMenuItem("Show Forecast",
-//		new BMessage(kShowForecastMessage)));
-//	menu->AddSeparatorItem();
+	menu->AddItem(fShowForecastMenuItem = new BMenuItem("Show Forecast",
+		new BMessage(kShowForecastMessage)));
+	menu->AddSeparatorItem();
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Refresh"),
 		new BMessage(kUpdateMessage), 'R'));
 	menubar->AddItem(menu);
@@ -77,7 +76,7 @@ MainWindow::MainWindow()
 	fForecastView = new ForecastView(BRect(0,0,100,100), &settings);
 	AddChild(fForecastView);
 	// Enable when works
-//	fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
+	fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
 }
 
 

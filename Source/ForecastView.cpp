@@ -96,6 +96,7 @@ ForecastView::ForecastView(BRect frame, BMessage* settings)
 	fDownloadThread(-1),
 	fReplicated(false),
 	fUpdateDelay(kMaxUpdateDelay),
+	fAutoUpdate(NULL),
 	fDelayUpdateAfterReconnection(NULL),
 	fConnected(false)
 {
@@ -107,6 +108,8 @@ ForecastView::ForecastView(BRect frame, BMessage* settings)
 ForecastView::~ForecastView()
 {
 	StopReload();
+	_DeleteBitmaps();
+	delete fAutoUpdate;
 }
 
 
@@ -115,25 +118,11 @@ ForecastView::_Init()
 {
 	_LoadBitmaps();
 
-	BGroupLayout* root = new BGroupLayout(B_VERTICAL);
-	root->SetSpacing(0);
-	this->SetLayout(root);
-	fView = new BGridView(2, 2);
-	fLayout = fView->GridLayout();
-	fLayout->SetInsets(5);
-	this->AddChild(fView);
-
 	// Icon for weather
 	fConditionButton = new TransparentButton("condition", "",
 		new BMessage(kUpdateMessage));
-
 	fConditionButton->SetIcon(fFewClouds[LARGE_ICON]);
-	fLayout->AddView(fConditionButton, (int32) 0, (int32) 0);
 	fConditionButton->SetFlat(true);
-	fInfoView = new BGroupView(B_VERTICAL);
-	BGroupLayout *infoLayout = fInfoView->GroupLayout();
-	infoLayout->SetInsets(16);
-	fLayout->AddView(fInfoView, (int32) 1, (int32) 0);
 
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
 	BFont bold_font(be_bold_font);
@@ -141,24 +130,16 @@ ForecastView::_Init()
 	fConditionView = new LabelView("description",
 		B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 	fConditionView->SetFont(&bold_font);
-	infoLayout->AddView(fConditionView);
-
-	// Numbers (e.g. temperature etc.)
-	fNumberView = new BGroupView(B_HORIZONTAL);
-	BGroupLayout* numberLayout = fNumberView->GroupLayout();
-	infoLayout->AddView(fNumberView);
 
 	BFont plain_font(be_plain_font);
 	plain_font.SetSize(16);
 	// Temperature (e.g. high 32 degrees C)
 	fTemperatureView = new LabelView("temperature", "--");
 	fTemperatureView->SetFont(&plain_font);
-	numberLayout->AddView(fTemperatureView);
 
 	// City
 	fCityView = new LabelView("city", "--");
 	fCityView->SetFont(&plain_font);
-	numberLayout->AddView(fCityView);
 	SetCityName(fCity);
 
 	fForecastView = new BGroupView(B_HORIZONTAL);
@@ -166,7 +147,6 @@ ForecastView::_Init()
 	forecastLayout->SetInsets(0, 2, 0, 0);
 	forecastLayout->SetSpacing(2);
 
-	fLayout->AddView(fForecastView, (int32) 0, (int32) 1, (int32) 2);
 	for (int32 i = 0; i < kMaxForecastDay; i++) {
 		fForecastDayView[i] = new ForecastDayView(BRect(0, 0, 62, 112));
 		fForecastDayView[i]->SetIcon(fFewClouds[SMALL_ICON]);
@@ -178,16 +158,29 @@ ForecastView::_Init()
 		fForecastView->Hide();
 	}
 
-	BRect rect(Bounds());
-	rect.top = rect.bottom - kDraggerSize;
-	rect.left = rect.right - kDraggerSize;
-	fDragger = new BDragger(rect, this,
-		B_FOLLOW_RIGHT | B_FOLLOW_BOTTOM);
+	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
+		.SetInsets(5, 5,
+				5, 5)
+		.AddGrid()
+				.Add(fConditionButton, 0, 0)
+				.AddGroup(B_VERTICAL,0, 1,0)
+					.Add(fConditionView)
+					.AddGroup(B_HORIZONTAL)
+						.Add(fTemperatureView)
+						.Add(fCityView)
+					.End()
+				.End()
+				.Add(fForecastView, 0, 1, 2)
+		.End()
+		.AddGroup(B_HORIZONTAL, 0)
+				.AddGlue()
+				.Add(fDragger = new BDragger(this))
+		.End()
+	.End();
 
 	SetViewColor(fBackgroundColor);
-	AddChild(fDragger);
-	root->SetExplicitMinSize(BSize(332,228));
-	root->SetExplicitMaxSize(BSize(332,228));
+	fDragger->SetExplicitMinSize(BSize(kDraggerSize, kDraggerSize));
+	fDragger->SetExplicitMaxSize(BSize(kDraggerSize, kDraggerSize));
 }
 
 
@@ -208,6 +201,7 @@ ForecastView::ForecastView(BMessage* archive)
 	fForcedForecast(false),
 	fReplicated(true),
 	fUpdateDelay(kMaxUpdateDelay),
+	fAutoUpdate(NULL),
 	fDelayUpdateAfterReconnection(NULL),
 	fConnected(false)
 {
@@ -523,6 +517,46 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fThunder, 'rGFX', "Artwork/weather_thunder.hvif");
 	_LoadIcons(fTropicalStorm, 'rGFX', "Artwork/weather_tropical_storm.hvif");
 	_LoadIcons(fCloud, 'rGFX', "Artwork/weather_cloud.hvif");
+}
+
+
+
+void
+ForecastView::_DeleteBitmaps()
+{
+	_DeleteIcons(fAlert);
+	_DeleteIcons(fClearNight);
+	_DeleteIcons(fClear);
+	_DeleteIcons(fClouds);
+	_DeleteIcons(fCold);
+	_DeleteIcons(fDrizzle);
+	_DeleteIcons(fFewClouds);
+	_DeleteIcons(fFog);
+	_DeleteIcons(fFreezingDrizzle);
+	_DeleteIcons(fLightSnow);
+	_DeleteIcons(fMixedSnowRain);
+	_DeleteIcons(fMostlyCloudyNight);
+	_DeleteIcons(fNightFewClouds);
+	_DeleteIcons(fRainingScattered);
+	_DeleteIcons(fRaining);
+	_DeleteIcons(fSevereThunderstorm);
+	_DeleteIcons(fShining);
+	_DeleteIcons(fShiny);
+	_DeleteIcons(fSnow);
+	_DeleteIcons(fStorm);
+	_DeleteIcons(fThunder);
+	_DeleteIcons(fTropicalStorm);
+	_DeleteIcons(fCloud);
+}
+
+
+void
+ForecastView::_DeleteIcons(BBitmap* bitmap[2])
+{
+	delete bitmap[0];
+	delete bitmap[1];
+	bitmap[0] = NULL;
+	bitmap[1] = NULL;
 }
 
 
@@ -910,20 +944,14 @@ ForecastView::SetTextColor(rgb_color color)
 {
 	fTextColor = color;
 	SetHighColor(color);
-	fView->SetHighColor(color);
-	fInfoView->SetHighColor(color);
 	fConditionButton->SetHighColor(color);
 	fConditionView->SetHighColor(color);
 	fTemperatureView->SetHighColor(color);
 	fCityView->SetHighColor(color);
 	fForecastView->SetHighColor(color);
-	fNumberView->SetHighColor(color);
 	for (int32 i = 0; i < kMaxForecastDay; i++) {
 		fForecastDayView[i]->SetTextColor(color);
 	}
-	fNumberView->Invalidate();
-	fInfoView->Invalidate();
-	fView->Invalidate();
 	fConditionButton->Invalidate();
 	fConditionView->Invalidate();
 	fTemperatureView->Invalidate();
@@ -937,28 +965,21 @@ ForecastView::SetBackgroundColor(rgb_color color)
 {
 	fBackgroundColor = color;
 	SetViewColor(color);
-	fDragger->SetViewColor(fBackgroundColor);
-	fView->SetViewColor(color);
-	fInfoView->SetViewColor(color);
 	fConditionButton->SetViewColor(color);
 	fConditionView->SetViewColor(color);
 	fTemperatureView->SetViewColor(color);
 	fCityView->SetViewColor(color);
 	fForecastView->SetViewColor(color);
-	fNumberView->SetViewColor(color);
 	for (int32 i = 0; i < kMaxForecastDay; i++) {
 		fForecastDayView[i]->SetViewColor(color);
 		fForecastDayView[i]->Invalidate();
 	}
-	fNumberView->Invalidate();
-	fInfoView->Invalidate();
-	fView->Invalidate();
 	fConditionButton->Invalidate();
 	fConditionView->Invalidate();
 	fTemperatureView->Invalidate();
 	fCityView->Invalidate();
 	fForecastView->Invalidate();
-	fDragger->Invalidate();
+	Invalidate();
 }
 
 
