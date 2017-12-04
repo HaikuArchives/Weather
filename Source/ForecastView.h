@@ -54,6 +54,7 @@ public:
 	virtual void	MessageReceived(BMessage* msg);
 	virtual void	AttachedToWindow();
 	virtual void	AllAttached();
+	virtual void	Draw(BRect updateRect);
 virtual status_t	Archive(BMessage* into, bool deep = true) const;
 static	BArchivable* Instantiate(BMessage* archive);
 status_t			SaveState(BMessage* into, bool deep = true) const;

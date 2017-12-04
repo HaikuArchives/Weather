@@ -341,6 +341,16 @@ ForecastView::AllAttached()
 }
 
 
+void
+ForecastView::Draw(BRect updateRect)
+{
+	if (fBackgroundColor != B_TRANSPARENT_COLOR) {
+		SetHighColor(fBackgroundColor);
+		FillRect(updateRect);
+	}
+}
+
+
 bool
 ForecastView::_SupportTransparent() {
 	return 	fReplicated && Parent() && (Parent()->Flags() & B_DRAW_ON_CHILDREN) != 0;
