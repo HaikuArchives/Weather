@@ -1,0 +1,75 @@
+1	Polish	x-vnd.przemub.Weather	3662372937
+About Weather	ForecastView		O Pogodzie
+Background	ForecastView		Tło
+Blowing snow	ForecastView		Opady śniegu z mocnym wiatrem
+Blustery	ForecastView		Porywisty wiatr
+Clear	ForecastView		Czyste niebo
+Cloudy	ForecastView		Zachmurzone niebo
+Cold	ForecastView		Zimno
+Connecting…	ForecastView		Łączenie…
+Connection error	ForecastView		Błąd połączenia
+Default	ForecastView		Domyślny
+Drizzle	ForecastView		Mżawka
+Dust	ForecastView		Pył
+Fair	ForecastView		Dobra pogoda
+Fog	ForecastView		Mgła
+Freezing drizzle	ForecastView		Mżawka z gradem
+Freezing rain	ForecastView		Deszcz z gradem
+Hail	ForecastView		Grad
+Haze	ForecastView		Mgiełka
+Heavy snow	ForecastView		Mocne opady śniegu
+Hot	ForecastView		Gorąco
+Hurricane	ForecastView		Huragan
+Isolated thundershowers	ForecastView		Miejscowo burze
+Isolated thunderstorms	ForecastView		Miejscowo burze
+Light snow showers	ForecastView		Lekkie, chwilowe opady śniegu
+Loading…	ForecastView		Ładowanie…
+Mixed rain and hail	ForecastView		Deszcz z gradem
+Mixed rain and sleet	ForecastView		Deszcz ze śniegiem (głównie deszcz)
+Mixed rain and snow	ForecastView		Deszcz ze śniegiem
+Mixed snow and sleet	ForecastView		Deszcz ze śniegiem (głównie śnieg)
+Mostly cloudy	ForecastView		Niebo w większości zachmurzone
+No network	ForecastView		Brak połączenia
+Not available	ForecastView		Usługa niedostępna
+OK	ForecastView		OK
+Partly cloudy	ForecastView		Częściowo zachmurzone niebo
+Scattered showers	ForecastView		Miejscowo deszcze
+Scattered snow showers	ForecastView		Miejscowo opady śniegu
+Scattered thunderstorms	ForecastView		Miejscowo burze
+Severe thunderstorms	ForecastView		Mocne burze
+Showers	ForecastView		Chwilowe opady deszczu
+Sleet	ForecastView		Deszcz ze śniegiem
+Smoky	ForecastView		Zadymione
+Snow	ForecastView		Śnieg
+Snow flurries	ForecastView		Lekkie opady śniegu
+Snow showers	ForecastView		Chwilowe opady śniegu
+Sunny	ForecastView		Słonecznie
+Text	ForecastView		Tekst
+Thundershowers	ForecastView		Chwilowe burze
+Thunderstorms	ForecastView		Burze
+Tornado	ForecastView		Tornado
+Transparent	ForecastView		Przezroczysty
+Tropical storm	ForecastView		Burza tropikalna
+Weather (The Replicant version)	ForecastView		Pogoda (replikant)
+Windy	ForecastView		Wietrznie
+Change location…	MainWindow		Zmień lokalizację…
+Edit	MainWindow		Edytuj
+Loading…	MainWindow		Ładowanie…
+Preferences…	MainWindow		Ustawienia…
+Quit	MainWindow		Wyjdź
+Refresh	MainWindow		Odśwież
+View	MainWindow		Widok
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Ustawienia
+Use degrees Celsius	PreferencesWindow		Używaj stopni Celsjusza
+Use degrees Delisle	PreferencesWindow		Używaj stopni Delislego
+Use degrees Fahrenheit	PreferencesWindow		Używaj stopni Fahrenheita
+Use degrees Rankine	PreferencesWindow		Używaj stopni Rankine'a
+Use units Kelvin	PreferencesWindow		Używaj kelwinów
+Change location	SelectionWindow		Zmień lokalizację
+City:	SelectionWindow		Miasto:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Wybierz miasto: miasto, kraj, region
+Weather	System name		Pogoda
+
+
