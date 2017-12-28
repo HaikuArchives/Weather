@@ -21,10 +21,15 @@
 #include <UrlProtocolRoster.h>
 #include <UrlRequest.h>
 
+#include <Deskbar.h>
+#include <Alert.h>
+
 #include "MainWindow.h"
 #include "NetListener.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
+#include "WeatherDeskbarView.h"
+#include "ForecastView.h"
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "MainWindow"
@@ -49,6 +54,8 @@ MainWindow::_PrepareMenuBar(void)
 	//menu->AddSeparatorItem();
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Refresh"),
 		new BMessage(kUpdateMessage), 'R'));
+	menu->AddItem(new BMenuItem(B_TRANSLATE("Toggle Deskbar Replicant"),
+		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
 	menubar->AddItem(menu);
 
 	return menubar;
@@ -77,6 +84,9 @@ MainWindow::MainWindow()
 	AddChild(fForecastView);
 	// Enable when works
 	//fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
+
+	fDeskbar = new BDeskbar();
+	fWeatherDeskbarReplicant = new WeatherDeskbarView(BRect(0, 0, 15, 15), fForecastView->GetWeatherIcon(0, (weatherIconSize)1));
 }
 
 
@@ -153,6 +163,34 @@ MainWindow::MessageReceived(BMessage *msg)
 	case kClosePrefWindowMessage:
 		fPreferencesWindow = NULL;
 		break;
+	case kToggleDeskbarReplicantMessage:
+	{
+		fShowDeskbarReplicant = !fShowDeskbarReplicant;
+		if (fShowDeskbarReplicant)
+		{
+			fWeatherDeskbarReplicant->SetWeatherIcon(fForecastView->GetWeatherIcon(0, (weatherIconSize)1));
+			status_t result = fDeskbar->AddItem(fWeatherDeskbarReplicant, &fDeskbarReplicantID);
+			if (result != B_OK)
+			{
+				BString errorMessage = "Unable to create a deskbar replicant. The error code is: ";
+				errorMessage << int(result);
+
+				BAlert* alert = new BAlert("Error", errorMessage.String(), "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+				alert->Go();
+				delete alert;
+
+				fShowDeskbarReplicant = false;
+			}
+		}
+		else
+		{
+			if (fDeskbar->HasItem(fDeskbarReplicantID))
+			{
+				fDeskbar->RemoveItem(fDeskbarReplicantID);
+			}
+		}
+		break;
+	}
 	default:
 		BWindow::MessageReceived(msg);
 	}

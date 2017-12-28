@@ -76,6 +76,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	void			SetBackgroundColor(rgb_color color);
 	bool			IsDefaultColor() const;
 	bool			IsConnected() const;
+	BBitmap* 		GetWeatherIcon(int32 condition, weatherIconSize size);
 private:
 	void			_Init();
 	void			_DownloadData();
