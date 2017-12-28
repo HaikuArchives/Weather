@@ -671,6 +671,12 @@ ForecastView::_GetWeatherMessage(int32 condition)
 }
 
 BBitmap*
+ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
+{
+	return _GetWeatherIcon(condition, iconSize);
+}
+
+BBitmap*
 ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
 	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
