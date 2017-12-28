@@ -4,12 +4,19 @@
  */
 
 #include <Bitmap.h>
+#include <PopUpMenu.h>
+#include <StringView.h>
+#include <String.h>
 
 #include "WeatherDeskbarView.h"
 #include "App.h"
 
+const int pulseRate = 4;
+const float pulsesPerSecond = 1000000000 / pulseRate;
+float tooltipTimer = 0;
+
 WeatherDeskbarView::WeatherDeskbarView(BRect viewSize, BBitmap* weatherIcon)
-	:	BView(viewSize, "WeatherDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
+	:	BView(viewSize, "WeatherDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
 {
 	fWeatherIcon = weatherIcon;
 }
@@ -51,9 +58,51 @@ WeatherDeskbarView::Draw(BRect drawRect)
 }
 
 void
-WeatherDeskbarView::OnMouseUp()
+WeatherDeskbarView::Pulse()
 {
-	App* weatherApp = new App();
-	weatherApp->Run();
-	delete weatherApp;
+	if (tooltipTimer > 0)
+	{
+		tooltipTimer -= pulseRate;
+	}
+}
+
+void
+WeatherDeskbarView::OnMouseMove(BPoint point)
+{
+	if (tooltipTimer <= 0)
+	{
+		tooltipTimer = pulseRate * pulsesPerSecond * 0.5f;
+
+		BView* tooltipView = new BView(BRect(0, 0, 20, 30), "tooltipView", B_FOLLOW_ALL, B_WILL_DRAW);
+		tooltipView->SetViewColor(255, 255, 255, 255);
+
+		BString weatherDetailsText;
+		weatherDetailsText << "Temperature: " << "\n";
+		weatherDetailsText << "Conditions: " << "\n";
+		weatherDetailsText << "City: " << "\n";
+		weatherDetailsText << "Day: " << "\n";
+		weatherDetailsText << "Date: " << "\n";
+		BStringView* weatherDetails = new BStringView(BRect(0, 0, 20, 30), "weatherDetails", weatherDetailsText.String());
+
+		tooltipView->AddChild(weatherDetails);
+		tooltipView->Show();
+	}
+}
+
+void
+WeatherDeskbarView::OnMouseUp(BPoint point)
+{
+	uint32 mouseButtonStates = 0;
+	if (Window()->CurrentMessage() != NULL)
+	{
+		mouseButtonStates = Window()->CurrentMessage()->FindInt32("buttons");
+	}
+
+	if (mouseButtonStates & B_PRIMARY_MOUSE_BUTTON) //Left click
+	{
+		App* weatherApp = new App();
+		weatherApp->Run();
+		delete weatherApp;
+		return;
+	}
 }
