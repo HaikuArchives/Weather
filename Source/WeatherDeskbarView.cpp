@@ -14,19 +14,22 @@ WeatherDeskbarView::WeatherDeskbarView(BRect viewSize, BBitmap* weatherIcon)
 	fWeatherIcon = weatherIcon;
 }
 
-void WeatherDeskbarView::SetWeatherIcon(BBitmap* newIcon)
+void
+WeatherDeskbarView::SetWeatherIcon(BBitmap* newIcon)
 {
 	fWeatherIcon = newIcon;
 }
 
-status_t WeatherDeskbarView::Archive(BMessage* into, bool deep=true) const
+status_t
+WeatherDeskbarView::Archive(BMessage* into, bool deep=true) const
 {
 	BView::Archive(into, deep);
 
 	return B_OK;
 }
 
-BArchivable* WeatherDeskbarView::Instantiate(BMessage* archive)
+BArchivable*
+WeatherDeskbarView::Instantiate(BMessage* archive)
 {
 	if (!validate_instantiation(archive, "DeskbarView"))
 	{
@@ -36,7 +39,8 @@ BArchivable* WeatherDeskbarView::Instantiate(BMessage* archive)
 	return new WeatherDeskbarView(BRect(0, 0, 15, 15), NULL);
 }
 
-void WeatherDeskbarView::Draw(BRect drawRect)
+void
+WeatherDeskbarView::Draw(BRect drawRect)
 {
 	BView::Draw(drawRect);
 
@@ -46,7 +50,8 @@ void WeatherDeskbarView::Draw(BRect drawRect)
 	SetDrawingMode(B_OP_COPY);
 }
 
-void WeatherDeskbarView::OnMouseUp()
+void
+WeatherDeskbarView::OnMouseUp()
 {
 	App* weatherApp = new App();
 	weatherApp->Run();
