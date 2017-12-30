@@ -13,6 +13,7 @@ class ForecastDeskbarView : public BView
 {
 public:
 	ForecastDeskbarView(BRect viewSize, BBitmap* weatherIcon);
+	ForecastDeskbarView(BMessage* archive);
 	virtual void Pulse();
 	virtual void OnMouseUp(BPoint point);
 	virtual void OnMouseMove(BPoint point);

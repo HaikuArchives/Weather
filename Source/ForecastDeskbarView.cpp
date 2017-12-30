@@ -21,6 +21,13 @@ ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, BBitmap* weatherIcon)
 	fWeatherIcon = weatherIcon;
 }
 
+ForecastDeskbarView::ForecastDeskbarView(BMessage* archive)
+	:	BView(BRect(0, 0, 15, 15), "WeatherDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
+{
+	//HACK: This is just used to fix the deskbar replicant
+	fWeatherIcon = NULL;
+}
+
 void
 ForecastDeskbarView::SetWeatherIcon(BBitmap* newIcon)
 {

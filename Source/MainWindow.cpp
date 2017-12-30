@@ -172,8 +172,8 @@ MainWindow::MessageReceived(BMessage *msg)
 			status_t result = fDeskbar->AddItem(fWeatherDeskbarReplicant, &fDeskbarReplicantID);
 			if (result != B_OK)
 			{
-				BString errorMessage = "Unable to create a deskbar replicant. The error code is: ";
-				errorMessage << int(result);
+				BString errorMessage = "Unable to create a deskbar replicant. The error is: \"";
+				errorMessage << strerror(result) << "\".";
 
 				BAlert* alert = new BAlert("Error", errorMessage.String(), "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
 				alert->Go();
