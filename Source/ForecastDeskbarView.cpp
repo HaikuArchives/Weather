@@ -10,22 +10,23 @@
 #include <Looper.h>
 
 #include "ForecastDeskbarView.h"
+#include "ForecastView.h"
 #include "App.h"
 
 const uint32 kShowToolTipMessage = 'sTTp';
 const float kToolTipDelay = 1000000; /*1000000ms = 1s*/
 
-ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, BBitmap* weatherIcon)
+ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, ForecastView* forecastView)
 	:	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
-	fWeatherIcon = weatherIcon;
+	fForecastView = forecastView;
 }
 
 ForecastDeskbarView::ForecastDeskbarView(BMessage* archive)
 	:	BView(BRect(0, 0, 15, 15), "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	//HACK: This is just used to fix the deskbar replicant
-	fWeatherIcon = NULL;
+	fForecastView = NULL;
 }
 
 ForecastDeskbarView::~ForecastDeskbarView()
@@ -37,12 +38,6 @@ void
 ForecastDeskbarView::AttachedToWindow()
 {
 	fMessageRunner = new BMessageRunner(BMessenger(reinterpret_cast<BLooper*>(this)), new BMessage(kShowToolTipMessage), kToolTipDelay, 0);
-}
-
-void
-ForecastDeskbarView::SetWeatherIcon(BBitmap* newIcon)
-{
-	fWeatherIcon = newIcon;
 }
 
 status_t
@@ -61,7 +56,7 @@ ForecastDeskbarView::Instantiate(BMessage* archive)
 		return NULL;
 	}
 
-	return reinterpret_cast<BArchivable*>(new ForecastDeskbarView(BRect(0, 0, 15, 15), NULL));
+	return reinterpret_cast<BArchivable*>(new ForecastDeskbarView(BRect(0, 0, 15, 15), new ForecastView(archive)));
 }
 
 void
@@ -71,7 +66,7 @@ ForecastDeskbarView::Draw(BRect drawRect)
 
 	SetDrawingMode(B_OP_ALPHA);
 	SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
-	DrawBitmap(fWeatherIcon, BRect(0, 0, 15, 15));
+	DrawBitmap(fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(0)), BRect(0, 0, 15, 15));
 	SetDrawingMode(B_OP_COPY);
 }
 
