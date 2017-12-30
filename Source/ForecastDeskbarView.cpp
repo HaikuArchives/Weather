@@ -8,27 +8,27 @@
 #include <StringView.h>
 #include <String.h>
 
-#include "WeatherDeskbarView.h"
+#include "ForecastDeskbarView.h"
 #include "App.h"
 
 const int pulseRate = 4;
 const float pulsesPerSecond = 1000000000 / pulseRate;
 float tooltipTimer = 0;
 
-WeatherDeskbarView::WeatherDeskbarView(BRect viewSize, BBitmap* weatherIcon)
+ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, BBitmap* weatherIcon)
 	:	BView(viewSize, "WeatherDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
 {
 	fWeatherIcon = weatherIcon;
 }
 
 void
-WeatherDeskbarView::SetWeatherIcon(BBitmap* newIcon)
+ForecastDeskbarView::SetWeatherIcon(BBitmap* newIcon)
 {
 	fWeatherIcon = newIcon;
 }
 
 status_t
-WeatherDeskbarView::Archive(BMessage* into, bool deep=true) const
+ForecastDeskbarView::Archive(BMessage* into, bool deep=true) const
 {
 	BView::Archive(into, deep);
 
@@ -36,18 +36,18 @@ WeatherDeskbarView::Archive(BMessage* into, bool deep=true) const
 }
 
 BArchivable*
-WeatherDeskbarView::Instantiate(BMessage* archive)
+ForecastDeskbarView::Instantiate(BMessage* archive)
 {
-	if (!validate_instantiation(archive, "DeskbarView"))
+	if (!validate_instantiation(archive, "WeatherDeskbarView"))
 	{
 		return NULL;
 	}
 
-	return new WeatherDeskbarView(BRect(0, 0, 15, 15), NULL);
+	return new ForecastDeskbarView(BRect(0, 0, 15, 15), NULL);
 }
 
 void
-WeatherDeskbarView::Draw(BRect drawRect)
+ForecastDeskbarView::Draw(BRect drawRect)
 {
 	BView::Draw(drawRect);
 
@@ -58,7 +58,7 @@ WeatherDeskbarView::Draw(BRect drawRect)
 }
 
 void
-WeatherDeskbarView::Pulse()
+ForecastDeskbarView::Pulse()
 {
 	if (tooltipTimer > 0)
 	{
@@ -67,7 +67,7 @@ WeatherDeskbarView::Pulse()
 }
 
 void
-WeatherDeskbarView::OnMouseMove(BPoint point)
+ForecastDeskbarView::OnMouseMove(BPoint point)
 {
 	if (tooltipTimer <= 0)
 	{
@@ -90,7 +90,7 @@ WeatherDeskbarView::OnMouseMove(BPoint point)
 }
 
 void
-WeatherDeskbarView::OnMouseUp(BPoint point)
+ForecastDeskbarView::OnMouseUp(BPoint point)
 {
 	uint32 mouseButtonStates = 0;
 	if (Window()->CurrentMessage() != NULL)

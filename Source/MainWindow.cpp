@@ -28,7 +28,7 @@
 #include "NetListener.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
-#include "WeatherDeskbarView.h"
+#include "ForecastDeskbarView.h"
 #include "ForecastView.h"
 
 #undef B_TRANSLATION_CONTEXT
@@ -86,7 +86,7 @@ MainWindow::MainWindow()
 	//fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
 
 	fDeskbar = new BDeskbar();
-	fWeatherDeskbarReplicant = new WeatherDeskbarView(BRect(0, 0, 15, 15), fForecastView->GetWeatherIcon(0, (weatherIconSize)1));
+	fWeatherDeskbarReplicant = new ForecastDeskbarView(BRect(0, 0, 15, 15), fForecastView->GetWeatherIcon(0, (weatherIconSize)1));
 }
 
 

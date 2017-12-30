@@ -2,17 +2,17 @@
  * Copyright 2017 Benjamin Amos
  * All rights reserved. Distributed under the terms of the MIT license.
  */
-#ifndef WEATHERDESKBARVIEW_H
-#define WEATHERDESKBARVIEW_H
+#ifndef FORECASTDESKBARVIEW_H
+#define FORECASTDESKBARVIEW_H
 
 #include <SupportDefs.h>
 #include <View.h>
 #include <Bitmap.h>
 
-class WeatherDeskbarView : public BView
+class ForecastDeskbarView : public BView
 {
 public:
-	WeatherDeskbarView(BRect viewSize, BBitmap* weatherIcon);
+	ForecastDeskbarView(BRect viewSize, BBitmap* weatherIcon);
 	virtual void Pulse();
 	virtual void OnMouseUp(BPoint point);
 	virtual void OnMouseMove(BPoint point);
@@ -25,4 +25,4 @@ private:
 };
 
 
-#endif // WEATHERDESKBARVIEW_H
+#endif // FORECASTDESKBARVIEW_H

@@ -24,7 +24,7 @@
 #include "ForecastDayView.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
-#include "WeatherDeskbarView.h"
+#include "ForecastDeskbarView.h"
 
 const BRect kDefaultMainWindowRect = BRect(150,150,0,0);
 const uint32 kCitySelectionMessage = 'SelC';
@@ -54,7 +54,7 @@ private:
 	bool fShowDeskbarReplicant;
 	BDeskbar* fDeskbar;
 	int32 fDeskbarReplicantID;
-	WeatherDeskbarView* fWeatherDeskbarReplicant;
+	ForecastDeskbarView* fWeatherDeskbarReplicant;
 };
 
 #endif // _MAINWINDOW_H_
