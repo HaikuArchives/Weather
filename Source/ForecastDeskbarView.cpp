@@ -4,28 +4,39 @@
  */
 
 #include <Bitmap.h>
-#include <PopUpMenu.h>
 #include <StringView.h>
 #include <String.h>
+#include <MessageRunner.h>
+#include <Looper.h>
 
 #include "ForecastDeskbarView.h"
 #include "App.h"
 
-const int pulseRate = 4;
-const float pulsesPerSecond = 1000000000 / pulseRate;
-float tooltipTimer = 0;
+const uint32 kShowToolTipMessage = 'sTTp';
+const float kToolTipDelay = 1000000; /*1000000ms = 1s*/
 
 ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, BBitmap* weatherIcon)
-	:	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
+	:	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	fWeatherIcon = weatherIcon;
 }
 
 ForecastDeskbarView::ForecastDeskbarView(BMessage* archive)
-	:	BView(BRect(0, 0, 15, 15), "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
+	:	BView(BRect(0, 0, 15, 15), "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	//HACK: This is just used to fix the deskbar replicant
 	fWeatherIcon = NULL;
+}
+
+ForecastDeskbarView::~ForecastDeskbarView()
+{
+	delete fMessageRunner;
+}
+
+void
+ForecastDeskbarView::AttachedToWindow()
+{
+	fMessageRunner = new BMessageRunner(BMessenger(reinterpret_cast<BLooper*>(this)), new BMessage(kShowToolTipMessage), kToolTipDelay, 0);
 }
 
 void
@@ -50,7 +61,7 @@ ForecastDeskbarView::Instantiate(BMessage* archive)
 		return NULL;
 	}
 
-	return new ForecastDeskbarView(BRect(0, 0, 15, 15), NULL);
+	return reinterpret_cast<BArchivable*>(new ForecastDeskbarView(BRect(0, 0, 15, 15), NULL));
 }
 
 void
@@ -65,21 +76,10 @@ ForecastDeskbarView::Draw(BRect drawRect)
 }
 
 void
-ForecastDeskbarView::Pulse()
+ForecastDeskbarView::MessageReceived(BMessage* message)
 {
-	if (tooltipTimer > 0)
+	if (message->what == kShowToolTipMessage)
 	{
-		tooltipTimer -= pulseRate;
-	}
-}
-
-void
-ForecastDeskbarView::OnMouseMove(BPoint point)
-{
-	if (tooltipTimer <= 0)
-	{
-		tooltipTimer = pulseRate * pulsesPerSecond * 0.5f;
-
 		BView* tooltipView = new BView(BRect(0, 0, 20, 30), "tooltipView", B_FOLLOW_ALL, B_WILL_DRAW);
 		tooltipView->SetViewColor(255, 255, 255, 255);
 
@@ -93,6 +93,19 @@ ForecastDeskbarView::OnMouseMove(BPoint point)
 
 		tooltipView->AddChild(weatherDetails);
 		tooltipView->Show();
+
+		fMessageRunner->SetCount(0);
+		fSendToolTip = false;
+	}
+}
+
+void
+ForecastDeskbarView::OnMouseMove(BPoint point)
+{
+	if (!fSendToolTip)
+	{
+		fMessageRunner->SetCount(1);
+		fSendToolTip = true;
 	}
 }
 
