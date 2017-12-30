@@ -16,13 +16,13 @@ const float pulsesPerSecond = 1000000000 / pulseRate;
 float tooltipTimer = 0;
 
 ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, BBitmap* weatherIcon)
-	:	BView(viewSize, "WeatherDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
+	:	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
 {
 	fWeatherIcon = weatherIcon;
 }
 
 ForecastDeskbarView::ForecastDeskbarView(BMessage* archive)
-	:	BView(BRect(0, 0, 15, 15), "WeatherDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
+	:	BView(BRect(0, 0, 15, 15), "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_PULSE_NEEDED)
 {
 	//HACK: This is just used to fix the deskbar replicant
 	fWeatherIcon = NULL;
@@ -45,7 +45,7 @@ ForecastDeskbarView::Archive(BMessage* into, bool deep=true) const
 BArchivable*
 ForecastDeskbarView::Instantiate(BMessage* archive)
 {
-	if (!validate_instantiation(archive, "WeatherDeskbarView"))
+	if (!validate_instantiation(archive, "ForecastDeskbarView"))
 	{
 		return NULL;
 	}
