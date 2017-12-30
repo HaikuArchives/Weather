@@ -671,6 +671,12 @@ ForecastView::_GetWeatherMessage(int32 condition)
 }
 
 BBitmap*
+ForecastView::GetWeatherIcon(weatherIconSize iconSize)
+{
+	return GetWeatherIcon(fCondition, iconSize);
+}
+
+BBitmap*
 ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
 	return _GetWeatherIcon(condition, iconSize);

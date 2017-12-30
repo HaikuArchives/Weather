@@ -11,10 +11,12 @@
 #include <MessageRunner.h>
 #include <Looper.h>
 
+#include "ForecastView.h"
+
 class ForecastDeskbarView : public BView, private BLooper
 {
 public:
-	ForecastDeskbarView(BRect viewSize, BBitmap* weatherIcon);
+	ForecastDeskbarView(BRect viewSize, ForecastView* forecastView);
 	ForecastDeskbarView(BMessage* archive);
 	~ForecastDeskbarView();
 	virtual void AttachedToWindow();
@@ -22,11 +24,10 @@ public:
 	virtual void OnMouseMove(BPoint point);
 	virtual void Draw(BRect drawRect);
 	virtual void MessageReceived(BMessage* message);
-	void SetWeatherIcon(BBitmap* newIcon);
 	virtual status_t	Archive(BMessage* into, bool deep = true) const;
 	static BArchivable*	Instantiate(BMessage* archive);
 private:
-	BBitmap* fWeatherIcon;
+	ForecastView* fForecastView;
 	BMessageRunner* fMessageRunner;
 	bool fSendToolTip;
 };

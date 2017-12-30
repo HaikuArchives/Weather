@@ -86,7 +86,7 @@ MainWindow::MainWindow()
 	//fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
 
 	fDeskbar = new BDeskbar();
-	fWeatherDeskbarReplicant = new ForecastDeskbarView(BRect(0, 0, 15, 15), fForecastView->GetWeatherIcon(0, (weatherIconSize)1));
+	fWeatherDeskbarReplicant = new ForecastDeskbarView(BRect(0, 0, 15, 15), fForecastView);
 }
 
 
@@ -168,7 +168,6 @@ MainWindow::MessageReceived(BMessage *msg)
 		fShowDeskbarReplicant = !fShowDeskbarReplicant;
 		if (fShowDeskbarReplicant)
 		{
-			fWeatherDeskbarReplicant->SetWeatherIcon(fForecastView->GetWeatherIcon(0, (weatherIconSize)1));
 			status_t result = fDeskbar->AddItem(fWeatherDeskbarReplicant, &fDeskbarReplicantID);
 			if (result != B_OK)
 			{
