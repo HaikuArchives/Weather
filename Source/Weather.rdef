@@ -2,11 +2,11 @@
 resource app_signature "application/x-vnd.przemub.Weather";
 
 resource app_version {
-	major  = 0,
-	middle = 1,
-	minor  = 1,
+	major  = 1,
+	middle = 0,
+	minor  = 0,
 
-	variety = B_APPV_BETA,
+	variety = B_APPV_FINAL,
 	internal = 0,
 
 	short_info = "A simple weather application",
