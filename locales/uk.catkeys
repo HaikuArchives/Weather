@@ -1,57 +1,57 @@
 1	Ukrainian	x-vnd.przemub.Weather	3662372937
 About Weather	ForecastView		Про Погоду
-Background	ForecastView		Background
-Blowing snow	ForecastView		Blowing snow
-Blustery	ForecastView		Blustery
-Clear	ForecastView		Clear
-Cloudy	ForecastView		Cloudy
-Cold	ForecastView		Cold
-Connecting…	ForecastView		Connecting…
+Background	ForecastView		Тло
+Blowing snow	ForecastView		Заметіль
+Blustery	ForecastView		Сильний вітер
+Clear	ForecastView		Ясно
+Cloudy	ForecastView		Хмарно
+Cold	ForecastView		Холодно
+Connecting…	ForecastView		Підключення…
 Connection error	ForecastView		Помилка підключення
-Default	ForecastView		Default
-Drizzle	ForecastView		Drizzle
-Dust	ForecastView		Dust
-Fair	ForecastView		Fair
-Fog	ForecastView		Fog
-Freezing drizzle	ForecastView		Freezing drizzle
-Freezing rain	ForecastView		Freezing rain
-Hail	ForecastView		Hail
-Haze	ForecastView		Haze
-Heavy snow	ForecastView		Heavy snow
-Hot	ForecastView		Hot
-Hurricane	ForecastView		Hurricane
-Isolated thundershowers	ForecastView		Isolated thundershowers
-Isolated thunderstorms	ForecastView		Isolated thunderstorms
-Light snow showers	ForecastView		Light snow showers
+Default	ForecastView		Умовчання
+Drizzle	ForecastView		Дрібний дощ
+Dust	ForecastView		Пилова буря
+Fair	ForecastView		Ясно
+Fog	ForecastView		Туман
+Freezing drizzle	ForecastView		Мряка з памороззю
+Freezing rain	ForecastView		Дощ з памороззю
+Hail	ForecastView		Град
+Haze	ForecastView		Серпанок
+Heavy snow	ForecastView		Сильний снігопад
+Hot	ForecastView		Спека
+Hurricane	ForecastView		Ураган
+Isolated thundershowers	ForecastView		Місцями грози і зливи
+Isolated thunderstorms	ForecastView		Місцями грози
+Light snow showers	ForecastView		Слабкий дощ зі снігом
 Loading…	ForecastView		Завантаження…
-Mixed rain and hail	ForecastView		Mixed rain and hail
-Mixed rain and sleet	ForecastView		Mixed rain and sleet
-Mixed rain and snow	ForecastView		Mixed rain and snow
-Mixed snow and sleet	ForecastView		Mixed snow and sleet
-Mostly cloudy	ForecastView		Mostly cloudy
-No network	ForecastView		No network
-Not available	ForecastView		Not available
+Mixed rain and hail	ForecastView		Дощ з градом
+Mixed rain and sleet	ForecastView		Дощ з мокрим снігом
+Mixed rain and snow	ForecastView		Дощ зі снігом
+Mixed snow and sleet	ForecastView		Сніг та мокрий сніг
+Mostly cloudy	ForecastView		Переважно хмарно
+No network	ForecastView		Немає мережі
+Not available	ForecastView		Недоступно
 OK	ForecastView		OK
-Partly cloudy	ForecastView		Partly cloudy
-Scattered showers	ForecastView		Scattered showers
-Scattered snow showers	ForecastView		Scattered snow showers
-Scattered thunderstorms	ForecastView		Scattered thunderstorms
-Severe thunderstorms	ForecastView		Severe thunderstorms
-Showers	ForecastView		Showers
-Sleet	ForecastView		Sleet
-Smoky	ForecastView		Smoky
-Snow	ForecastView		Snow
-Snow flurries	ForecastView		Snow flurries
-Snow showers	ForecastView		Snow showers
-Sunny	ForecastView		Sunny
-Text	ForecastView		Text
-Thundershowers	ForecastView		Thundershowers
-Thunderstorms	ForecastView		Thunderstorms
-Tornado	ForecastView		Tornado
-Transparent	ForecastView		Transparent
-Tropical storm	ForecastView		Tropical storm
+Partly cloudy	ForecastView		Хмарно з проясненнями
+Scattered showers	ForecastView		Місцями зливи
+Scattered snow showers	ForecastView		Місцями дощ зі снігом
+Scattered thunderstorms	ForecastView		Місцями грози
+Severe thunderstorms	ForecastView		Сильні грози
+Showers	ForecastView		Зливи
+Sleet	ForecastView		Мокрий сніг
+Smoky	ForecastView		Димно
+Snow	ForecastView		Снігопад
+Snow flurries	ForecastView		Снігові бурі
+Snow showers	ForecastView		Дощі зі снігом
+Sunny	ForecastView		Сонячно
+Text	ForecastView		Текст
+Thundershowers	ForecastView		Зливи з грозами
+Thunderstorms	ForecastView		Грози
+Tornado	ForecastView		Торнадо
+Transparent	ForecastView		Прозорість
+Tropical storm	ForecastView		Тропічний шторм
 Weather (The Replicant version)	ForecastView		Погода (реплікант)
-Windy	ForecastView		Windy
+Windy	ForecastView		Вітряно
 Change location…	MainWindow		Змінити розташування…
 Edit	MainWindow		Редагувати
 Loading…	MainWindow		Завантаження…
