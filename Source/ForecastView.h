@@ -78,6 +78,9 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	bool			IsConnected() const;
 	BBitmap*		GetWeatherIcon(weatherIconSize size);
 	BBitmap* 		GetWeatherIcon(int32 condition, weatherIconSize size);
+	int32			GetCondition();
+	BString			GetStatus();
+	int32			Temperature();
 private:
 	void			_Init();
 	void			_DownloadData();

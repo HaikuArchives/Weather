@@ -145,7 +145,7 @@ ForecastDayView::Draw(BRect urect)
 	BRect boxBRect = Bounds();
 	boxBRect.bottom = boxBRect.top + finfo.ascent + finfo.descent + finfo.leading + 10;
 	FillRect(boxBRect);
-	if (ViewColor() == B_TRANSPARENT_COLOR) 
+	if (ViewColor() == B_TRANSPARENT_COLOR)
 		SetDrawingMode(B_OP_ALPHA);
 	else
 		SetDrawingMode(B_OP_COPY);

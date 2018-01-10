@@ -8,16 +8,18 @@
 #include <String.h>
 #include <MessageRunner.h>
 #include <Looper.h>
+#include <Roster.h>
 
 #include "ForecastDeskbarView.h"
 #include "ForecastView.h"
 #include "App.h"
+#include "Util.h"
 
-const uint32 kShowToolTipMessage = 'sTTp';
+const uint32 kUpdateForecastMessage = 'Updt';
 const float kToolTipDelay = 1000000; /*1000000ms = 1s*/
 
 ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, ForecastView* forecastView)
-	:	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
+	:	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE | B_PULSE_NEEDED)
 {
 	fForecastView = forecastView;
 }
@@ -25,7 +27,6 @@ ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, ForecastView* forecastV
 ForecastDeskbarView::ForecastDeskbarView(BMessage* archive)
 	:	BView(BRect(0, 0, 15, 15), "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
-	//HACK: This is just used to fix the deskbar replicant
 	fForecastView = NULL;
 }
 
@@ -37,15 +38,30 @@ ForecastDeskbarView::~ForecastDeskbarView()
 void
 ForecastDeskbarView::AttachedToWindow()
 {
-	fMessageRunner = new BMessageRunner(BMessenger(reinterpret_cast<BLooper*>(this)), new BMessage(kShowToolTipMessage), kToolTipDelay, 0);
+	fMessageRunner = new BMessageRunner(BMessenger(this), new BMessage(kUpdateForecastMessage), kToolTipDelay, -1);
+	fForecastView->AttachedToWindow();
+	fForecastView->Reload(true);
+
+	AddChild(fForecastView);
 }
 
 status_t
 ForecastDeskbarView::Archive(BMessage* into, bool deep=true) const
 {
 	BView::Archive(into, deep);
-
 	return B_OK;
+}
+
+extern "C" _EXPORT BView*
+instantiate_deskbar_item(void)
+{
+	BMessage settings;
+	LoadSettings(settings);
+	ForecastDeskbarView* view = new ForecastDeskbarView(BRect(0, 0, 15, 15), new ForecastView(BRect(0, 0, 0, 0), &settings));
+	entry_ref appRef;
+	settings.FindRef("appLocation", &appRef);
+	view->SetAppLocation(appRef);
+	return view;
 }
 
 BArchivable*
@@ -56,7 +72,7 @@ ForecastDeskbarView::Instantiate(BMessage* archive)
 		return NULL;
 	}
 
-	return reinterpret_cast<BArchivable*>(new ForecastDeskbarView(BRect(0, 0, 15, 15), new ForecastView(archive)));
+	return instantiate_deskbar_item();
 }
 
 void
@@ -64,48 +80,35 @@ ForecastDeskbarView::Draw(BRect drawRect)
 {
 	BView::Draw(drawRect);
 
-	SetDrawingMode(B_OP_ALPHA);
+	SetDrawingMode(B_OP_OVER);
 	SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
-	DrawBitmap(fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(0)), BRect(0, 0, 15, 15));
+	BBitmap* bitmap = fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(0));
+	DrawBitmap(bitmap, BRect(0, 0, 15, 15));
 	SetDrawingMode(B_OP_COPY);
 }
 
 void
 ForecastDeskbarView::MessageReceived(BMessage* message)
 {
-	if (message->what == kShowToolTipMessage)
+	if (message->what == kUpdateForecastMessage)
 	{
-		BView* tooltipView = new BView(BRect(0, 0, 20, 30), "tooltipView", B_FOLLOW_ALL, B_WILL_DRAW);
-		tooltipView->SetViewColor(255, 255, 255, 255);
-
-		BString weatherDetailsText;
-		weatherDetailsText << "Temperature: " << "\n";
-		weatherDetailsText << "Conditions: " << "\n";
-		weatherDetailsText << "City: " << "\n";
-		weatherDetailsText << "Day: " << "\n";
-		weatherDetailsText << "Date: " << "\n";
-		BStringView* weatherDetails = new BStringView(BRect(0, 0, 20, 30), "weatherDetails", weatherDetailsText.String());
-
-		tooltipView->AddChild(weatherDetails);
-		tooltipView->Show();
-
-		fMessageRunner->SetCount(0);
-		fSendToolTip = false;
+		Draw(BRect(0, 0, 15, 15));
 	}
 }
 
 void
-ForecastDeskbarView::OnMouseMove(BPoint point)
+ForecastDeskbarView::MouseMoved(BPoint point, uint32 message, const BMessage* dragMessage)
 {
-	if (!fSendToolTip)
-	{
-		fMessageRunner->SetCount(1);
-		fSendToolTip = true;
-	}
+	BString weatherDetailsText;
+	weatherDetailsText << "Temperature: " << FormatString(fForecastView->Unit(), fForecastView->Temperature()) << "\n";
+	weatherDetailsText << "Condition: " << fForecastView->GetStatus() << "\n";
+	weatherDetailsText << "Location: " << fForecastView->CityName();
+	SetToolTip(weatherDetailsText.String());
+	ShowToolTip(ToolTip());
 }
 
 void
-ForecastDeskbarView::OnMouseUp(BPoint point)
+ForecastDeskbarView::MouseDown(BPoint point)
 {
 	uint32 mouseButtonStates = 0;
 	if (Window()->CurrentMessage() != NULL)
@@ -115,9 +118,11 @@ ForecastDeskbarView::OnMouseUp(BPoint point)
 
 	if (mouseButtonStates & B_PRIMARY_MOUSE_BUTTON) //Left click
 	{
-		App* weatherApp = new App();
-		weatherApp->Run();
-		delete weatherApp;
-		return;
+		be_roster->Launch(&fAppRef);
 	}
+}
+
+void ForecastDeskbarView::SetAppLocation(entry_ref location)
+{
+	fAppRef = location;
 }
