@@ -23,6 +23,7 @@
 
 #include <Deskbar.h>
 #include <Alert.h>
+#include <Roster.h>
 
 #include "MainWindow.h"
 #include "NetListener.h"
@@ -30,6 +31,7 @@
 #include "SelectionWindow.h"
 #include "ForecastDeskbarView.h"
 #include "ForecastView.h"
+#include "Util.h"
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "MainWindow"
@@ -78,15 +80,27 @@ MainWindow::MainWindow()
 	AddChild(_PrepareMenuBar());
 
 	BMessage settings;
-	_LoadSettings(settings);
+	LoadSettings(settings);
+
+	if (settings.FindRect("fMainWindowRect", &fMainWindowRect) != B_OK)
+	{
+		fMainWindowRect = kDefaultMainWindowRect;
+	}
+
+	MoveTo(fMainWindowRect.LeftTop());
+
 
 	fForecastView = new ForecastView(BRect(0,0,100,100), &settings);
 	AddChild(fForecastView);
 	// Enable when works
 	//fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
 
-	fDeskbar = new BDeskbar();
-	fWeatherDeskbarReplicant = new ForecastDeskbarView(BRect(0, 0, 15, 15), fForecastView);
+	BDeskbar deskbar;
+
+	if (deskbar.HasItem("ForecastDeskbarView"))
+	{
+		fShowDeskbarReplicant = true;
+	}
 }
 
 
@@ -165,10 +179,14 @@ MainWindow::MessageReceived(BMessage *msg)
 		break;
 	case kToggleDeskbarReplicantMessage:
 	{
+		BDeskbar deskbar;
 		fShowDeskbarReplicant = !fShowDeskbarReplicant;
 		if (fShowDeskbarReplicant)
 		{
-			status_t result = fDeskbar->AddItem(fWeatherDeskbarReplicant, &fDeskbarReplicantID);
+			app_info info;
+			be_roster->GetAppInfo("application/x-vnd.przemub.Weather", &info);
+
+			status_t result = deskbar.AddItem(&info.ref);
 			if (result != B_OK)
 			{
 				BString errorMessage = "Unable to create a deskbar replicant. The error is: \"";
@@ -183,9 +201,9 @@ MainWindow::MessageReceived(BMessage *msg)
 		}
 		else
 		{
-			if (fDeskbar->HasItem(fDeskbarReplicantID))
+			if (deskbar.HasItem("ForecastDeskbarView"))
 			{
-				fDeskbar->RemoveItem(fDeskbarReplicantID);
+				deskbar.RemoveItem("ForecastDeskbarView");
 			}
 		}
 		break;
@@ -194,36 +212,6 @@ MainWindow::MessageReceived(BMessage *msg)
 		BWindow::MessageReceived(msg);
 	}
 }
-
-
-status_t
-MainWindow::_LoadSettings(BMessage& m)
-{
-	BPath p;
-	BFile f;
-
-	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
-		return B_ERROR;
-	p.Append(kSettingsFileName);
-
-	f.SetTo(p.Path(), B_READ_ONLY);
-	if (f.InitCheck() != B_OK)
-		return B_ERROR;
-
-	if (m.Unflatten(&f) != B_OK)
-		return B_ERROR;
-
-	if (m.what != kSettingsMessage)
-		return B_ERROR;
-
-	if (m.FindRect("fMainWindowRect", &fMainWindowRect) != B_OK)
-		fMainWindowRect = kDefaultMainWindowRect;
-
-	MoveTo(fMainWindowRect.LeftTop());
-
-	return B_OK;
-}
-
 
 status_t
 MainWindow::_SaveSettings()
@@ -235,6 +223,10 @@ MainWindow::_SaveSettings()
 	fForecastView->SaveState(&m);
 
 	m.AddRect("fMainWindowRect", Frame());
+
+	app_info info;
+	be_roster->GetAppInfo("application/x-vnd.przemub.Weather", &info);
+	m.AddRef("appLocation", &info.ref);
 
 	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) != B_OK)
 		return B_ERROR;

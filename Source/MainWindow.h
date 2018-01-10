@@ -38,7 +38,6 @@ public:
 	virtual bool	QuitRequested();
 
 private:
-	status_t		_LoadSettings(BMessage& settings);
 	status_t		_SaveSettings();
 	BMenuBar*		_PrepareMenuBar(void);
 	ForecastView*	fForecastView;
@@ -52,9 +51,6 @@ private:
 	BMenuItem*		fShowForecastMenuItem;
 
 	bool fShowDeskbarReplicant;
-	BDeskbar* fDeskbar;
-	int32 fDeskbarReplicantID;
-	ForecastDeskbarView* fWeatherDeskbarReplicant;
 };
 
 #endif // _MAINWINDOW_H_

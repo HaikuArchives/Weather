@@ -452,7 +452,7 @@ ForecastView::MessageReceived(BMessage *msg)
 		break;
 	}
 	case kUpdateMessage:
-		if (fConnected) {
+		if (!fConnected) {
 			SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 		}
 	case kAutoUpdateMessage:
@@ -682,6 +682,11 @@ ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 	return _GetWeatherIcon(condition, iconSize);
 }
 
+int32 ForecastView::Temperature()
+{
+	return fTemperature;
+}
+
 BBitmap*
 ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
@@ -861,6 +866,17 @@ ForecastView::IsFahrenheitDefault()
 	return false;
 }
 
+int32
+ForecastView::GetCondition()
+{
+	return fCondition;
+}
+
+BString
+ForecastView::GetStatus()
+{
+	return fConditionView->Text();
+}
 
 void
 ForecastView::SetCondition(BString condition)

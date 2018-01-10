@@ -10,26 +10,30 @@
 #include <Bitmap.h>
 #include <MessageRunner.h>
 #include <Looper.h>
+#include <Entry.h>
 
 #include "ForecastView.h"
 
-class ForecastDeskbarView : public BView, private BLooper
+extern "C" _EXPORT BView* instantiate_deskbar_item(void);
+
+class ForecastDeskbarView : public BView
 {
 public:
 	ForecastDeskbarView(BRect viewSize, ForecastView* forecastView);
 	ForecastDeskbarView(BMessage* archive);
 	~ForecastDeskbarView();
 	virtual void AttachedToWindow();
-	virtual void OnMouseUp(BPoint point);
-	virtual void OnMouseMove(BPoint point);
+	virtual void MouseDown(BPoint point);
+	virtual void MouseMoved(BPoint point, uint32 message, const BMessage* dragMessage);
 	virtual void Draw(BRect drawRect);
 	virtual void MessageReceived(BMessage* message);
 	virtual status_t	Archive(BMessage* into, bool deep = true) const;
 	static BArchivable*	Instantiate(BMessage* archive);
+	void SetAppLocation(entry_ref location);
 private:
 	ForecastView* fForecastView;
 	BMessageRunner* fMessageRunner;
-	bool fSendToolTip;
+	entry_ref fAppRef;
 };
 
 
