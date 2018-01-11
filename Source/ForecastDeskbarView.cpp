@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Benjamin Amos
+ * Copyright 2018 Benjamin Amos
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
@@ -19,37 +19,27 @@ const uint32 kUpdateForecastMessage = 'Updt';
 const float kToolTipDelay = 1000000; /*1000000ms = 1s*/
 
 ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, ForecastView* forecastView)
-	:	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW | B_NAVIGABLE | B_PULSE_NEEDED)
+	:	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
 	fForecastView = forecastView;
-}
-
-ForecastDeskbarView::ForecastDeskbarView(BMessage* archive)
-	:	BView(BRect(0, 0, 15, 15), "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
-{
-	fForecastView = NULL;
+	fMessageRunner = NULL;
 }
 
 ForecastDeskbarView::~ForecastDeskbarView()
 {
 	delete fMessageRunner;
+	delete fForecastView;
 }
 
 void
 ForecastDeskbarView::AttachedToWindow()
 {
 	fMessageRunner = new BMessageRunner(BMessenger(this), new BMessage(kUpdateForecastMessage), kToolTipDelay, -1);
-	fForecastView->AttachedToWindow();
-	fForecastView->Reload(true);
 
+	fForecastView->SetShowForecast(false);
 	AddChild(fForecastView);
-}
 
-status_t
-ForecastDeskbarView::Archive(BMessage* into, bool deep=true) const
-{
-	BView::Archive(into, deep);
-	return B_OK;
+	AdoptParentColors();
 }
 
 extern "C" _EXPORT BView*
@@ -92,18 +82,19 @@ ForecastDeskbarView::MessageReceived(BMessage* message)
 {
 	if (message->what == kUpdateForecastMessage)
 	{
-		Draw(BRect(0, 0, 15, 15));
+		BString weatherDetailsText;
+		weatherDetailsText << "Temperature: " << FormatString(fForecastView->Unit(), fForecastView->Temperature()) << "\n";
+		weatherDetailsText << "Condition: " << fForecastView->GetStatus() << "\n";
+		weatherDetailsText << "Location: " << fForecastView->CityName();
+		SetToolTip(weatherDetailsText.String());
+
+		Invalidate();
 	}
 }
 
 void
 ForecastDeskbarView::MouseMoved(BPoint point, uint32 message, const BMessage* dragMessage)
 {
-	BString weatherDetailsText;
-	weatherDetailsText << "Temperature: " << FormatString(fForecastView->Unit(), fForecastView->Temperature()) << "\n";
-	weatherDetailsText << "Condition: " << fForecastView->GetStatus() << "\n";
-	weatherDetailsText << "Location: " << fForecastView->CityName();
-	SetToolTip(weatherDetailsText.String());
 	ShowToolTip(ToolTip());
 }
 

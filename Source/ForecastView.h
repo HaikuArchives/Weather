@@ -89,7 +89,6 @@ private:
 	void			_DeleteBitmaps();
 	void			_DeleteIcons(BBitmap* bitmap[2]);
 	const char *    _GetWeatherMessage(int32 condition);
-	BBitmap* 		_GetWeatherIcon(int32 condition, weatherIconSize size);
 	BString			_GetDayText(const BString& day) const;
 
 	status_t		_ApplyState(BMessage *settings);
