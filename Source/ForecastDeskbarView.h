@@ -24,7 +24,6 @@ public:
 	virtual void MouseMoved(BPoint point, uint32 message, const BMessage* dragMessage);
 	virtual void Draw(BRect drawRect);
 	virtual void MessageReceived(BMessage* message);
-	static BArchivable* Instantiate(BMessage* archive);
 	void SetAppLocation(entry_ref location);
 private:
 	ForecastView* fForecastView;

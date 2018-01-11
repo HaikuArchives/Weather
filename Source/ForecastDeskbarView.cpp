@@ -54,17 +54,6 @@ instantiate_deskbar_item(void)
 	return view;
 }
 
-BArchivable*
-ForecastDeskbarView::Instantiate(BMessage* archive)
-{
-	if (!validate_instantiation(archive, "ForecastDeskbarView"))
-	{
-		return NULL;
-	}
-
-	return instantiate_deskbar_item();
-}
-
 void
 ForecastDeskbarView::Draw(BRect drawRect)
 {
