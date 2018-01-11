@@ -410,7 +410,7 @@ ForecastView::MessageReceived(BMessage *msg)
 		BString tempText = FormatString(fDisplayUnit,fTemperature);
 		fTemperatureView->SetText(tempText.String());
 		SetCondition(_GetWeatherMessage(fCondition));
-		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
+		fConditionButton->SetIcon(GetWeatherIcon(fCondition, LARGE_ICON));
 		break;
 	}
 	case kForecastDataMessage: {
@@ -434,7 +434,7 @@ ForecastView::MessageReceived(BMessage *msg)
 			break;
 
 		fForecastDayView[forecastNum]->SetDayLabel(day);
-		fForecastDayView[forecastNum]->SetIcon(_GetWeatherIcon(condition, SMALL_ICON));
+		fForecastDayView[forecastNum]->SetIcon(GetWeatherIcon(condition, SMALL_ICON));
 		fForecastDayView[forecastNum]->SetHighTemp(high);
 		fForecastDayView[forecastNum]->SetLowTemp(low);
 		fForecastDayView[forecastNum]->SetToolTip(text);
@@ -442,7 +442,7 @@ ForecastView::MessageReceived(BMessage *msg)
 	}
 	case kFailureMessage: {
 		fConnected = _NetworkConnected();
-		if (!fConnected) {
+		if (fConnected) {
 			SetCondition(B_TRANSLATE("No network"));
 			start_watching_network(
 				B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
@@ -676,19 +676,13 @@ ForecastView::GetWeatherIcon(weatherIconSize iconSize)
 	return GetWeatherIcon(fCondition, iconSize);
 }
 
-BBitmap*
-ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
-{
-	return _GetWeatherIcon(condition, iconSize);
-}
-
 int32 ForecastView::Temperature()
 {
 	return fTemperature;
 }
 
 BBitmap*
-ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
+ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
 	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
 		case 0:	 										// tornado
