@@ -79,6 +79,10 @@ ForecastDeskbarView::MessageReceived(BMessage* message)
 
 		Invalidate();
 	}
+	else
+	{
+		BView::MessageReceived(message);
+	}
 }
 
 void
