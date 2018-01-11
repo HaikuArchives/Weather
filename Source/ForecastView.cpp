@@ -442,7 +442,7 @@ ForecastView::MessageReceived(BMessage *msg)
 	}
 	case kFailureMessage: {
 		fConnected = _NetworkConnected();
-		if (fConnected) {
+		if (!fConnected) {
 			SetCondition(B_TRANSLATE("No network"));
 			start_watching_network(
 				B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
@@ -452,7 +452,7 @@ ForecastView::MessageReceived(BMessage *msg)
 		break;
 	}
 	case kUpdateMessage:
-		if (!fConnected) {
+		if (fConnected) {
 			SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 		}
 	case kAutoUpdateMessage:
