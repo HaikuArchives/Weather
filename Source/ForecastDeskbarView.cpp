@@ -66,6 +66,16 @@ ForecastDeskbarView::Draw(BRect drawRect)
 	SetDrawingMode(B_OP_COPY);
 }
 
+BArchivable* ForecastDeskbarView::Instantiate(BMessage* archive)
+{
+	if (!validate_instantiation(archive, "ForecastDeskbarView"))
+	{
+		return NULL;
+	}
+
+	return reinterpret_cast<BArchivable*>(instantiate_deskbar_item());
+}
+
 void
 ForecastDeskbarView::MessageReceived(BMessage* message)
 {

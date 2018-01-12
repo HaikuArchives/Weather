@@ -103,7 +103,6 @@ MainWindow::MainWindow()
 	}
 }
 
-
 void
 MainWindow::MessageReceived(BMessage *msg)
 {
@@ -189,7 +188,7 @@ MainWindow::MessageReceived(BMessage *msg)
 			status_t result = deskbar.AddItem(&info.ref);
 			if (result != B_OK)
 			{
-				BString errorMessage = "Unable to create a deskbar replicant. The error is: \"";
+				BString errorMessage = B_TRANSLATE("Unable to create a deskbar replicant. The error is: \"");
 				errorMessage << strerror(result) << "\".";
 
 				BAlert* alert = new BAlert("Error", errorMessage.String(), "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
