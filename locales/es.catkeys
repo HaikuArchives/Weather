@@ -1,57 +1,57 @@
 1	Spanish	x-vnd.przemub.Weather	3662372937
 About Weather	ForecastView		Acerca de Clima
-Background	ForecastView		Background
-Blowing snow	ForecastView		Blowing snow
-Blustery	ForecastView		Blustery
-Clear	ForecastView		Clear
-Cloudy	ForecastView		Cloudy
-Cold	ForecastView		Cold
-Connecting…	ForecastView		Connecting…
+Background	ForecastView		Fondo
+Blowing snow	ForecastView		Ventisca con nieve
+Blustery	ForecastView		Borrascoso
+Clear	ForecastView		Despejado
+Cloudy	ForecastView		Nublado
+Cold	ForecastView		Frío
+Connecting…	ForecastView		Conectando…
 Connection error	ForecastView		Error de conexión
-Default	ForecastView		Default
-Drizzle	ForecastView		Drizzle
-Dust	ForecastView		Dust
-Fair	ForecastView		Fair
-Fog	ForecastView		Fog
-Freezing drizzle	ForecastView		Freezing drizzle
-Freezing rain	ForecastView		Freezing rain
-Hail	ForecastView		Hail
-Haze	ForecastView		Haze
-Heavy snow	ForecastView		Heavy snow
-Hot	ForecastView		Hot
-Hurricane	ForecastView		Hurricane
-Isolated thundershowers	ForecastView		Isolated thundershowers
-Isolated thunderstorms	ForecastView		Isolated thunderstorms
-Light snow showers	ForecastView		Light snow showers
+Default	ForecastView		Por defecto
+Drizzle	ForecastView		Llovizna
+Dust	ForecastView		Polvareda
+Fair	ForecastView		Bueno
+Fog	ForecastView		Niebla
+Freezing drizzle	ForecastView		Llovizna gélida
+Freezing rain	ForecastView		Lluvia gélida
+Hail	ForecastView		Granizo
+Haze	ForecastView		Calima
+Heavy snow	ForecastView		Nevada fuerte
+Hot	ForecastView		Cálido
+Hurricane	ForecastView		Huracán
+Isolated thundershowers	ForecastView		Tormentas aisladas
+Isolated thunderstorms	ForecastView		Tormentas aisladas
+Light snow showers	ForecastView		Nevadas ligeras
 Loading…	ForecastView		Cargando…
-Mixed rain and hail	ForecastView		Mixed rain and hail
-Mixed rain and sleet	ForecastView		Mixed rain and sleet
-Mixed rain and snow	ForecastView		Mixed rain and snow
-Mixed snow and sleet	ForecastView		Mixed snow and sleet
-Mostly cloudy	ForecastView		Mostly cloudy
-No network	ForecastView		No network
-Not available	ForecastView		Not available
+Mixed rain and hail	ForecastView		Lluvia y granizo
+Mixed rain and sleet	ForecastView		Lluvia y aguanieve
+Mixed rain and snow	ForecastView		Lluvia y nieve
+Mixed snow and sleet	ForecastView		Nieve y aguanieve
+Mostly cloudy	ForecastView		Mayormente nublado
+No network	ForecastView		Sin conexión
+Not available	ForecastView		No disponible
 OK	ForecastView		OK
-Partly cloudy	ForecastView		Partly cloudy
-Scattered showers	ForecastView		Scattered showers
-Scattered snow showers	ForecastView		Scattered snow showers
-Scattered thunderstorms	ForecastView		Scattered thunderstorms
-Severe thunderstorms	ForecastView		Severe thunderstorms
-Showers	ForecastView		Showers
-Sleet	ForecastView		Sleet
-Smoky	ForecastView		Smoky
-Snow	ForecastView		Snow
-Snow flurries	ForecastView		Snow flurries
-Snow showers	ForecastView		Snow showers
-Sunny	ForecastView		Sunny
-Text	ForecastView		Text
-Thundershowers	ForecastView		Thundershowers
-Thunderstorms	ForecastView		Thunderstorms
+Partly cloudy	ForecastView		Parcialmente nublado
+Scattered showers	ForecastView		Lluvias dispersas
+Scattered snow showers	ForecastView		Nevadas dispersas
+Scattered thunderstorms	ForecastView		Tormentas dispersas
+Severe thunderstorms	ForecastView		Tormentas fuertes
+Showers	ForecastView		Lluvias
+Sleet	ForecastView		Aguanieve
+Smoky	ForecastView		Brumoso
+Snow	ForecastView		Nieve
+Snow flurries	ForecastView		Copos de nieve
+Snow showers	ForecastView		Nevadas
+Sunny	ForecastView		Soleado
+Text	ForecastView		Texto
+Thundershowers	ForecastView		Tormentas eléctricas
+Thunderstorms	ForecastView		Tormentas eléctricas
 Tornado	ForecastView		Tornado
-Transparent	ForecastView		Transparent
-Tropical storm	ForecastView		Tropical storm
+Transparent	ForecastView		Transparente
+Tropical storm	ForecastView		Tormenta tropical
 Weather (The Replicant version)	ForecastView		Clima (versión replicante)
-Windy	ForecastView		Windy
+Windy	ForecastView		Ventoso
 Change location…	MainWindow		Cambiar ubicación…
 Edit	MainWindow		Editar
 Loading…	MainWindow		Cargando…
