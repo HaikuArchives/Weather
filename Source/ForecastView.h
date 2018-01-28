@@ -76,6 +76,11 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	void			SetBackgroundColor(rgb_color color);
 	bool			IsDefaultColor() const;
 	bool			IsConnected() const;
+	BBitmap*		GetWeatherIcon(weatherIconSize size);
+	BBitmap* 		GetWeatherIcon(int32 condition, weatherIconSize size);
+	int32			GetCondition();
+	BString			GetStatus();
+	int32			Temperature();
 private:
 	void			_Init();
 	void			_DownloadData();
@@ -84,7 +89,6 @@ private:
 	void			_DeleteBitmaps();
 	void			_DeleteIcons(BBitmap* bitmap[2]);
 	const char *    _GetWeatherMessage(int32 condition);
-	BBitmap* 		_GetWeatherIcon(int32 condition, weatherIconSize size);
 	BString			_GetDayText(const BString& day) const;
 
 	status_t		_ApplyState(BMessage *settings);

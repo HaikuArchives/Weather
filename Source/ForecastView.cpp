@@ -410,7 +410,7 @@ ForecastView::MessageReceived(BMessage *msg)
 		BString tempText = FormatString(fDisplayUnit,fTemperature);
 		fTemperatureView->SetText(tempText.String());
 		SetCondition(_GetWeatherMessage(fCondition));
-		fConditionButton->SetIcon(_GetWeatherIcon(fCondition, LARGE_ICON));
+		fConditionButton->SetIcon(GetWeatherIcon(fCondition, LARGE_ICON));
 		break;
 	}
 	case kForecastDataMessage: {
@@ -434,7 +434,7 @@ ForecastView::MessageReceived(BMessage *msg)
 			break;
 
 		fForecastDayView[forecastNum]->SetDayLabel(day);
-		fForecastDayView[forecastNum]->SetIcon(_GetWeatherIcon(condition, SMALL_ICON));
+		fForecastDayView[forecastNum]->SetIcon(GetWeatherIcon(condition, SMALL_ICON));
 		fForecastDayView[forecastNum]->SetHighTemp(high);
 		fForecastDayView[forecastNum]->SetLowTemp(low);
 		fForecastDayView[forecastNum]->SetToolTip(text);
@@ -671,7 +671,18 @@ ForecastView::_GetWeatherMessage(int32 condition)
 }
 
 BBitmap*
-ForecastView::_GetWeatherIcon(int32 condition, weatherIconSize iconSize)
+ForecastView::GetWeatherIcon(weatherIconSize iconSize)
+{
+	return GetWeatherIcon(fCondition, iconSize);
+}
+
+int32 ForecastView::Temperature()
+{
+	return fTemperature;
+}
+
+BBitmap*
+ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
 	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
 		case 0:	 										// tornado
@@ -849,6 +860,17 @@ ForecastView::IsFahrenheitDefault()
 	return false;
 }
 
+int32
+ForecastView::GetCondition()
+{
+	return fCondition;
+}
+
+BString
+ForecastView::GetStatus()
+{
+	return fConditionView->Text();
+}
 
 void
 ForecastView::SetCondition(BString condition)
