@@ -520,7 +520,7 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fNightFewClouds, 'rGFX', "Artwork/weather_night_few_clouds.hvif");
 	_LoadIcons(fRainingScattered, 'rGFX', "Artwork/weather_raining_scattered.hvif");
 	_LoadIcons(fRaining, 'rGFX', "Artwork/weather_raining.hvif");
-	_LoadIcons(fIsolatedThunderstorm, 'rGFX', "Artwork/weather_isolated_thunderstorm.hvif");
+	_LoadIcons(fSevereThunderstorm, 'rGFX', "Artwork/weather_severe_thunderstorm.hvif");
 	_LoadIcons(fIsolatedThundershowers, 'rGFX', "Artwork/weather_isolated_thundershowers.hvif");
 	_LoadIcons(fShining, 'rGFX', "Artwork/weather_shining.hvif");
 	_LoadIcons(fShiny, 'rGFX', "Artwork/weather_shiny.hvif");
