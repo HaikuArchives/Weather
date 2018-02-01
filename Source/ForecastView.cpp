@@ -520,7 +520,8 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fNightFewClouds, 'rGFX', "Artwork/weather_night_few_clouds.hvif");
 	_LoadIcons(fRainingScattered, 'rGFX', "Artwork/weather_raining_scattered.hvif");
 	_LoadIcons(fRaining, 'rGFX', "Artwork/weather_raining.hvif");
-	_LoadIcons(fSevereThunderstorm, 'rGFX', "Artwork/weather_severe_thunderstorm.hvif");
+	_LoadIcons(fIsolatedThunderstorm, 'rGFX', "Artwork/weather_isolated_thunderstorm.hvif");
+	_LoadIcons(fIsolatedThundershowers, 'rGFX', "Artwork/weather_isolated_thundershowers.hvif");
 	_LoadIcons(fShining, 'rGFX', "Artwork/weather_shining.hvif");
 	_LoadIcons(fShiny, 'rGFX', "Artwork/weather_shiny.hvif");
 	_LoadIcons(fSnow, 'rGFX', "Artwork/weather_snow.hvif");
@@ -551,6 +552,7 @@ ForecastView::_DeleteBitmaps()
 	_DeleteIcons(fNightFewClouds);
 	_DeleteIcons(fRainingScattered);
 	_DeleteIcons(fRaining);
+	_DeleteIcons(fIsolatedThundershowers);
 	_DeleteIcons(fSevereThunderstorm);
 	_DeleteIcons(fShining);
 	_DeleteIcons(fShiny);
@@ -737,7 +739,7 @@ ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 44: return fClouds[iconSize]; 				// partly cloudy
 		case 45: return fStorm[iconSize];				// thundershowers
 		case 46: return fSnow[iconSize];				// snow showers
-		case 47: return fThunder[iconSize];				// isolated thundershowers
+		case 47: return fIsolatedThundershowers[iconSize];				// isolated thundershowers
 		case 3200: break;								//*not available
 
 	}
