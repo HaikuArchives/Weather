@@ -513,6 +513,8 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fFewClouds, 'rGFX', "Artwork/weather_few_clouds.hvif");
 	_LoadIcons(fFog, 'rGFX', "Artwork/weather_fog.hvif");
 	_LoadIcons(fFreezingDrizzle, 'rGFX', "Artwork/weather_freezing_drizzle.hvif");
+	_LoadIcons(fIsolatedThundershowers, 'rGFX', "Artwork/weather_isolated_thundershowers.hvif");
+	_LoadIcons(fIsolatedThunderstorm, 'rGFX', "Artwork/weather_isolated_thunderstorm.hvif");
 	_LoadIcons(fLightSnow, 'rGFX', "Artwork/weather_light_snow.hvif");
 	_LoadIcons(fMixedSnowRain, 'rGFX', "Artwork/weather_mixed_snow_rain.hvif");
 	_LoadIcons(fMostlyCloudyNight, 'rGFX', "Artwork/weather_mostly_cloudy_night.hvif");
@@ -543,6 +545,8 @@ ForecastView::_DeleteBitmaps()
 	_DeleteIcons(fFewClouds);
 	_DeleteIcons(fFog);
 	_DeleteIcons(fFreezingDrizzle);
+	_DeleteIcons(fIsolatedThundershowers);
+	_DeleteIcons(fIsolatedThunderstorm);
 	_DeleteIcons(fLightSnow);
 	_DeleteIcons(fMixedSnowRain);
 	_DeleteIcons(fMostlyCloudyNight);
@@ -723,7 +727,7 @@ ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 34: return fFewClouds[iconSize];			// fair (day)
 		case 35: return fRainingScattered[iconSize];	// mixed rain and hail
 		case 36: return fShining[iconSize];				// hot
-		case 37: return fThunder[iconSize];				// isolated thunderstorms
+		case 37: return fIsolatedThunderstorm[iconSize];				// isolated thunderstorms
 											// 38 - 39  It isn't an error repeated
 							// 39 is PM Showers, Probably a documentation error
 		case 38: return fStorm[iconSize];				// scattered thunderstorms
@@ -735,7 +739,7 @@ ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 44: return fClouds[iconSize]; 				// partly cloudy
 		case 45: return fStorm[iconSize];				// thundershowers
 		case 46: return fSnow[iconSize];				// snow showers
-		case 47: return fThunder[iconSize];				// isolated thundershowers
+		case 47: return fIsolatedThundershowers[iconSize];				// isolated thundershowers
 		case 3200: break;								//*not available
 
 	}
