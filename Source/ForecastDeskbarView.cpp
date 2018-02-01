@@ -61,8 +61,8 @@ ForecastDeskbarView::Draw(BRect drawRect)
 
 	SetDrawingMode(B_OP_OVER);
 	SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
-	BBitmap* bitmap = fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(0));
-	DrawBitmap(bitmap, BRect(0, 0, 15, 15));
+	BBitmap* bitmap = fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(2));
+	DrawBitmap(bitmap);
 	SetDrawingMode(B_OP_COPY);
 }
 

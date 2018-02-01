@@ -36,7 +36,7 @@ public:
 					MainWindow(void);
 	virtual void	MessageReceived(BMessage* msg);
 	virtual bool	QuitRequested();
-
+	virtual void	MenusBeginning();
 private:
 	status_t		_SaveSettings();
 	BMenuBar*		_PrepareMenuBar(void);
@@ -49,8 +49,8 @@ private:
 	PreferencesWindow* fPreferencesWindow;
 
 	BMenuItem*		fShowForecastMenuItem;
+	BMenuItem*		fReplicantMenuItem;
 
-	bool fShowDeskbarReplicant;
 };
 
 #endif // _MAINWINDOW_H_
