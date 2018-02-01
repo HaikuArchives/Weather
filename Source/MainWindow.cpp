@@ -56,7 +56,7 @@ MainWindow::_PrepareMenuBar(void)
 	//menu->AddSeparatorItem();
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Refresh"),
 		new BMessage(kUpdateMessage), 'R'));
-	menu->AddItem(new BMenuItem(B_TRANSLATE("Toggle Deskbar Replicant"),
+	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar Replicant"),
 		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
 	menubar->AddItem(menu);
 
@@ -94,13 +94,6 @@ MainWindow::MainWindow()
 	AddChild(fForecastView);
 	// Enable when works
 	//fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
-
-	BDeskbar deskbar;
-
-	if (deskbar.HasItem("ForecastDeskbarView"))
-	{
-		fShowDeskbarReplicant = true;
-	}
 }
 
 void
@@ -179,8 +172,8 @@ MainWindow::MessageReceived(BMessage *msg)
 	case kToggleDeskbarReplicantMessage:
 	{
 		BDeskbar deskbar;
-		fShowDeskbarReplicant = !fShowDeskbarReplicant;
-		if (fShowDeskbarReplicant)
+
+		if (!deskbar.HasItem("ForecastDeskbarView"))
 		{
 			app_info info;
 			be_roster->GetAppInfo("application/x-vnd.przemub.Weather", &info);
@@ -194,16 +187,11 @@ MainWindow::MessageReceived(BMessage *msg)
 				BAlert* alert = new BAlert("Error", errorMessage.String(), "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
 				alert->Go();
 				delete alert;
-
-				fShowDeskbarReplicant = false;
 			}
 		}
 		else
 		{
-			if (deskbar.HasItem("ForecastDeskbarView"))
-			{
 				deskbar.RemoveItem("ForecastDeskbarView");
-			}
 		}
 		break;
 	}
@@ -242,7 +230,16 @@ MainWindow::_SaveSettings()
 }
 
 
-bool MainWindow::QuitRequested()
+void
+MainWindow::MenusBeginning()
+{
+	BDeskbar deskbar;
+	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
+}
+
+
+bool
+MainWindow::QuitRequested()
 {
 	_SaveSettings();
 	return true;

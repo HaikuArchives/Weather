@@ -117,7 +117,7 @@ void
 ForecastView::_Init()
 {
 	_LoadBitmaps();
-
+	fCondition = 34;
 	// Icon for weather
 	fConditionButton = new TransparentButton("condition", "",
 		new BMessage(kUpdateMessage));
@@ -565,22 +565,25 @@ ForecastView::_DeleteBitmaps()
 
 
 void
-ForecastView::_DeleteIcons(BBitmap* bitmap[2])
+ForecastView::_DeleteIcons(BBitmap* bitmap[3])
 {
 	delete bitmap[0];
 	delete bitmap[1];
+	delete bitmap[2];
 	bitmap[0] = NULL;
 	bitmap[1] = NULL;
+	bitmap[2] = NULL;
 }
 
 
 void
-ForecastView::_LoadIcons(BBitmap* bitmap[2], uint32 type, const char* name)
+ForecastView::_LoadIcons(BBitmap* bitmap[3], uint32 type, const char* name)
 {
 	size_t dataSize;
 
 	bitmap[0] = NULL;
 	bitmap[1] = NULL;
+	bitmap[2] = NULL;
 
 	const void* data = NULL;
 
@@ -597,6 +600,8 @@ dummy_label:
 			B_RGBA32);
 		BBitmap* largeBitmap = new BBitmap(BRect(0, 0, kSizeLargeIcon - 1, kSizeLargeIcon - 1), 0,
 			B_RGBA32);
+		BBitmap* deskbarBitmap = new BBitmap(BRect(0, 0, kSizeDeskBarIcon - 1, kSizeDeskBarIcon - 1), 0,
+			B_RGBA32);
 
 		status_t status = smallBitmap->InitCheck();
 		if (status == B_OK) {
@@ -608,8 +613,14 @@ dummy_label:
 			status = BIconUtils::GetVectorIcon(
 				reinterpret_cast<const uint8*>(data), dataSize, largeBitmap);
 		};
+		status = deskbarBitmap->InitCheck();
+		if (status == B_OK) {
+			status = BIconUtils::GetVectorIcon(
+				reinterpret_cast<const uint8*>(data), dataSize, deskbarBitmap);
+		};
 		bitmap[0] = smallBitmap;
 		bitmap[1] = largeBitmap;
+		bitmap[2] = deskbarBitmap;
 	};
 }
 

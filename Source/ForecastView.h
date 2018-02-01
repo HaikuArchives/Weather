@@ -37,10 +37,12 @@ extern const char* kSettingsFileName;
 
 const uint32 kSizeSmallIcon = 40;
 const uint32 kSizeLargeIcon = 80;
+const uint32 kSizeDeskBarIcon = 16;
 
 enum weatherIconSize {
 	SMALL_ICON,
-	LARGE_ICON
+	LARGE_ICON,
+	DESKBAR_ICON
 };
 
 class _EXPORT ForecastView;
@@ -123,29 +125,31 @@ private:
 	BMessageRunner*	fDelayUpdateAfterReconnection;
 	bool			fConnected;
 
-	BBitmap* 		fAlert[2];
-	BBitmap* 		fClearNight[2];
-	BBitmap* 		fClear[2];
-	BBitmap* 		fClouds[2];
-	BBitmap* 		fCold[2];
-	BBitmap* 		fDrizzle[2];
-	BBitmap* 		fFewClouds[2];
-	BBitmap* 		fFog[2];
-	BBitmap* 		fFreezingDrizzle[2];
-	BBitmap* 		fLightSnow[2];
-	BBitmap* 		fMixedSnowRain[2];
-	BBitmap* 		fMostlyCloudyNight[2];
-	BBitmap* 		fNightFewClouds[2];
-	BBitmap* 		fRainingScattered[2];
-	BBitmap* 		fRaining[2];
-	BBitmap* 		fSevereThunderstorm[2];
-	BBitmap* 		fShining[2];
-	BBitmap* 		fShiny[2];
-	BBitmap* 		fSnow[2];
-	BBitmap* 		fStorm[2];
-	BBitmap* 		fThunder[2];
-	BBitmap* 		fTropicalStorm[2];
-	BBitmap* 		fCloud[2];
+	BBitmap* 		fAlert[3];
+	BBitmap* 		fClearNight[3];
+	BBitmap* 		fClear[3];
+	BBitmap* 		fClouds[3];
+	BBitmap* 		fCold[3];
+	BBitmap* 		fDrizzle[3];
+	BBitmap* 		fFewClouds[3];
+	BBitmap* 		fFog[3];
+	BBitmap* 		fFreezingDrizzle[3];
+	BBitmap* 		fLightSnow[3];
+	BBitmap* 		fMixedSnowRain[3];
+	BBitmap* 		fMostlyCloudyNight[3];
+	BBitmap* 		fNightFewClouds[3];
+	BBitmap* 		fRainingScattered[3];
+	BBitmap* 		fRaining[3];
+	BBitmap* 		fSevereThunderstorm[3];
+	BBitmap* 		fShining[3];
+	BBitmap* 		fShiny[3];
+	BBitmap* 		fSnow[3];
+	BBitmap* 		fStorm[3];
+	BBitmap* 		fThunder[3];
+	BBitmap* 		fTropicalStorm[3];
+	BBitmap* 		fCloud[3];
+	BBitmap* 		fIsolatedThunderstorm[3];
+	BBitmap* 		fIsolatedThundershowers[3];
 	BGroupView*		fInfoView;
 	BGroupView*		fNumberView;
 	BGroupView* 	fForecastView;
