@@ -529,6 +529,9 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fThunder, 'rGFX', "Artwork/weather_thunder.hvif");
 	_LoadIcons(fTropicalStorm, 'rGFX', "Artwork/weather_tropical_storm.hvif");
 	_LoadIcons(fCloud, 'rGFX', "Artwork/weather_cloud.hvif");
+	_LoadIcons(fHurricane, 'rGFX', "Artwork/weather_hurricane.hvif");
+	_LoadIcons(fSnowShowers, 'rGFX', "Artwork/weather_snow_showers.hvif");
+	_LoadIcons(fScatteredSnowShowers, 'rGFX', "Artwork/weather_scattered_snow_showers.hvif");
 }
 
 
@@ -561,6 +564,9 @@ ForecastView::_DeleteBitmaps()
 	_DeleteIcons(fThunder);
 	_DeleteIcons(fTropicalStorm);
 	_DeleteIcons(fCloud);
+	_DeleteIcons(fHurricane);
+	_DeleteIcons(fSnowShowers);
+	_DeleteIcons(fScatteredSnowShowers);
 }
 
 
@@ -702,7 +708,7 @@ ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
 		case 0:	 										// tornado
 		case 1:	return fTropicalStorm[iconSize];		// tropical storm
-		case 2:	return fAlert[iconSize];				// hurricane
+		case 2:	return fHurricane[iconSize];			// hurricane
 		case 3:	return fSevereThunderstorm[iconSize];	// severe thunderstorms
 		case 4:	return fStorm[iconSize];				// thunderstorms
 		case 5:	return fMixedSnowRain[iconSize];		// mixed rain and snow
@@ -745,11 +751,11 @@ ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 39: return fRainingScattered[iconSize];	// scattered thunderstorms
 		case 40: return fRainingScattered[iconSize];	// scattered showers
 		case 41:										// heavy snow
-		case 42:										// scattered snow showers
+		case 42: return fScatteredSnowShowers[iconSize];	// scattered snow showers
 		case 43: return fSnow[iconSize];				// heavy snow
 		case 44: return fClouds[iconSize]; 				// partly cloudy
 		case 45: return fStorm[iconSize];				// thundershowers
-		case 46: return fSnow[iconSize];				// snow showers
+		case 46: return fSnowShowers[iconSize];			// snow showers
 		case 47: return fIsolatedThundershowers[iconSize];				// isolated thundershowers
 		case 3200: break;								//*not available
 

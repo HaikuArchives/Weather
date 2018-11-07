@@ -150,6 +150,9 @@ private:
 	BBitmap* 		fCloud[3];
 	BBitmap* 		fIsolatedThunderstorm[3];
 	BBitmap* 		fIsolatedThundershowers[3];
+	BBitmap* 		fHurricane[3];
+	BBitmap* 		fSnowShowers[3];
+	BBitmap* 		fScatteredSnowShowers[3];
 	BGroupView*		fInfoView;
 	BGroupView*		fNumberView;
 	BGroupView* 	fForecastView;
