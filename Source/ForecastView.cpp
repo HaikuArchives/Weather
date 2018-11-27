@@ -527,11 +527,13 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fSnow, 'rGFX', "Artwork/weather_snow.hvif");
 	_LoadIcons(fStorm, 'rGFX', "Artwork/weather_storm.hvif");
 	_LoadIcons(fThunder, 'rGFX', "Artwork/weather_thunder.hvif");
+	_LoadIcons(fTornado, 'rGFX', "Artwork/weather_tornado.hvif");
 	_LoadIcons(fTropicalStorm, 'rGFX', "Artwork/weather_tropical_storm.hvif");
 	_LoadIcons(fCloud, 'rGFX', "Artwork/weather_cloud.hvif");
 	_LoadIcons(fHurricane, 'rGFX', "Artwork/weather_hurricane.hvif");
-	_LoadIcons(fSnowShowers, 'rGFX', "Artwork/weather_snow_showers.hvif");
+	_LoadIcons(fSmoky, 'rGFX', "Artwork/weather_smoky.hvif");
 	_LoadIcons(fScatteredSnowShowers, 'rGFX', "Artwork/weather_scattered_snow_showers.hvif");
+	_LoadIcons(fSnowShowers, 'rGFX', "Artwork/weather_snow_showers.hvif");
 }
 
 
@@ -562,11 +564,13 @@ ForecastView::_DeleteBitmaps()
 	_DeleteIcons(fSnow);
 	_DeleteIcons(fStorm);
 	_DeleteIcons(fThunder);
+	_DeleteIcons(fTornado);
 	_DeleteIcons(fTropicalStorm);
 	_DeleteIcons(fCloud);
 	_DeleteIcons(fHurricane);
-	_DeleteIcons(fSnowShowers);
 	_DeleteIcons(fScatteredSnowShowers);
+	_DeleteIcons(fSmoky);
+	_DeleteIcons(fSnowShowers);
 }
 
 
@@ -706,7 +710,7 @@ BBitmap*
 ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
 	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
-		case 0:	 										// tornado
+		case 0:	return fTornado[iconSize];				// tornado
 		case 1:	return fTropicalStorm[iconSize];		// tropical storm
 		case 2:	return fHurricane[iconSize];			// hurricane
 		case 3:	return fSevereThunderstorm[iconSize];	// severe thunderstorms
@@ -729,9 +733,9 @@ ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 		case 19: break;									//*dust
 		case 20: return fFog[iconSize];					// fog
 		case 21: break;									//*haze
-		case 22: break;									//*smoky
+		case 22: return fSmoky[iconSize];				//*smoky
 		case 23: break;									//*blustery
-		case 24: break;									//*windy
+		case 24: return fWindy[iconSize];				//*windy
 		case 25: return fCold[iconSize];				//*cold
 		case 26: return	fCloud[iconSize];				// cloudy
 		case 27: return fMostlyCloudyNight[iconSize];	// mostly cloudy (night)
