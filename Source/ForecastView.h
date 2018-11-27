@@ -146,13 +146,16 @@ private:
 	BBitmap* 		fSnow[3];
 	BBitmap* 		fStorm[3];
 	BBitmap* 		fThunder[3];
+	BBitmap* 		fTornado[3];
 	BBitmap* 		fTropicalStorm[3];
 	BBitmap* 		fCloud[3];
 	BBitmap* 		fIsolatedThunderstorm[3];
 	BBitmap* 		fIsolatedThundershowers[3];
 	BBitmap* 		fHurricane[3];
-	BBitmap* 		fSnowShowers[3];
 	BBitmap* 		fScatteredSnowShowers[3];
+	BBitmap* 		fSmoky[3];
+	BBitmap* 		fSnowShowers[3];
+	BBitmap* 		fWindy[3];
 	BGroupView*		fInfoView;
 	BGroupView*		fNumberView;
 	BGroupView* 	fForecastView;
