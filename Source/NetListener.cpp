@@ -210,6 +210,39 @@ NetListener::_ProcessCityData(bool success)
 		message->AddString("id", woeid);
 		messenger.SendMessage(message);
 	}
+	if (parsedData.FindMessage("query", &queryMessage) == B_OK
+		&& queryMessage.FindMessage("results", &resultsMessage) == B_OK
+		&& resultsMessage.FindMessage("place", &placeMessage) == B_OK)
+	{
+		int32 index = 0;
+		BMessage placeIndexMessage;
+		BString messageIndex("0");
+		BMessage* message = new BMessage(kCitiesListMessage);
+		while (placeMessage.FindMessage(messageIndex, &placeIndexMessage) == B_OK)
+		{
+			BMessage countryMessage, admin1Message, localityMessage;
+			BString country, admin1, locality, woeid;
+			if (placeIndexMessage.FindMessage("country", &countryMessage) == B_OK)
+				countryMessage.FindString("content", &country);
+
+			if (placeIndexMessage.FindMessage("admin1", &admin1Message) == B_OK)
+				admin1Message.FindString("content", &admin1);
+
+			if (placeIndexMessage.FindMessage("locality1", &localityMessage) == B_OK)
+			{
+				localityMessage.FindString("content", &locality);
+				localityMessage.FindString("woeid", &woeid);
+			}
+			BString total;
+			total << locality << ", " << admin1 << ", " << country;
+			message->AddString("city", total);
+			message->AddString("woeid", woeid);
+			index++;
+			messageIndex = "";
+			messageIndex << index;
+		}
+		messenger.SendMessage(message);
+	}
 	else
 	{
 		BMessage* message = new BMessage(kFailureMessage);

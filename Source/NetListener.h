@@ -14,7 +14,7 @@ enum RequestType {
 	CITY_REQUEST,
 	WEATHER_REQUEST
 } ;
-
+const uint32 kCitiesListMessage = 'lstC';
 const uint32 kDataMessage = 'Data';
 const uint32 kForecastDataMessage = 'FDta';
 const uint32 kFailureMessage = 'Fail';

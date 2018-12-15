@@ -17,6 +17,7 @@
 #include <UrlRequest.h>
 #include <Window.h>
 
+#include "CitiesListSelectionWindow.h"
 #include "MainWindow.h"
 #include "NetListener.h"
 #include "SelectionWindow.h"
@@ -65,6 +66,12 @@ SelectionWindow::MessageReceived(BMessage *msg)
 		_StartSearch();
 		Hide();
 		break;
+	case kCitiesListMessage: {
+		BRect frame(Frame().LeftTop(),BSize(400,200));
+		frame.OffsetBy(30,30);
+		(new CitiesListSelectionWindow(frame, fParent, msg))->Show();
+		break;
+		}
 	case kDataMessage:
 		msg->FindString("id", &fCityId);
 		_UpdateCity();
@@ -139,8 +146,8 @@ void
 SelectionWindow::_FindId()
 {
 	BString urlString("https://query.yahooapis.com/v1/public/yql");
-	urlString << "?q=select+woeid+from+geo.places(1)+"
-		<< "where+text+=%22" << fCityControl->Text() << "%22&format=json";
+	urlString << "?q=select+%20*%20+from+geo.places+"
+		<< "where+text+=%22" << fCityControl->Text() << "%22%20and%20placeTypeName%3D%22Town%22&format=json";
 	urlString.ReplaceAll(" ", "+");
 	urlString.ReplaceAll("<", "");	// Filter out characters that trip up BUrl
 	urlString.ReplaceAll(">", "");
@@ -155,3 +162,4 @@ SelectionWindow::_FindId()
 	wait_for_thread(thread, NULL);
 	delete request;
 }
+ 
