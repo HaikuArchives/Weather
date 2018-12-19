@@ -43,7 +43,7 @@ NetListener::RequestCompleted(BUrlRequest* caller,
 
 	if (fRequestType == WEATHER_REQUEST)
 		_ProcessWeatherData(success);
-		
+
 	if (fRequestType == CITY_REQUEST)
 		_ProcessCityData(success);
 
@@ -55,7 +55,7 @@ NetListener::_ProcessWeatherData(bool success)
 {
 	BMessenger messenger(fHandler);
 	BString jsonString;
-		
+
 	if (!success) {
 		messenger.SendMessage(new BMessage(kFailureMessage));
 		return;
@@ -90,11 +90,6 @@ NetListener::_ProcessWeatherData(bool success)
 			locationMessage.FindString("city", &city);
 			locationMessage.FindString("country", &country);
 			locationMessage.FindString("region", &region);
-	
-			if (country == "United States")
-				city << ", " << region;
-			else
-				city << ", " << country;
 
 			BMessage* message = new BMessage(kUpdateCityName);
 			message->AddString("city", city);
@@ -119,7 +114,7 @@ NetListener::_ProcessWeatherData(bool success)
 				BString code;
 				BString temp;
 				BString text;
-	
+
 				conditionMessage.FindString("code", &code);
 				conditionMessage.FindString("temp", &temp);
 				conditionMessage.FindString("text", &text);
@@ -128,7 +123,7 @@ NetListener::_ProcessWeatherData(bool success)
 				int temperature, condition;
 				sscanf(temp.String(), "%d", &temperature);
 				sscanf(code.String(), "%d", &condition);
-	
+
 				BMessage* message = new BMessage(kDataMessage);
 				message->AddInt32("temp", temperature);
 				message->AddInt32("code", condition);
