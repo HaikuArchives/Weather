@@ -18,7 +18,7 @@ class CitiesListSelectionWindow : public BWindow {
 public:
 					CitiesListSelectionWindow(BRect rect, BWindow* parent,
 						BMessage* citiesMessage);
-	
+	virtual			~CitiesListSelectionWindow();
 	virtual void	MessageReceived(BMessage *msg);
 	virtual bool	QuitRequested();
 private:

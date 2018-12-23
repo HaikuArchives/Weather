@@ -28,19 +28,84 @@
 class CityItem : public BStringItem {
 public:
 								CityItem(const char* text,
-									const char* woeid);
+									const char* woeid, const char* countryCode);
+	virtual						~CityItem();
 								BString Woeid() const {return fWoeid; };
+	virtual	void				DrawItem(BView* owner, BRect frame,
+									bool complete = false);
+	virtual	void				Update(BView* owner, const BFont* font);
 private:
 			BString				fWoeid;
-
+			BString				fCountryCode;
+			BBitmap*			fIcon;
 };
 
 
-CityItem::CityItem(const char* text, const char* woeid):
+CityItem::CityItem(const char* text, const char* woeid, const char* countryCode):
 	BStringItem(text),
-	fWoeid(woeid)
+	fWoeid(woeid),
+	fCountryCode(countryCode),
+	fIcon(NULL)
 {
 };
+
+CityItem::~CityItem()
+{
+	delete fIcon;
+}
+
+void
+CityItem::DrawItem(BView* owner, BRect frame,
+	bool complete)
+{
+	float iconSize = 0;
+
+	if (fIcon != NULL && fIcon->IsValid())
+		iconSize = fIcon->Bounds().Width();
+
+	BRect offsetFrame(frame);
+	offsetFrame.left += iconSize + be_control_look->DefaultLabelSpacing();
+
+	BStringItem::DrawItem(owner, offsetFrame, complete);
+
+	if (fIcon != NULL && fIcon->IsValid())
+	{
+		BRect iconFrame(frame.left + be_control_look->DefaultLabelSpacing(),
+			frame.top,
+			frame.left + iconSize - 1 + be_control_look->DefaultLabelSpacing(),
+			frame.top + iconSize - 1);
+		if (IsSelected() ) {
+			owner->SetHighColor(ui_color(B_LIST_SELECTED_BACKGROUND_COLOR));
+			frame.right = offsetFrame.left;
+			owner->FillRect(frame);
+		}
+		owner->SetDrawingMode(B_OP_OVER);
+		owner->DrawBitmap(fIcon, iconFrame);
+		owner->SetDrawingMode(B_OP_COPY);
+	}
+};
+
+
+void
+CityItem::Update(BView* owner, const BFont* font)
+{
+	BStringItem::Update(owner, font);
+
+	float iconSize = Height();
+	SetWidth(Width() + iconSize + be_control_look->DefaultLabelSpacing());
+
+	if (fCountryCode.IsEmpty())
+		return;
+
+	fIcon = new(std::nothrow) BBitmap(BRect(0, 0, iconSize - 1, iconSize - 1),
+		B_RGBA32);
+	if (fIcon != NULL && BLocaleRoster::Default()->GetFlagIconForCountry(fIcon,
+			fCountryCode.String()) != B_OK) {
+		delete fIcon;
+		fIcon = NULL;
+	}
+}
+
 
 const uint32 kSelectedCity = 'SeCy';
 const uint32 kCancelCity = 'CncC';
@@ -64,7 +129,9 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 	while(citiesMessage->FindString("city", index, &completeCity) == B_OK
 		&& citiesMessage->FindString("woeid", index, &woeid) == B_OK )
 	{
-		fCitiesListView->AddItem(new CityItem(completeCity, woeid));
+		BString countryCode;
+		citiesMessage->FindString("countryCode", index, &countryCode);
+		fCitiesListView->AddItem(new CityItem(completeCity, woeid, countryCode));
 		index++;
 	}
 	fCitiesListView->Select(0);
@@ -85,6 +152,13 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 	fButtonOk->MakeDefault(true);
 }
 
+
+CitiesListSelectionWindow::~CitiesListSelectionWindow()
+{
+	BListItem* cityItem;
+	for(int32 index = 0; cityItem = fCitiesListView->ItemAt(index); index++)
+		delete cityItem;
+}
 
 void
 CitiesListSelectionWindow::MessageReceived(BMessage *msg)

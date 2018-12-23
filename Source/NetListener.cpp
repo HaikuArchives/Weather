@@ -216,10 +216,12 @@ NetListener::_ProcessCityData(bool success)
 		while (placeMessage.FindMessage(messageIndex, &placeIndexMessage) == B_OK)
 		{
 			BMessage countryMessage, admin1Message, localityMessage;
-			BString country, admin1, locality, woeid;
+			BString country, admin1, locality, woeid, countryCode;
 			if (placeIndexMessage.FindMessage("country", &countryMessage) == B_OK)
+			{
 				countryMessage.FindString("content", &country);
-
+				countryMessage.FindString("code", &countryCode);
+			}
 			if (placeIndexMessage.FindMessage("admin1", &admin1Message) == B_OK)
 				admin1Message.FindString("content", &admin1);
 
@@ -232,6 +234,7 @@ NetListener::_ProcessCityData(bool success)
 			total << locality << ", " << admin1 << ", " << country;
 			message->AddString("city", total);
 			message->AddString("woeid", woeid);
+			message->AddString("countryCode", countryCode);
 			index++;
 			messageIndex = "";
 			messageIndex << index;
