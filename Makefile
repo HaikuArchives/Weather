@@ -76,7 +76,8 @@ LIBPATHS =
 #	Additional paths to look for system headers. These use the form
 #	"#include <header>". Directories that contain the files in SRCS are
 #	NOT auto-included here.
-SYSTEM_INCLUDE_PATHS = /system/develop/headers/private/shared
+SYSTEM_INCLUDE_PATHS = /system/develop/headers/private/shared \
+					   /system/develop/headers/private/interface
 
 #	Additional paths paths to look for local headers. These use the form
 #	#include "header". Directories that contain the files in SRCS are
