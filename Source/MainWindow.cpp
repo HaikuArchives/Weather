@@ -4,6 +4,7 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
+#include <AboutWindow.h>
 #include <AppKit.h>
 #include <Bitmap.h>
 #include <Catalog.h>
@@ -46,6 +47,8 @@ MainWindow::_PrepareMenuBar(void)
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Preferences" B_UTF8_ELLIPSIS),
 		new BMessage(kOpenPreferencesMessage), ',' ));
 	menu->AddSeparatorItem();
+	menu->AddItem(new BMenuItem(B_TRANSLATE("About Weather"), 
+		new BMessage(B_ABOUT_REQUESTED)));
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Quit"),
 		new BMessage(B_QUIT_REQUESTED), 'Q'));
 	menubar->AddItem(menu);
@@ -195,6 +198,11 @@ MainWindow::MessageReceived(BMessage *msg)
 		}
 		break;
 	}
+	case B_ABOUT_REQUESTED:
+	{
+		AboutRequested();
+		break;
+	}	
 	default:
 		BWindow::MessageReceived(msg);
 	}
@@ -237,6 +245,45 @@ MainWindow::MenusBeginning()
 	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
 }
 
+
+void
+MainWindow::AboutRequested()
+{
+	BAboutWindow* about = new BAboutWindow(
+		"About Weather", "application/x-vnd.przemub.Weather");
+	
+	const char* kAuthors[] = {
+		"Kevin Adams",
+		"Janus",
+		"Scott McCreary",
+		"Venu Vardhan Reddy Tekula",
+		"Sergei Reznikov",
+		"Humdinger",
+		"Benjamin Amos",
+		"Waddlesplash",
+		"Przemyslaw Buczkowski",
+		"Akshay Agarwal",
+		"Stephanie Fu",
+		"Adrián Arroyo Calle",
+		"George White",
+		NULL
+	};
+	
+	const char* kCopyright = "George White";
+	
+	const char* kExtraCopyrights[] = {
+		"2015 Przemyslaw Buczkowski",
+		"2015 Adrián Arroyo Calle",
+		"2018 Benjamin Amos",
+		NULL
+	};
+	
+	about->AddDescription(B_TRANSLATE("Open source weather app."));
+	about->AddAuthors(kAuthors);
+	about->AddCopyright(2014, kCopyright, kExtraCopyrights);
+	about->Show();
+}
+	
 
 bool
 MainWindow::QuitRequested()

@@ -6,7 +6,6 @@
 #ifndef _MAINWINDOW_H_
 #define _MAINWINDOW_H_
 
-
 #include <Bitmap.h>
 #include <Button.h>
 #include <GridLayout.h>
@@ -36,6 +35,7 @@ public:
 					MainWindow(void);
 	virtual void	MessageReceived(BMessage* msg);
 	virtual bool	QuitRequested();
+	virtual void	AboutRequested();
 	virtual void	MenusBeginning();
 private:
 	status_t		_SaveSettings();
