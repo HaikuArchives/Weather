@@ -250,41 +250,34 @@ void
 MainWindow::AboutRequested()
 {
 	BAboutWindow* about = new BAboutWindow(
-		"About Weather", "application/x-vnd.przemub.Weather");
-	
+		B_TRANSLATE_SYSTEM_NAME("Weather"), "application/x-vnd.przemub.Weather");
+
 	const char* kAuthors[] = {
-		"Kevin Adams",
-		"Janus",
-		"Scott McCreary",
-		"Venu Vardhan Reddy Tekula",
-		"Sergei Reznikov",
-		"Humdinger",
-		"Benjamin Amos",
-		"Waddlesplash",
-		"Przemyslaw Buczkowski",
-		"Akshay Agarwal",
-		"Stephanie Fu",
 		"Adrián Arroyo Calle",
+		"Akshay Agarwal",
+		"Bach Nguyen",
+		"Benjamin Amos",
 		"George White",
+		"Humdinger",
+		"Janus",
+		"Kevin Adams",
+		"Naseef",
+		"Przemyslaw Buczkowski",
+		"Sergei Reznikov",
+		"Stephanie Fu",
+		"Venu Vardhan Reddy Tekula",
+		"Waddlesplash",
 		NULL
 	};
-	
+		
 	const char* kCopyright = "George White";
 	
-	const char* kExtraCopyrights[] = {
-		"2015 Przemyslaw Buczkowski",
-		"2015 Adrián Arroyo Calle",
-		"2018 Benjamin Amos",
-		NULL
-	};
-	
-	about->AddDescription(B_TRANSLATE("Open source weather app."));
+	about->AddDescription(B_TRANSLATE("An open source weather app showing a forecast for the next 5 days."));
 	about->AddAuthors(kAuthors);
-	about->AddCopyright(2014, kCopyright, kExtraCopyrights);
+	about->AddCopyright(2014, kCopyright, NULL);
 	about->Show();
 }
 	
-
 bool
 MainWindow::QuitRequested()
 {
