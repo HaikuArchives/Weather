@@ -250,7 +250,7 @@ void
 MainWindow::AboutRequested()
 {
 	BAboutWindow* about = new BAboutWindow(
-		"About Weather", "application/x-vnd.przemub.Weather");
+		B_TRANSLATE_SYSTEM_NAME("Weather"), "application/x-vnd.przemub.Weather");
 
 	const char* kAuthors[] = {
 		"Adrián Arroyo Calle",
