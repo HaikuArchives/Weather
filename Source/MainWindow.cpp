@@ -255,7 +255,6 @@ MainWindow::AboutRequested()
 	const char* kAuthors[] = {
 		"Kevin Adams",
 		"Janus",
-		"Scott McCreary",
 		"Venu Vardhan Reddy Tekula",
 		"Sergei Reznikov",
 		"Humdinger",
@@ -266,6 +265,8 @@ MainWindow::AboutRequested()
 		"Stephanie Fu",
 		"Adrián Arroyo Calle",
 		"George White",
+		"Naseef",
+		"Bach Nguyen",
 		NULL
 	};
 	
@@ -278,7 +279,7 @@ MainWindow::AboutRequested()
 		NULL
 	};
 	
-	about->AddDescription(B_TRANSLATE("Open source weather app."));
+	about->AddDescription(B_TRANSLATE("Open source weather app for Haiku."));
 	about->AddAuthors(kAuthors);
 	about->AddCopyright(2014, kCopyright, kExtraCopyrights);
 	about->Show();
