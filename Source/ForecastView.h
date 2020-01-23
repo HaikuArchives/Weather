@@ -45,6 +45,37 @@ enum weatherIconSize {
 	DESKBAR_ICON
 };
 
+enum weatherConditions {
+	WC_TORNADO,
+	WC_TROPICAL_STORM,
+	WC_HURRICANE,
+	WC_SEVERE_THUNDERSTORM,
+	WC_STORM,
+	WC_MIXED_SNOW_RAIN,
+	WC_SNOW,
+	WC_FREEZING_DRIZZLE,
+	WC_DRIZZE,
+	WC_RAINING,
+	WC_RAINING_SCATTERED,
+	WC_LIGHT_SNOW,
+	WC_FOG,
+	WC_SMOKY,
+	WC_WINDY,
+	WC_COLD,
+	WC_CLOUD,
+	WC_MOSTLY_CLOUDY_NIGHT,
+	WC_MOSTLY_CLOUDY_DAY,
+	WC_NIGHT_FEW_CLOUDS,
+	WC_CLEAR_NIGHT,
+	WC_FEW_CLOUDS,
+	WC_ISOLATED_THUNDERSTORM,
+	WC_SCATTERED_SNOW_SHOWERS,
+	WC_SNOW_SHOWERS,
+	WC_ISOLATED_THUNDERSHOWERS,
+	WC_SHINING,
+	WC_NOT_AVALIABLE,
+};
+
 class _EXPORT ForecastView;
 
 
@@ -83,6 +114,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	int32			GetCondition();
 	BString			GetStatus();
 	int32			Temperature();
+
 private:
 	void			_Init();
 	void			_DownloadData();

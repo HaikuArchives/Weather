@@ -30,7 +30,7 @@ APP_MIME_SIG = x-vnd.przemub.Weather
 #	Also note that spaces in folder names do not work well with this Makefile.
 SRCS = Source/App.cpp \
 	   Source/LabelView.cpp\
-	   Source/NetListener.cpp\
+	   Source/WSMetaWeather.cpp\
 	   Source/MainWindow.cpp \
 	   Source/PreferencesWindow.cpp \
 	   Source/SelectionWindow.cpp \

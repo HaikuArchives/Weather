@@ -1,9 +1,9 @@
 /*
- * Copyright 2015 Przemysław Buczkowski <przemub@przemub.pl>
+ * Copyright 2020 Raheem Idowu <abdurraheemidowu@gmail.com>
  * All rights reserved. Distributed under the terms of the MIT license.
  */
-#ifndef _NETLISTENER_H_
-#define _NETLISTENER_H_
+#ifndef _WSMETAWEATHER_H_
+#define _WSMETAWEATHER_H_
 
 
 #include <Looper.h>
@@ -13,18 +13,12 @@
 enum RequestType {
 	CITY_REQUEST,
 	WEATHER_REQUEST
-} ;
-const uint32 kCitiesListMessage = 'lstC';
-const uint32 kDataMessage = 'Data';
-const uint32 kForecastDataMessage = 'FDta';
-const uint32 kFailureMessage = 'Fail';
-const uint32 kUpdateCityName = 'UpCN';
-const uint32 kUpdateTTLMessage = 'TTLm';
+};
 
-class NetListener : public BUrlProtocolListener {
+class WSMetaWeather : public BUrlProtocolListener {
 public:
-						NetListener(BHandler* fHandler, RequestType requestType);
-	virtual				~NetListener();
+						WSMetaWeather(BHandler* fHandler, RequestType requestType);
+	virtual				~WSMetaWeather();
 	virtual	void		ResponseStarted(BUrlRequest* caller);
 	virtual	void		DataReceived(BUrlRequest* caller, const char* data,
 							off_t position, ssize_t size);
@@ -39,4 +33,4 @@ private:
 };
 
 
-#endif // _NETLISTENER_H_
+#endif // _WSMETAWEATHER_H_
