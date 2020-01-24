@@ -119,9 +119,9 @@ WSMetaWeather::_ProcessWeatherData(bool success)
 					if (code == "s")
 						condition = WC_RAINING_SCATTERED;
 					if (code == "hc")
-						condition = WC_CLOUD;
-					if (code == "lc")
 						condition = WC_MOSTLY_CLOUDY_DAY;
+					if (code == "lc")
+						condition = WC_CLOUD;
 					if (code == "c")
 						condition = WC_FEW_CLOUDS;
 						
@@ -194,5 +194,24 @@ WSMetaWeather::_ProcessCityData(bool success)
 		return;
 	}
 
-	//TODO - implement searching for and finding locations
+	char *name;
+	uint32 type;
+	int32 count;
+	double woeid;
+	BString locationName;
+	BMessage *message = new BMessage(kCitiesListMessage);
+	for (int32 i = 0; parsedData.GetInfo(B_MESSAGE_TYPE, i, &name, &type, &count) == B_OK; i++) {
+		BMessage locationMessage;
+		if (parsedData.FindMessage(name, &locationMessage) == B_OK) {
+			locationMessage.FindString("title", &locationName);
+			locationMessage.FindDouble("woeid", &woeid);
+
+			char woeidStr[10];
+			sprintf(woeidStr, "%.0f", woeid);
+
+			message->AddString("city", locationName);
+			message->AddString("woeid", woeidStr);
+		}
+	}
+	messenger.SendMessage(message);
 }

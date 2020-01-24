@@ -146,7 +146,7 @@ SelectionWindow::_FindIdFunc(void *cookie)
 void
 SelectionWindow::_FindId()
 {
-	BString urlString("https://metaweather.com/api/location/search/?query=");
+	BString urlString("https://www.metaweather.com/api/location/search/?query=");
 	urlString << fCityControl->Text();
 	// Filter out characters that trip up BUrl
 	urlString.ReplaceAll(" ", "+");
