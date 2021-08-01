@@ -52,6 +52,10 @@ Transparent	ForecastView		Transparent
 Tropical storm	ForecastView		Tropisk storm
 Weather (The Replicant version)	ForecastView		Väder (Replikantversionen)
 Windy	ForecastView		Blåsigt
+Change location	SelectionWindow		Ändra plats
+City:	SelectionWindow		Stad:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Välj stad: stad, land, region
 Change location…	MainWindow		Ändra plats…
 Edit	MainWindow		Ändra
 Loading…	MainWindow		Laddar…
@@ -66,8 +70,4 @@ Use degrees Delisle	PreferencesWindow		Använd enheten Delisle
 Use degrees Fahrenheit	PreferencesWindow		Använd enheten Fahrenheit
 Use degrees Rankine	PreferencesWindow		Använd enheten Rankine
 Use units Kelvin	PreferencesWindow		Använd enheten Kelvin
-Change location	SelectionWindow		Ändra plats
-City:	SelectionWindow		Stad:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Välj stad: stad, land, region
 Weather	System name		Väder

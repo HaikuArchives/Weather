@@ -1,4 +1,4 @@
-1	Italiano	x-vnd.przemub.Weather	3662372937
+1	Italian	x-vnd.przemub.Weather	3662372937
 About Weather	ForecastView		Informazioni su Meteo
 Background	ForecastView		Sfondo
 Blowing snow	ForecastView		Bufera di neve
@@ -52,6 +52,10 @@ Transparent	ForecastView		Trasparente
 Tropical storm	ForecastView		Tempesta tropicale
 Weather (The Replicant version)	ForecastView		Meteo (versione replicante)
 Windy	ForecastView		Ventoso
+Change location	SelectionWindow		Cambia  località
+City:	SelectionWindow		Città:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Seleziona città: città, paese, regione
 Change location…	MainWindow		Cambia località…
 Edit	MainWindow		Modifica
 Loading…	MainWindow		Caricamento…
@@ -66,8 +70,4 @@ Use degrees Delisle	PreferencesWindow		Usa gradi Delisle
 Use degrees Fahrenheit	PreferencesWindow		Usa gradi Fahrenheit
 Use degrees Rankine	PreferencesWindow		Usa gradi Rankine
 Use units Kelvin	PreferencesWindow		Usa unità Kelvin
-Change location	SelectionWindow		Cambia  località
-City:	SelectionWindow		Città:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Seleziona città: città, paese, regione
 Weather	System name		Meteo

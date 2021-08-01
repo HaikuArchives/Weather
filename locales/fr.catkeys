@@ -1,0 +1,73 @@
+1	French	x-vnd.przemub.Weather	3662372937
+About Weather	ForecastView		À propos de Météo
+Background	ForecastView		Appliquer à l’arrière-plan
+Blowing snow	ForecastView		Rafales de neige
+Blustery	ForecastView		Bourrasques
+Clear	ForecastView		Clair
+Cloudy	ForecastView		Nuageux
+Cold	ForecastView		Froid
+Connecting…	ForecastView		Connexion en cours...
+Connection error	ForecastView		Erreur de connexion
+Default	ForecastView		Couleurs par défaut
+Drizzle	ForecastView		Bruine
+Dust	ForecastView		Poussière
+Fair	ForecastView		Beau temps
+Fog	ForecastView		Brouillard
+Freezing drizzle	ForecastView		Bruine verglaçante
+Freezing rain	ForecastView		Pluie verglaçante
+Hail	ForecastView		Grêle
+Haze	ForecastView		Brume
+Heavy snow	ForecastView		Importantes chutes de neige
+Hot	ForecastView		Chaud
+Hurricane	ForecastView		Ouragan
+Isolated thundershowers	ForecastView		Averses orageuses isolées
+Isolated thunderstorms	ForecastView		Orages isolés
+Light snow showers	ForecastView		Chutes de neige modérées
+Loading…	ForecastView		Chargement en cours...
+Mixed rain and hail	ForecastView		Pluie et grêle
+Mixed rain and sleet	ForecastView		Pluie et neige fondue
+Mixed rain and snow	ForecastView		Pluie et neige
+Mixed snow and sleet	ForecastView		Neige et neige fondue
+Mostly cloudy	ForecastView		Généralement couvert
+No network	ForecastView		Pas de réseau
+Not available	ForecastView		Non disponible
+OK	ForecastView		D'accord
+Partly cloudy	ForecastView		Partiellement couvert
+Scattered showers	ForecastView		Averses intermittentes
+Scattered snow showers	ForecastView		Chutes de neige intermittentes
+Scattered thunderstorms	ForecastView		Orages intermittents
+Severe thunderstorms	ForecastView		Orages violents
+Showers	ForecastView		Averses
+Sleet	ForecastView		Neige fondue
+Smoky	ForecastView		Fumées
+Snow	ForecastView		Neige
+Snow flurries	ForecastView		Bourrasques de neige
+Snow showers	ForecastView		Chutes de neiges
+Sunny	ForecastView		Ensoleillé
+Text	ForecastView		Appliquer au texte
+Thundershowers	ForecastView		Averses orageuses
+Thunderstorms	ForecastView		Orages
+Tornado	ForecastView		Tornade
+Transparent	ForecastView		Transparent
+Tropical storm	ForecastView		Tempête tropicale
+Weather (The Replicant version)	ForecastView		Météo (La version Réplicant)
+Windy	ForecastView		Vents
+Change location	SelectionWindow		Changer de localisation
+City:	SelectionWindow		Ville :
+OK	SelectionWindow		D'accord
+Select city: city, country, region	SelectionWindow		Sélectionner la ville : ville, pays, région
+Change location…	MainWindow		Changer de localisation…
+Edit	MainWindow		Éditer
+Loading…	MainWindow		Chargement en cours…
+Preferences…	MainWindow		Préférences…
+Quit	MainWindow		Quitter
+Refresh	MainWindow		Actualiser
+View	MainWindow		Vue
+OK	PreferencesWindow		D'accord
+Preferences	PreferencesWindow		Préférences
+Use degrees Celsius	PreferencesWindow		Utiliser des degrés Celsius
+Use degrees Delisle	PreferencesWindow		Utiliser des degrés Delisle
+Use degrees Fahrenheit	PreferencesWindow		Utiliser des degrés Fahrenheit
+Use degrees Rankine	PreferencesWindow		Utiliser des degrés Rankine
+Use units Kelvin	PreferencesWindow		Utiliser des unités Kelvin
+Weather	System name		Météo

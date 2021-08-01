@@ -52,6 +52,10 @@ Transparent	ForecastView		Прозорість
 Tropical storm	ForecastView		Тропічний шторм
 Weather (The Replicant version)	ForecastView		Погода (реплікант)
 Windy	ForecastView		Вітряно
+Change location	SelectionWindow		Змінити розташування
+City:	SelectionWindow		Місто:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Вибрати місто: місто, країна, регіон
 Change location…	MainWindow		Змінити розташування…
 Edit	MainWindow		Редагувати
 Loading…	MainWindow		Завантаження…
@@ -66,8 +70,4 @@ Use degrees Delisle	PreferencesWindow		Градуси Деліля
 Use degrees Fahrenheit	PreferencesWindow		Градуси Фаренгейта
 Use degrees Rankine	PreferencesWindow		Градуси Ранкіна
 Use units Kelvin	PreferencesWindow		Градуси Кельвіна
-Change location	SelectionWindow		Змінити розташування
-City:	SelectionWindow		Місто:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Вибрати місто: місто, країна, регіон
 Weather	System name		Погода

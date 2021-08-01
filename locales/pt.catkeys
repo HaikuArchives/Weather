@@ -1,0 +1,73 @@
+1	Portuguese	x-vnd.przemub.Weather	3662372937
+About Weather	ForecastView		Acerca da Meteorologia
+Background	ForecastView		Fundo
+Blowing snow	ForecastView		Tempestade de neve
+Blustery	ForecastView		Tempestuoso
+Clear	ForecastView		Céu limpo
+Cloudy	ForecastView		Céu nublado
+Cold	ForecastView		Frio
+Connecting…	ForecastView		A estabelecer ligação…
+Connection error	ForecastView		Erro de ligação
+Default	ForecastView		Predefinição
+Drizzle	ForecastView		Chuvisco
+Dust	ForecastView		Poeira
+Fair	ForecastView		Bom tempo
+Fog	ForecastView		Nevoeiro
+Freezing drizzle	ForecastView		Geada
+Freezing rain	ForecastView		Chuva gelada
+Hail	ForecastView		Saraiva
+Haze	ForecastView		Neblina
+Heavy snow	ForecastView		Neve intensa
+Hot	ForecastView		Quente
+Hurricane	ForecastView		Furacão
+Isolated thundershowers	ForecastView		Trovoadas com chuva isoladas
+Isolated thunderstorms	ForecastView		Trovoadas isoladas
+Light snow showers	ForecastView		Aguaceiros ligeiros de neve
+Loading…	ForecastView		A carregar…
+Mixed rain and hail	ForecastView		Chuva com saraiva
+Mixed rain and sleet	ForecastView		Chuva com granizo
+Mixed rain and snow	ForecastView		Chuva com neve
+Mixed snow and sleet	ForecastView		Neve com granizo
+Mostly cloudy	ForecastView		Muito nublado
+No network	ForecastView		Sem rede
+Not available	ForecastView		Não disponível
+OK	ForecastView		OK
+Partly cloudy	ForecastView		Parcialmente nublado
+Scattered showers	ForecastView		Aguaceiros dispersos
+Scattered snow showers	ForecastView		Aguaceiros de neve dispersos
+Scattered thunderstorms	ForecastView		Trovoadas dispersas
+Severe thunderstorms	ForecastView		Trovoadas intensas
+Showers	ForecastView		Aguaceiros
+Sleet	ForecastView		Granizo
+Smoky	ForecastView		Fumo
+Snow	ForecastView		Neve
+Snow flurries	ForecastView		Queda de neve
+Snow showers	ForecastView		Aguaceiros de neve
+Sunny	ForecastView		Soalheiro
+Text	ForecastView		Texto
+Thundershowers	ForecastView		Trovoadas com aguaceiros
+Thunderstorms	ForecastView		Trovoadas
+Tornado	ForecastView		Tornado
+Transparent	ForecastView		Transparente
+Tropical storm	ForecastView		Tempestade tropical
+Weather (The Replicant version)	ForecastView		Meteorologia (a versão em Replicante)
+Windy	ForecastView		Ventoso
+Change location	SelectionWindow		Alterar localização
+City:	SelectionWindow		Cidade:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Selecione cidade: cidade, país, região
+Change location…	MainWindow		Alterar localização…
+Edit	MainWindow		Editar
+Loading…	MainWindow		A carregar…
+Preferences…	MainWindow		Preferências…
+Quit	MainWindow		Sair
+Refresh	MainWindow		Atualizar
+View	MainWindow		Visualização
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Preferências
+Use degrees Celsius	PreferencesWindow		Usar graus Celsius
+Use degrees Delisle	PreferencesWindow		Usar graus Delisle
+Use degrees Fahrenheit	PreferencesWindow		Usar graus Fahrenheit
+Use degrees Rankine	PreferencesWindow		Usar graus Rankine
+Use units Kelvin	PreferencesWindow		Usar unidades Kelvin
+Weather	System name		Meteorologia

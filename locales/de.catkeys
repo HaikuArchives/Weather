@@ -52,6 +52,10 @@ Transparent	ForecastView		Transparent
 Tropical storm	ForecastView		Tropischer Sturm
 Weather (The Replicant version)	ForecastView		Wetter (die Replikant Version)
 Windy	ForecastView		Windig
+Change location	SelectionWindow		Standort ändern
+City:	SelectionWindow		Stadt:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Stadt auswählen: Stadt, Land, Region
 Change location…	MainWindow		Standort ändern…
 Edit	MainWindow		Bearbeiten
 Loading…	MainWindow		Lade Daten…
@@ -66,8 +70,4 @@ Use degrees Delisle	PreferencesWindow		Grad Delisle benutzen
 Use degrees Fahrenheit	PreferencesWindow		Grad Fahrenheit benutzen
 Use degrees Rankine	PreferencesWindow		Grad Rankine benutzen
 Use units Kelvin	PreferencesWindow		Kelvin benutzen
-Change location	SelectionWindow		Standort ändern
-City:	SelectionWindow		Stadt:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Stadt auswählen: Stadt, Land, Region
 Weather	System name		Wetter

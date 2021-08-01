@@ -52,6 +52,10 @@ Transparent	ForecastView		Transparente
 Tropical storm	ForecastView		Tormenta tropical
 Weather (The Replicant version)	ForecastView		Clima (versión replicante)
 Windy	ForecastView		Ventoso
+Change location	SelectionWindow		Cambiar ubicación
+City:	SelectionWindow		Ciudad:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Seleccionar ciudad: ciudad, país, región
 Change location…	MainWindow		Cambiar ubicación…
 Edit	MainWindow		Editar
 Loading…	MainWindow		Cargando…
@@ -66,8 +70,4 @@ Use degrees Delisle	PreferencesWindow		Usar grados Delisle
 Use degrees Fahrenheit	PreferencesWindow		Usar grados Fahrenheit
 Use degrees Rankine	PreferencesWindow		Usar grados Rankine
 Use units Kelvin	PreferencesWindow		Usar grados Kelvin
-Change location	SelectionWindow		Cambiar ubicación
-City:	SelectionWindow		Ciudad:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Seleccionar ciudad: ciudad, país, región
 Weather	System name		Clima

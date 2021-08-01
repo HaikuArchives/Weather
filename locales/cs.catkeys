@@ -1,0 +1,73 @@
+1	Czech	x-vnd.przemub.Weather	3662372937
+About Weather	ForecastView		O aplikaci počasí
+Background	ForecastView		Pozadí
+Blowing snow	ForecastView		Sněhová bouře
+Blustery	ForecastView		Bouřky
+Clear	ForecastView		Jasno
+Cloudy	ForecastView		Oblačno
+Cold	ForecastView		Zima
+Connecting…	ForecastView		Připojování…
+Connection error	ForecastView		Chyba spojení (koukněte se z okna)
+Default	ForecastView		Výchozí
+Drizzle	ForecastView		Mrholení
+Dust	ForecastView		Prašno
+Fair	ForecastView		Hezky
+Fog	ForecastView		Mlha
+Freezing drizzle	ForecastView		Mrznoucí mrholení
+Freezing rain	ForecastView		Mrznoucí déšť
+Hail	ForecastView		Kroupy
+Haze	ForecastView		Opar
+Heavy snow	ForecastView		Husté sněžení
+Hot	ForecastView		Teplo
+Hurricane	ForecastView		Hurikán
+Isolated thundershowers	ForecastView		Ojedinělé bouřky
+Isolated thunderstorms	ForecastView		Ojedinělé bouřky
+Light snow showers	ForecastView		Lehké sněhové přeháňky
+Loading…	ForecastView		Načítání…
+Mixed rain and hail	ForecastView		Déšť s kroupama
+Mixed rain and sleet	ForecastView		Déšť a plískanice
+Mixed rain and snow	ForecastView		Déšť se sněhem
+Mixed snow and sleet	ForecastView		Sníh a plískanice
+Mostly cloudy	ForecastView		Většinou oblačno
+No network	ForecastView		Žádná síť
+Not available	ForecastView		Nedostupné
+OK	ForecastView		OK
+Partly cloudy	ForecastView		Částečně oblačno
+Scattered showers	ForecastView		Rozptýlené přeháňky
+Scattered snow showers	ForecastView		Rozptýlené sněhové přeháňky
+Scattered thunderstorms	ForecastView		Ojedinělé přeháňky
+Severe thunderstorms	ForecastView		Silné bouřky
+Showers	ForecastView		Deštivo
+Sleet	ForecastView		Plískanice
+Smoky	ForecastView		Kouř
+Snow	ForecastView		Sníh
+Snow flurries	ForecastView		Sněhová bouře
+Snow showers	ForecastView		Sněhové přeháňky
+Sunny	ForecastView		Slunečno
+Text	ForecastView		Text
+Thundershowers	ForecastView		Bouřkové přeháňky
+Thunderstorms	ForecastView		Bouřky
+Tornado	ForecastView		Tornádo
+Transparent	ForecastView		Průhledné
+Tropical storm	ForecastView		Tropická bouře
+Weather (The Replicant version)	ForecastView		Počasí (replikant)
+Windy	ForecastView		Větrno
+Change location	SelectionWindow		Změnit umístění
+City:	SelectionWindow		Město:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Zvolte město: město, země, kraj
+Change location…	MainWindow		Změnit umístění…
+Edit	MainWindow		Upravit
+Loading…	MainWindow		Načítání…
+Preferences…	MainWindow		Možnosti…
+Quit	MainWindow		Ukončit
+Refresh	MainWindow		Obnovit
+View	MainWindow		Zobrazení
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Možnosti
+Use degrees Celsius	PreferencesWindow		Použít stupně Celsia
+Use degrees Delisle	PreferencesWindow		Použít stupně Delisla
+Use degrees Fahrenheit	PreferencesWindow		Použít stupně Fahrenheita
+Use degrees Rankine	PreferencesWindow		Použít stupně Rankina
+Use units Kelvin	PreferencesWindow		Použít jednotky Kelvina
+Weather	System name		Počasí

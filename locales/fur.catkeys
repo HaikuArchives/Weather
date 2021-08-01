@@ -1,0 +1,73 @@
+1	Friulian	x-vnd.przemub.Weather	3662372937
+About Weather	ForecastView		Informazions su Weather
+Background	ForecastView		Fonts
+Blowing snow	ForecastView		Bugadis di nêf
+Blustery	ForecastView		Aiarôs
+Clear	ForecastView		Clâr
+Cloudy	ForecastView		Nulât
+Cold	ForecastView		Frêt
+Connecting…	ForecastView		Daûr a conetisi…
+Connection error	ForecastView		Erôr di conession
+Default	ForecastView		Predefinît
+Drizzle	ForecastView		Ploie fine
+Dust	ForecastView		Polvar
+Fair	ForecastView		Biel timp
+Fog	ForecastView		Fumate
+Freezing drizzle	ForecastView		Ploie fine glaçade
+Freezing rain	ForecastView		Ploie glaçade
+Hail	ForecastView		Tampieste
+Haze	ForecastView		Caligo
+Heavy snow	ForecastView		Neveade fuarte
+Hot	ForecastView		Cjalt
+Hurricane	ForecastView		Uragan
+Isolated thundershowers	ForecastView		Scravaçs di temporâl isolâts
+Isolated thunderstorms	ForecastView		Temporâi isolâts
+Light snow showers	ForecastView		Neveadis lizeris
+Loading…	ForecastView		Daûr a cjariâ…
+Mixed rain and hail	ForecastView		Ploie e tampieste
+Mixed rain and sleet	ForecastView		Ploie e nevuscle
+Mixed rain and snow	ForecastView		Ploie e nêf
+Mixed snow and sleet	ForecastView		Nêf e nevuscle
+Mostly cloudy	ForecastView		Par plui nulât
+No network	ForecastView		Assence di rêt
+Not available	ForecastView		No disponibil
+OK	ForecastView		Va ben
+Partly cloudy	ForecastView		Pôc nulât
+Scattered showers	ForecastView		Plotis sparniçadis
+Scattered snow showers	ForecastView		Neveadis sparniçadis
+Scattered thunderstorms	ForecastView		Temporâi sparniçâts
+Severe thunderstorms	ForecastView		Temporâi fuarts
+Showers	ForecastView		Scravaçs
+Sleet	ForecastView		Nevuscle
+Smoky	ForecastView		Fumatele
+Snow	ForecastView		Nêf
+Snow flurries	ForecastView		Bugadis di nêf
+Snow showers	ForecastView		Neveadis
+Sunny	ForecastView		Soreglât
+Text	ForecastView		Test
+Thundershowers	ForecastView		Scravaçs di temporâl
+Thunderstorms	ForecastView		Temporâi
+Tornado	ForecastView		Bissebove
+Transparent	ForecastView		Trasparent
+Tropical storm	ForecastView		Burlaç tropicâl
+Weather (The Replicant version)	ForecastView		Meteo (La version Replicant)
+Windy	ForecastView		Aiarôs
+Change location	SelectionWindow		Cambie lûc
+City:	SelectionWindow		Citât:
+OK	SelectionWindow		Va ben
+Select city: city, country, region	SelectionWindow		Selezione citât: citât, paîs, regjon
+Change location…	MainWindow		Cambie lûc…
+Edit	MainWindow		Modifiche
+Loading…	MainWindow		Daûr a cjariâ…
+Preferences…	MainWindow		Preferencis…
+Quit	MainWindow		Jes
+Refresh	MainWindow		Inzorne
+View	MainWindow		Viodude
+OK	PreferencesWindow		Va ben
+Preferences	PreferencesWindow		Preferencis
+Use degrees Celsius	PreferencesWindow		Dopre grâts Celsius
+Use degrees Delisle	PreferencesWindow		Dopre grâts Delisle
+Use degrees Fahrenheit	PreferencesWindow		Dopre grâts Fahrenheit
+Use degrees Rankine	PreferencesWindow		Dopre grâts Rankine
+Use units Kelvin	PreferencesWindow		Dopre unitâts Kelvin
+Weather	System name		Meteo

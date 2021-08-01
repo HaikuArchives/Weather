@@ -1,0 +1,73 @@
+1	Turkish	x-vnd.przemub.Weather	3662372937
+About Weather	ForecastView		Hava Durumu hakkında
+Background	ForecastView		Arkaplan
+Blowing snow	ForecastView		Kar tipisi
+Blustery	ForecastView		Sert rüzgârlı
+Clear	ForecastView		Açık
+Cloudy	ForecastView		Bulutlu
+Cold	ForecastView		Soğuk
+Connecting…	ForecastView		Bağlanıyor
+Connection error	ForecastView		Bağlantı hatası
+Default	ForecastView		Öntanımlı
+Drizzle	ForecastView		Çiseliyor
+Dust	ForecastView		Tozlu
+Fair	ForecastView		Açık iyi
+Fog	ForecastView		Sis
+Freezing drizzle	ForecastView		Donan çisenti
+Freezing rain	ForecastView		Donan yağmur
+Hail	ForecastView		Dolu
+Haze	ForecastView		Puslu
+Heavy snow	ForecastView		Ağır kar yağışı
+Hot	ForecastView		Sıcak
+Hurricane	ForecastView		Kasırga
+Isolated thundershowers	ForecastView		Yalıtık gök gürültülü sağanak yağış
+Isolated thunderstorms	ForecastView		Yalıtık gök gürültülü fırtına
+Light snow showers	ForecastView		Hafif kar sağanağı
+Loading…	ForecastView		Yükleniyor...
+Mixed rain and hail	ForecastView		Yağmurla karışık dolu
+Mixed rain and sleet	ForecastView		Sulu sepken yağmur
+Mixed rain and snow	ForecastView		Karla karışık yağmur
+Mixed snow and sleet	ForecastView		Sulu kar
+Mostly cloudy	ForecastView		Genelde kapalı
+No network	ForecastView		Ağ yok
+Not available	ForecastView		Mevcut değil
+OK	ForecastView		Tamam
+Partly cloudy	ForecastView		Parçalı bulutlu
+Scattered showers	ForecastView		Aralıklarla sağanak yağış
+Scattered snow showers	ForecastView		Aralıklarla kar sağanağı
+Scattered thunderstorms	ForecastView		Aralıklarla gök gürültüsü
+Severe thunderstorms	ForecastView		Şiddetli gök gürültüsü
+Showers	ForecastView		Sağanak
+Sleet	ForecastView		Sepken
+Smoky	ForecastView		Dumanlı
+Snow	ForecastView		Kar
+Snow flurries	ForecastView		Kar fırtınası
+Snow showers	ForecastView		Kar sağanağı
+Sunny	ForecastView		Güneşli
+Text	ForecastView		Metin
+Thundershowers	ForecastView		Gök gürültülü sağanak yağış
+Thunderstorms	ForecastView		Gök gürültüsü
+Tornado	ForecastView		Hortum
+Transparent	ForecastView		Saydam
+Tropical storm	ForecastView		Tropik fırtına
+Weather (The Replicant version)	ForecastView		Hava Durumu (Yinelenmiş)
+Windy	ForecastView		Rüzgârlı
+Change location	SelectionWindow		Konum değiştir
+City:	SelectionWindow		Kent:
+OK	SelectionWindow		Tamam
+Select city: city, country, region	SelectionWindow		Kent seçin: kent, ülke, bölge
+Change location…	MainWindow		Konum değiştir…
+Edit	MainWindow		Düzen
+Loading…	MainWindow		Yükleniyor…
+Preferences…	MainWindow		Tercihler…
+Quit	MainWindow		Çık
+Refresh	MainWindow		Yenile
+View	MainWindow		Görünüm
+OK	PreferencesWindow		Tamam
+Preferences	PreferencesWindow		Tercihler
+Use degrees Celsius	PreferencesWindow		Celsius kullan
+Use degrees Delisle	PreferencesWindow		Delisle kullan
+Use degrees Fahrenheit	PreferencesWindow		Fahrenheit kullan
+Use degrees Rankine	PreferencesWindow		Rankine kullan
+Use units Kelvin	PreferencesWindow		Kelvin kullan
+Weather	System name		Hava Durumu
