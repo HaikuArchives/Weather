@@ -77,7 +77,8 @@ LIBPATHS =
 #	"#include <header>". Directories that contain the files in SRCS are
 #	NOT auto-included here.
 SYSTEM_INCLUDE_PATHS = /system/develop/headers/private/shared \
-					   /system/develop/headers/private/interface
+					   /system/develop/headers/private/interface \
+					   /system/develop/headers/private/netservices
 
 #	Additional paths paths to look for local headers. These use the form
 #	#include "header". Directories that contain the files in SRCS are
@@ -100,7 +101,7 @@ LOCALES = ca cs de en en_GB es fi fur it pl pt ro ru sv tr uk
 #	use. For example, setting DEFINES to "DEBUG=1" will cause the compiler
 #	option "-DDEBUG=1" to be used. Setting DEFINES to "DEBUG" would pass
 #	"-DDEBUG" on the compiler's command line.
-DEFINES =
+DEFINES = LIBNETAPI_DEPRECATED
 
 #	Specify the warning level. Either NONE (suppress all warnings),
 #	ALL (enable all warnings), or leave blank (enable default warnings).
