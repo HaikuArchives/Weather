@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Nexus6 (Davide Alfano) <nexus6.haiku@icloud.com>
+ * Copyright 2022 Davide Alfano (Nexus6) <nexus6.haiku@icloud.com>
  * Copyright 2020 Raheem Idowu <abdurraheemidowu@gmail.com>
  * All rights reserved. Distributed under the terms of the MIT license.
  * Weather data source using the MetaWeather API at: metaweather.com
@@ -305,7 +305,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			
 			message->AddString("day", "Tue");
 			messenger.SendMessage(message);
-			//delete message;
+			delete message;
 		}
 		
 		//Get current weather
@@ -314,7 +314,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		message->AddInt32("condition", 1);
 		message->AddString("text", "test");
 		messenger.SendMessage(message);
-		//delete message;
+		delete message;
 		
 
 }

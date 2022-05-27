@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Nexus6 (Davide Alfano) <nexus6.haiku@icloud.com>
+ * Copyright 2022 Davide Alfano (Nexus6) <nexus6.haiku@icloud.com>
  * Copyright 2020 Raheem Idowu <abdurraheemidowu@gmail.com>
  * All rights reserved. Distributed under the terms of the MIT license.
  */

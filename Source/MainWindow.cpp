@@ -252,6 +252,7 @@ MainWindow::AboutRequested()
 		B_TRANSLATE_SYSTEM_NAME("Weather"), "application/x-vnd.przemub.Weather");
 
 	const char* kAuthors[] = {
+		"Davide Alfano (Nexus6)",
 		"Adrián Arroyo Calle",
 		"Akshay Agarwal",
 		"Bach Nguyen",

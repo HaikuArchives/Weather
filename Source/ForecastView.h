@@ -1,4 +1,5 @@
 /*
+ * Copyright 2022 Davide Alfano (Nexus6) <nexus6.haiku@icloud.com>
  * Copyright 2015 Adrián Arroyo Calle <adrian.arroyocalle@gmail.com>
  * Copyright 2015 Przemysław Buczkowski <przemub@przemub.pl>
  * Copyright 2014 George White
