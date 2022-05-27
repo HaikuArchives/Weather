@@ -1,4 +1,5 @@
 /*
+ * Copyright 2022 Nexus6 (Davide Alfano) <nexus6.haiku@icloud.com>
  * Copyright 2015 Adrián Arroyo Calle <adrian.arroyocalle@gmail.com>
  * Copyright 2015 Przemysław Buczkowski <przemub@przemub.pl>
  * Copyright 2014 George White
@@ -28,15 +29,16 @@
 #include <UrlRequest.h>
 
 #include "ForecastView.h"
-#include "NetListener.h"
+#include "WSOpenMeteo.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
+#include "MainWindow.h"
 
 const float kDraggerSize = 7;
 const char* kSettingsFileName = "Weather settings";
 
-const char* kDefaultCityName = "Menlo Park, CA";
-const char* kDefaultCityId = "2449435";
+const char* kDefaultCityName = "San Francisco";
+const char* kDefaultCityId = "2487956";
 const bool  kDefaultShowForecast = true;
 
 const int32 kMaxUpdateDelay = 240;
@@ -47,7 +49,6 @@ extern const char* kSignature;
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "ForecastView"
-
 
 class TransparentButton : public BButton {
 	public:
@@ -399,12 +400,13 @@ ForecastView::MessageReceived(BMessage *msg)
 		}
 	}
 
+	uint32 what = msg->what;
 	switch (msg->what) {
 	case kDataMessage: {
 		BString text("");
 
 		msg->FindInt32("temp", &fTemperature);
-		msg->FindInt32("code", &fCondition);
+		msg->FindInt32("condition", &fCondition);
 		msg->FindString("text", &text);
 
 		BString tempText = FormatString(fDisplayUnit,fTemperature);
@@ -423,7 +425,7 @@ ForecastView::MessageReceived(BMessage *msg)
 		msg->FindInt32("forecast", &forecastNum);
 		msg->FindInt32("high", &high);
 		msg->FindInt32("low", &low);
-		msg->FindInt32("code", &condition);
+		msg->FindInt32("condition", &condition);
 		msg->FindString("text", &text);
 		msg->FindString("day", &day);
 
@@ -509,7 +511,8 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fClear, 'rGFX', "Artwork/weather_clear.hvif");
 	_LoadIcons(fClouds, 'rGFX',	"Artwork/weather_clouds.hvif");
 	_LoadIcons(fCold, 'rGFX',	"Artwork/weather_cold.hvif");
-	_LoadIcons(fDrizzle, 'rGFX',	"Artwork/weather_drizzle.hvif");
+	_LoadIcons(fLightDrizzle, 'rGFX',	"Artwork/weather_drizzle.hvif");
+	_LoadIcons(fModerateDenseDrizzle, 'rGFX',	"Artwork/weather_icon.hvif");
 	_LoadIcons(fFewClouds, 'rGFX', "Artwork/weather_few_clouds.hvif");
 	_LoadIcons(fFog, 'rGFX', "Artwork/weather_fog.hvif");
 	_LoadIcons(fFreezingDrizzle, 'rGFX', "Artwork/weather_freezing_drizzle.hvif");
@@ -530,6 +533,7 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fTornado, 'rGFX', "Artwork/weather_tornado.hvif");
 	_LoadIcons(fTropicalStorm, 'rGFX', "Artwork/weather_tropical_storm.hvif");
 	_LoadIcons(fCloud, 'rGFX', "Artwork/weather_cloud.hvif");
+	_LoadIcons(fPartlyCloudy, 'rGFX', "Artwork/weather_partly_cloudy.hvif");
 	_LoadIcons(fHurricane, 'rGFX', "Artwork/weather_hurricane.hvif");
 	_LoadIcons(fSmoky, 'rGFX', "Artwork/weather_smoky.hvif");
 	_LoadIcons(fScatteredSnowShowers, 'rGFX', "Artwork/weather_scattered_snow_showers.hvif");
@@ -546,7 +550,8 @@ ForecastView::_DeleteBitmaps()
 	_DeleteIcons(fClear);
 	_DeleteIcons(fClouds);
 	_DeleteIcons(fCold);
-	_DeleteIcons(fDrizzle);
+	_DeleteIcons(fLightDrizzle);
+	_DeleteIcons(fModerateDenseDrizzle);
 	_DeleteIcons(fFewClouds);
 	_DeleteIcons(fFog);
 	_DeleteIcons(fFreezingDrizzle);
@@ -637,60 +642,64 @@ dummy_label:
 const char *
 ForecastView::_GetWeatherMessage(int32 condition)
 {
-	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
-		case 0:	return B_TRANSLATE("Tornado");
-		case 1:	return B_TRANSLATE("Tropical storm");
-		case 2:	return B_TRANSLATE("Hurricane");
-		case 3:	return B_TRANSLATE("Severe thunderstorms");
-		case 4:	return B_TRANSLATE("Thunderstorms");
-		case 5:	return B_TRANSLATE("Mixed rain and snow");
-		case 6:	return B_TRANSLATE("Mixed rain and sleet");
-		case 7: return B_TRANSLATE("Mixed snow and sleet");
-		case 8:	return B_TRANSLATE("Freezing drizzle");
-		case 9:	return B_TRANSLATE("Drizzle");
-		case 10: return B_TRANSLATE("Freezing rain");
-												// 11 - 12 It isn't an error repeated
-		case 11: return B_TRANSLATE("Showers");
-		case 12: return B_TRANSLATE("Showers");
-		case 13: return B_TRANSLATE("Snow flurries");
-		case 14: return B_TRANSLATE("Light snow showers");
-		case 15: return B_TRANSLATE("Blowing snow");
-		case 16: return B_TRANSLATE("Snow");
-		case 17: return B_TRANSLATE("Hail");
-		case 18: return B_TRANSLATE("Sleet");
-		case 19: return B_TRANSLATE("Dust");
-		case 20: return B_TRANSLATE("Fog");
-		case 21: return B_TRANSLATE("Haze");
-		case 22: return B_TRANSLATE("Smoky");
-		case 23: return B_TRANSLATE("Blustery");
-		case 24: return B_TRANSLATE("Windy");
-		case 25: return B_TRANSLATE("Cold");
-		case 26: return B_TRANSLATE("Cloudy");
-		case 27: return B_TRANSLATE("Mostly cloudy");
-		case 28: return B_TRANSLATE("Mostly cloudy");
-		case 29: return B_TRANSLATE("Partly cloudy");
-		case 30: return B_TRANSLATE("Partly cloudy");
-		case 31: return B_TRANSLATE("Clear");
-		case 32: return B_TRANSLATE("Sunny");
-		case 33: return B_TRANSLATE("Fair");
-		case 34: return B_TRANSLATE("Fair");
-		case 35: return B_TRANSLATE("Mixed rain and hail");
-		case 36: return B_TRANSLATE("Hot");
-		case 37: return B_TRANSLATE("Isolated thunderstorms");
-											// 38 - 39  It isn't an error repeated
-							// 39 is PM Showers, Probably a documentation error
-		case 38: return B_TRANSLATE("Scattered thunderstorms");
-		case 39: return B_TRANSLATE("Scattered thunderstorms");
-		case 40: return B_TRANSLATE("Scattered showers");
-		case 41: return B_TRANSLATE("Heavy snow");
-		case 42: return B_TRANSLATE("Scattered snow showers");
-		case 43: return B_TRANSLATE("Heavy snow");
-		case 44: return B_TRANSLATE("Partly cloudy");
-		case 45: return B_TRANSLATE("Thundershowers");
-		case 46: return B_TRANSLATE("Snow showers");
-		case 47: return B_TRANSLATE("Isolated thundershowers");
-		case 3200: return B_TRANSLATE("Not available");
-
+//	switch (condition) {
+//		case WC_TORNADO:				return B_TRANSLATE("Tornado");
+//		case WC_TROPICAL_STORM:			return B_TRANSLATE("Tropical storm");
+//		case WC_HURRICANE:				return B_TRANSLATE("Hurricane");
+//		case WC_SEVERE_THUNDERSTORM:	return B_TRANSLATE("Severe thunderstorms");
+//		case WC_STORM:					return B_TRANSLATE("Thunderstorms");
+//		case WC_MIXED_SNOW_RAIN:		return B_TRANSLATE("Mixed rain and snow");
+//		case WC_FREEZING_DRIZZLE:		return B_TRANSLATE("Freezing drizzle");
+//		case WC_DRIZZE:					return B_TRANSLATE("Drizzle");
+//		case WC_RAINING: 				return B_TRANSLATE("Raining");
+//		case WC_RAINING_SCATTERED: 		return B_TRANSLATE("Showers");
+//		case WC_LIGHT_SNOW: 			return B_TRANSLATE("Light snow showers");
+//		case WC_SNOW: 					return B_TRANSLATE("Snow");
+//		case WC_FOG: 					return B_TRANSLATE("Fog");
+//		case WC_SMOKY: 					return B_TRANSLATE("Smoky");
+//		case WC_WINDY: 					return B_TRANSLATE("Windy");
+//		case WC_COLD: 					return B_TRANSLATE("Cold");
+//		case WC_CLOUD: 					return B_TRANSLATE("Cloudy");
+//		case WC_MOSTLY_CLOUDY_NIGHT: 	return B_TRANSLATE("Mostly cloudy");
+//		case WC_MOSTLY_CLOUDY_DAY: 		return B_TRANSLATE("Mostly cloudy");
+//		case WC_FEW_CLOUDS: 			return B_TRANSLATE("Partly cloudy");
+//		case WC_CLEAR_NIGHT: 			return B_TRANSLATE("Clear");
+//		case WC_ISOLATED_THUNDERSTORM: 	return B_TRANSLATE("Isolated thunderstorms");
+//		case WC_SCATTERED_SNOW_SHOWERS: return B_TRANSLATE("Scattered showers");
+//		case WC_SNOW_SHOWERS: 			return B_TRANSLATE("Snow showers");
+//		case WC_ISOLATED_THUNDERSHOWERS:return B_TRANSLATE("Isolated thundershowers");
+//		case WC_NOT_AVALIABLE: 			return B_TRANSLATE("Not available");
+//	}
+	
+	switch (condition) {
+		case WC_CLEAR_SKY:					return B_TRANSLATE("Clear sky");
+		case WC_MAINLY_CLEAR:				return B_TRANSLATE("Mainly clear");
+		case WC_PARTLY_CLOUDY:				return B_TRANSLATE("Partly cloudy");
+		case WC_OVERCAST:					return B_TRANSLATE("Overcast");
+		case WC_FOG:						return B_TRANSLATE("Fog");
+		case WC_DEPOSITING_RIME_FOG:		return B_TRANSLATE("Depositing rime fog");
+		case WC_LIGHT_DRIZZLE:				return B_TRANSLATE("Light drizzle");
+		case WC_MODERATE_DRIZZLE:			return B_TRANSLATE("Moderate drizzle");
+		case WC_DENSE_DRIZZLE:				return B_TRANSLATE("Dense drizzle");
+		case WC_FREEZING_LIGHT_DRIZZLE:		return B_TRANSLATE("Freezing light drizzle");
+		case WC_FREEZING_DENSE_DRIZZLE:		return B_TRANSLATE("Freezing dense drizze");
+		case WC_SLIGHT_RAIN:				return B_TRANSLATE("Slight rain");
+		case WC_MODERATE_RAIN:				return B_TRANSLATE("Moderate rain");
+		case WC_HEAVY_RAIN:					return B_TRANSLATE("Heavy rain");
+		case WC_LIGHT_FREEZING_RAIN:		return B_TRANSLATE("Light freezing rain");
+		case WC_HEAVY_FREEZING_RAIN:		return B_TRANSLATE("Heavy freezing rain");
+		case WC_SLIGHT_SNOW_FALL:			return B_TRANSLATE("Slight snow fall");
+		case WC_MODERATE_SNOW_FALL:			return B_TRANSLATE("Moderate snow fall");
+		case WC_HEAVY_SNOW_FALL:			return B_TRANSLATE("Heavy snow fall");
+		case WC_SNOW_GRAINS:				return B_TRANSLATE("Snow grains");
+		case WC_SLIGHT_RAIN_SHOWERS:		return B_TRANSLATE("Slight rain showers");
+		case WC_MODERATE_RAIN_SHOWERS:		return B_TRANSLATE("Moderate rain showers");
+		case WC_HEAVY_RAIN_SHOWERS:			return B_TRANSLATE("heavy rain showers");
+		case WC_SLIGHT_SNOW_SHOWERS:		return B_TRANSLATE("Slight snow showers");
+		case WC_HEAVY_SNOW_SHOWERS:			return B_TRANSLATE("Heavy snow showers");
+		case WC_THUNDERSTORM:				return B_TRANSLATE("Thunderstorm");
+		case WC_THUNDERSTORM_SLIGHT_HAIL:	return B_TRANSLATE("Thunderstorm with slight hail");
+		case WC_THUNDERSTORM_HEAVY_HAIL:	return B_TRANSLATE("Thunderstorm with heavey hail");
 	}
 	return B_TRANSLATE("Not available");
 }
@@ -709,60 +718,75 @@ int32 ForecastView::Temperature()
 BBitmap*
 ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
-	switch (condition) {	// https://developer.yahoo.com/weather/documentation.html
-		case 0:	return fTornado[iconSize];				// tornado
-		case 1:	return fTropicalStorm[iconSize];		// tropical storm
-		case 2:	return fHurricane[iconSize];			// hurricane
-		case 3:	return fSevereThunderstorm[iconSize];	// severe thunderstorms
-		case 4:	return fStorm[iconSize];				// thunderstorms
-		case 5:	return fMixedSnowRain[iconSize];		// mixed rain and snow
-		case 6:											// mixed rain and sleet
-		case 7: return fSnow[iconSize];					// mixed snow and sleet
-		case 8:	return fFreezingDrizzle[iconSize];		// freezing drizzle
-		case 9:	return fDrizzle[iconSize];				// drizzle
-		case 10: return fRaining[iconSize];				// freezing rain
-												// 11 - 12 It isn't an error repeated
-		case 11:										// showers
-		case 12: return fRainingScattered[iconSize];	// showers
-		case 13:										// snow flurries
-		case 14: return fLightSnow[iconSize];			// light snow showers
-		case 15:										// blowing snow
-		case 16:										// snow
-		case 17:										// hail
-		case 18: return fSnow[iconSize];				// sleet
-		case 19: break;									//*dust
-		case 20: return fFog[iconSize];					// fog
-		case 21: break;									//*haze
-		case 22: return fSmoky[iconSize];				//*smoky
-		case 23: break;									//*blustery
-		case 24: return fWindy[iconSize];				//*windy
-		case 25: return fCold[iconSize];				//*cold
-		case 26: return	fCloud[iconSize];				// cloudy
-		case 27: return fMostlyCloudyNight[iconSize];	// mostly cloudy (night)
-		case 28: return fClouds[iconSize];				// mostly cloudy (day)
-		case 29: return fNightFewClouds[iconSize];		// partly cloudy (night)
-		case 30: return fFewClouds[iconSize];			// partly cloudy (day)
-		case 31: return fClearNight[iconSize];			// clear (night)
-		case 32: return fClear[iconSize];				// sunny
-		case 33: return fClearNight[iconSize];			// fair (night)
-		case 34: return fFewClouds[iconSize];			// fair (day)
-		case 35: return fRainingScattered[iconSize];	// mixed rain and hail
-		case 36: return fShining[iconSize];				// hot
-		case 37: return fIsolatedThunderstorm[iconSize];				// isolated thunderstorms
-											// 38 - 39  It isn't an error repeated
-							// 39 is PM Showers, Probably a documentation error
-		case 38: return fStorm[iconSize];				// scattered thunderstorms
-		case 39: return fRainingScattered[iconSize];	// scattered thunderstorms
-		case 40: return fRainingScattered[iconSize];	// scattered showers
-		case 41:										// heavy snow
-		case 42: return fScatteredSnowShowers[iconSize];	// scattered snow showers
-		case 43: return fSnow[iconSize];				// heavy snow
-		case 44: return fClouds[iconSize]; 				// partly cloudy
-		case 45: return fStorm[iconSize];				// thundershowers
-		case 46: return fSnowShowers[iconSize];			// snow showers
-		case 47: return fIsolatedThundershowers[iconSize];				// isolated thundershowers
-		case 3200: break;								//*not available
-
+//	switch (condition) {
+//		case WC_TORNADO:				return fTornado[iconSize];
+//		case WC_TROPICAL_STORM:			return fTropicalStorm[iconSize];
+//		case WC_HURRICANE:				return fHurricane[iconSize];
+//		case WC_SEVERE_THUNDERSTORM:	return fSevereThunderstorm[iconSize];
+//		case WC_STORM:					return fStorm[iconSize];
+//		case WC_MIXED_SNOW_RAIN:		return fMixedSnowRain[iconSize];
+//		case WC_SNOW:					return fSnow[iconSize];
+//		case WC_FREEZING_DRIZZLE:		return fFreezingDrizzle[iconSize];
+//		case WC_DRIZZE:					return fDrizzle[iconSize];
+//		case WC_RAINING: 				return fRaining[iconSize];
+//		case WC_LIGHT_SNOW: 			return fLightSnow[iconSize];
+//		case WC_FOG: 					return fFog[iconSize];
+//		case WC_SMOKY: 					return fSmoky[iconSize];
+//		case WC_WINDY: 					return fWindy[iconSize];
+//		case WC_CLOUD: 					return	fCloud[iconSize];
+//		case WC_MOSTLY_CLOUDY_NIGHT: 	return fMostlyCloudyNight[iconSize];
+//		case WC_MOSTLY_CLOUDY_DAY: 		return fClouds[iconSize];
+//		case WC_NIGHT_FEW_CLOUDS: 		return fNightFewClouds[iconSize];
+//		case WC_CLEAR_NIGHT:			return fClearNight[iconSize];
+//		case WC_FEW_CLOUDS: 			return fFewClouds[iconSize];
+//		case WC_RAINING_SCATTERED: 		return fRainingScattered[iconSize];
+//		case WC_SHINING: 				return fShining[iconSize];
+//		case WC_SCATTERED_SNOW_SHOWERS: return fScatteredSnowShowers[iconSize];
+//		case WC_SNOW_SHOWERS: 			return fSnowShowers[iconSize];
+//		case WC_ISOLATED_THUNDERSHOWERS:return fIsolatedThundershowers[iconSize];
+//		case WC_NOT_AVALIABLE: break;
+//	}
+	
+	switch (condition) {
+		
+		case WC_CLEAR_SKY: 					return fClear[iconSize];
+		case WC_MAINLY_CLEAR: 				return fFewClouds[iconSize];
+		case WC_PARTLY_CLOUDY: 				return fPartlyCloudy[iconSize];
+		case WC_OVERCAST: 					return fClouds[iconSize];
+		
+		case WC_FOG: 						return fFog[iconSize];
+		case WC_DEPOSITING_RIME_FOG: 		return fSmoky[iconSize];
+		
+		case WC_LIGHT_DRIZZLE:				return fLightDrizzle[iconSize];
+		case WC_MODERATE_DRIZZLE:			return fModerateDenseDrizzle[iconSize];
+		case WC_DENSE_DRIZZLE:				return fModerateDenseDrizzle[iconSize];
+		case WC_FREEZING_LIGHT_DRIZZLE:		return fFreezingDrizzle[iconSize];
+		case WC_FREEZING_DENSE_DRIZZLE:		return fFreezingDrizzle[iconSize];
+		
+		case WC_SLIGHT_RAIN: 				return fRainingScattered[iconSize];
+		case WC_MODERATE_RAIN:				return fRaining[iconSize];		
+		case WC_HEAVY_RAIN:					return fIsolatedThundershowers[iconSize];
+		
+		case WC_SLIGHT_RAIN_SHOWERS: 		return fRainingScattered[iconSize];	
+		case WC_MODERATE_RAIN_SHOWERS:		return fIsolatedThundershowers[iconSize];
+		case WC_HEAVY_RAIN_SHOWERS:			return fIsolatedThundershowers[iconSize];
+		
+		case WC_LIGHT_FREEZING_RAIN:		return fMixedSnowRain[iconSize];
+		case WC_HEAVY_FREEZING_RAIN:		return fSnow[iconSize];
+		
+		case WC_SLIGHT_SNOW_FALL:			return fSnowShowers[iconSize];
+		case WC_MODERATE_SNOW_FALL:			return fScatteredSnowShowers[iconSize];
+		case WC_HEAVY_SNOW_FALL:			return fSnow[iconSize];
+		
+		case WC_SNOW_GRAINS:				return fMixedSnowRain[iconSize];
+		
+		case WC_SLIGHT_SNOW_SHOWERS:		return fScatteredSnowShowers[iconSize];
+		case WC_HEAVY_SNOW_SHOWERS:			return fSnowShowers[iconSize];
+		
+		case WC_THUNDERSTORM:				return fIsolatedThunderstorm[iconSize];
+		case WC_THUNDERSTORM_SLIGHT_HAIL:	return fAlert[iconSize];
+		case WC_THUNDERSTORM_HEAVY_HAIL:	return fSevereThunderstorm[iconSize];
+		
 	}
 	return NULL; // Change to N/A
 }
@@ -963,15 +987,12 @@ ForecastView::_DownloadDataFunc(void *cookie)
 void
 ForecastView::_DownloadData()
 {
-	BString urlString("https://query.yahooapis.com/v1/public/yql");
-	if (fShowForecast || fForcedForecast)
-		urlString << "?q=select+*+from+weather.forecast+";
-	else
-		urlString << "?q=select+item.condition+from+weather.forecast+";
 
-	urlString << "where+woeid+=+" << fCityId << "&format=json";
-
-	NetListener listener(this, WEATHER_REQUEST);
+	// BString urlString("https://www.metaweather.com/api/location/");
+	// urlString << fCityId << "/";
+	WSOpenMeteo listener(this, WEATHER_REQUEST);
+	BString urlString = listener.GetUrl("");
+	
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
 		&listener);

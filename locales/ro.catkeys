@@ -52,10 +52,6 @@ Transparent	ForecastView		Transparent
 Tropical storm	ForecastView		Furtună tropicală
 Weather (The Replicant version)	ForecastView		Weather (Versiunea replicant)
 Windy	ForecastView		Vântoasă
-Change location	SelectionWindow		Schimbă locația
-City:	SelectionWindow		Oraș:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Selectează orașul: oraș, țară, regiune
 Change location…	MainWindow		Schimbă locația...
 Edit	MainWindow		Editează
 Loading…	MainWindow		Se încarcă...
@@ -70,4 +66,8 @@ Use degrees Delisle	PreferencesWindow		Utilizează grade Delisle
 Use degrees Fahrenheit	PreferencesWindow		Utilizează grade Fahrenheit
 Use degrees Rankine	PreferencesWindow		Utilizează grade Rankine
 Use units Kelvin	PreferencesWindow		Utilizează unități Kelvin
+Change location	SelectionWindow		Schimbă locația
+City:	SelectionWindow		Oraș:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Selectează orașul: oraș, țară, regiune
 Weather	System name		Weather

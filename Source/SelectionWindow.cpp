@@ -19,7 +19,7 @@
 
 #include "CitiesListSelectionWindow.h"
 #include "MainWindow.h"
-#include "NetListener.h"
+#include "WSOpenMeteo.h"
 #include "SelectionWindow.h"
 
 #undef B_TRANSLATION_CONTEXT
@@ -146,15 +146,15 @@ SelectionWindow::_FindIdFunc(void *cookie)
 void
 SelectionWindow::_FindId()
 {
-	BString urlString("https://query.yahooapis.com/v1/public/yql");
-	urlString << "?q=select+%20*%20+from+geo.places+"
-		<< "where+text+=%22" << fCityControl->Text() << "%22%20and%20placeTypeName%3D%22Town%22&format=json";
+	BString urlString("https://www.metaweather.com/api/location/search/?query=");
+	urlString << fCityControl->Text();
+	// Filter out characters that trip up BUrl
 	urlString.ReplaceAll(" ", "+");
-	urlString.ReplaceAll("<", "");	// Filter out characters that trip up BUrl
+	urlString.ReplaceAll("<", "");
 	urlString.ReplaceAll(">", "");
 	urlString.ReplaceAll("\"", "");
-	
-	NetListener listener(this, CITY_REQUEST);
+	WSOpenMeteo listener(this, CITY_REQUEST);
+
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
 		&listener);

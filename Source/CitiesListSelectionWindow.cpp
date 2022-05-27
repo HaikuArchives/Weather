@@ -18,7 +18,6 @@
 #include <Window.h>
 
 #include "MainWindow.h"
-#include "NetListener.h"
 #include "CitiesListSelectionWindow.h"
 
 #undef B_TRANSLATION_CONTEXT

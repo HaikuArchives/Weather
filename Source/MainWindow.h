@@ -30,6 +30,13 @@ const uint32 kCitySelectionMessage = 'SelC';
 const uint32 kOpenPreferencesMessage = 'OPrf';
 const uint32 kToggleDeskbarReplicantMessage = 'TDkB';
 
+const uint32 kCitiesListMessage = 'lstC';
+const uint32 kDataMessage = 'Data';
+const uint32 kForecastDataMessage = 'FDta';
+const uint32 kFailureMessage = 'Fail';
+const uint32 kUpdateCityName = 'UpCN';
+const uint32 kUpdateTTLMessage = 'TTLm';
+
 class MainWindow : public BWindow {
 public:
 					MainWindow(void);

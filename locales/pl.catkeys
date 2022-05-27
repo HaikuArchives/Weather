@@ -52,10 +52,6 @@ Transparent	ForecastView		Przezroczysty
 Tropical storm	ForecastView		Burza tropikalna
 Weather (The Replicant version)	ForecastView		Pogoda (replikant)
 Windy	ForecastView		Wietrznie
-Change location	SelectionWindow		Zmień lokalizację
-City:	SelectionWindow		Miasto:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Wybierz miasto: miasto, kraj, region
 Change location…	MainWindow		Zmień lokalizację…
 Edit	MainWindow		Edytuj
 Loading…	MainWindow		Ładowanie…
@@ -70,4 +66,10 @@ Use degrees Delisle	PreferencesWindow		Używaj stopni Delislego
 Use degrees Fahrenheit	PreferencesWindow		Używaj stopni Fahrenheita
 Use degrees Rankine	PreferencesWindow		Używaj stopni Rankine'a
 Use units Kelvin	PreferencesWindow		Używaj kelwinów
+Change location	SelectionWindow		Zmień lokalizację
+City:	SelectionWindow		Miasto:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Wybierz miasto: miasto, kraj, region
 Weather	System name		Pogoda
+
+

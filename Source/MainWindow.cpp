@@ -27,7 +27,6 @@
 #include <Roster.h>
 
 #include "MainWindow.h"
-#include "NetListener.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 #include "ForecastDeskbarView.h"
