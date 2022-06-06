@@ -403,11 +403,11 @@ ForecastView::MessageReceived(BMessage *msg)
 	uint32 what = msg->what;
 	switch (msg->what) {
 	case kDataMessage: {
-		BString text("");
+		//BString text("");
 
 		msg->FindInt32("temp", &fTemperature);
 		msg->FindInt32("condition", &fCondition);
-		msg->FindString("text", &text);
+		//msg->FindString("text", &text);
 
 		BString tempText = FormatString(fDisplayUnit,fTemperature);
 		fTemperatureView->SetText(tempText.String());

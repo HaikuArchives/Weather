@@ -8,6 +8,8 @@
 #include <Messenger.h>
 #include <stdio.h>
 
+#include <parsedate.h>
+
 // remove
 #include <StorageKit.h>
 #include <Alert.h>
@@ -88,7 +90,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		return;
 	}
 	
-// pragma remove
+//	#pragma mark - remove
 // temp - save parsed data to file
 //	BPath p;
 //	BFile f;
@@ -197,7 +199,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 					}
 				}
 				
-				// weathercodeunroll
+				// weathercode unroll
 				if (strcmp(name,"weathercode")==0) {
 					BMessage codeMessage;
 					if (weatherData.FindMessage(name, &codeMessage) == B_OK) {
@@ -302,8 +304,37 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			message->AddInt32("low", (int) dailyWeather[tDay].minTemperature);
 			message->AddInt32("condition", dailyWeather[tDay].weatherCode);
 			
+			time_t dateTime = parsedate(dailyWeather[tDay].date, PARSEDATE_RELATIVE_TIME);
+			BDate date = BDate(dateTime);
+			BString dayOfWeek;
+			switch(date.DayOfWeek())
+			{
+				case 1:
+					dayOfWeek = "Mon";
+					break;
+				case 2:
+					dayOfWeek = "Tue";
+					break;
+				case 3:
+					dayOfWeek = "Wed";
+					break;
+				case 4:
+					dayOfWeek = "Thu";
+					break;
+				case 5:
+					dayOfWeek = "Fri";
+					break;
+				case 6:
+					dayOfWeek = "Sat";
+					break;	
+				case 7:
+					dayOfWeek = "Sun";
+					break;	
+				default:
+					dayOfWeek = "Undefined";
+			}
 			
-			message->AddString("day", "Tue");
+			message->AddString("day", dayOfWeek.String());
 			messenger.SendMessage(message);
 			delete message;
 		}
@@ -318,6 +349,18 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		
 
 }
+
+// BString
+// EventSync::(time_t timeT)
+// {
+	// BString timeString;
+	// BDateFormat dateFormat;
+
+	// dateFormat.SetDateFormat(B_SHORT_DATE_FORMAT, "y-MM-dd'T'HH:mm:ssXXX");
+	// dateFormat.Format(timeString, timeT,
+		// B_SHORT_DATE_FORMAT);
+	// return timeString;
+// }
 
 void
 WSOpenMeteo::_ProcessCityData(bool success)
