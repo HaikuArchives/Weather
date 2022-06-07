@@ -1082,7 +1082,12 @@ FormatString(DisplayUnit unit, int32 temp)
 	BString tempString="";
 	switch (unit) {
 		case CELSIUS : {
-			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "°C";
+			// Open Meteo allows to request temperatures either in Fahreneit or Celsius
+			// the response contains the unit measure so no conversion is required
+			// and the unit measure settings should only be used to request temperatures in a given unit measure
+			// Other unit measures are unsupported by Open Meteo and should be removed from the preference panel
+			// tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "°C";
+			tempString << temp << "°C";
 			break;
 		}
 		case FAHRENHEIT : {

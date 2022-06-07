@@ -7,7 +7,7 @@
 #include <Json.h>
 #include <Messenger.h>
 #include <stdio.h>
-
+#include <memory>
 #include <parsedate.h>
 
 // remove
@@ -61,7 +61,12 @@ BString
 WSOpenMeteo::GetUrl(BString cityId) {
 	//BString urlString("https://www.openmeteo.com/api/location/");
 	//urlString << fCityId << "/";
-	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=45.49624&longitude=9.29323&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe%2FBerlin");
+	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=45.49&longitude=9.29&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin");
+	
+//	double latitude = 45.49624;
+//	double longitude= 9.29323;
+//	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin");
+https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin
 	return urlString;
 }
 
@@ -72,41 +77,43 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 	BString jsonString;
 
 	if (!success) {
-		messenger.SendMessage(new BMessage(kFailureMessage));
+		auto message = std::make_shared<BMessage>(kFailureMessage);
+		messenger.SendMessage(message.get());
 		return;
 	}
 
 	jsonString.SetTo(static_cast<const char*>(fResponseData.Buffer()),
 		fResponseData.BufferLength());
 
+	
 	BMessage parsedData;
 	BJson parser;
 
 	status_t status = parser.Parse(jsonString, parsedData);
 	if (status == B_BAD_DATA) {
 		printf("JSON Parser error for data:\n%s\n", jsonString.String());
-		BMessage* message = new BMessage(kFailureMessage);
-		messenger.SendMessage(message);
+		auto message = std::make_shared<BMessage>(kFailureMessage);
+		messenger.SendMessage(message.get());
 		return;
 	}
 	
 //	#pragma mark - remove
-// temp - save parsed data to file
-//	BPath p;
-//	BFile f;
-//
-//	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) == B_OK) {
-//		p.Append("weather_parsed_data");
-//
-//		f.SetTo(p.Path(), B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
-//		if (f.InitCheck() == B_OK)
-//			parsedData.Flatten(&f);
-//	}
-// temp - save parsed data to file
+// 	temp - save parsed data to file
+	BPath p;
+	BFile f;
+
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) == B_OK) {
+		p.Append("weather_parsed_data");
+
+		f.SetTo(p.Path(), B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
+		if (f.InitCheck() == B_OK)
+			parsedData.Flatten(&f);
+	}
+// 	temp - save parsed data to file
 	
 	const int maxDaysForecast = 5;
 	struct {
-		BString	date;
+		double	date;
 		double 	maxTemperature;
 		double 	minTemperature;
 		double 	weatherCode;
@@ -118,12 +125,12 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		BString title = "Milan";
 		// TO-DO: get city name from Geocoding service;
 		//parsedData.FindString("title", &title);
-		BMessage* message = new BMessage(kUpdateCityName);
+		auto message = std::make_shared<BMessage>(kUpdateCityName);
 		message->AddString("city", title);
-		messenger.SendMessage(message);
+		messenger.SendMessage(message.get());
 		
 		//Get weather forecast
-		BMessage weatherData;
+		
 		char *name;
 		uint32 type;
 		int32 count, condition;
@@ -132,7 +139,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		
 		int dayCount = 0;
 		
-
+		BMessage weatherData;
 		
 		if (parsedData.FindMessage("daily", &weatherData) == B_OK) {
 			
@@ -143,22 +150,23 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 					BMessage dayMessage;
 					if (weatherData.FindMessage(name, &dayMessage) == B_OK) {
 				
-						BString date;
-						char yearStr[4];
-						char monthStr[2];
-						char dayStr[2];
-						int weekDay;
-		
-						char id[1] = "";
-						sprintf(id,"%d",i);
+						double date;
+//						BString date;
+//						char yearStr[4];
+//						char monthStr[2];
+//						char dayStr[2];
+//						int weekDay;
+//		
+//						char id[1] = "";
+//						sprintf(id,"%d",i);
 						
 						int tCount;
 						uint32 tType;
 						char *tName;
-						for (int32 tDay = 0; dayMessage.GetInfo(B_STRING_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
+						for (int32 tDay = 0; dayMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
 							
-							if (dayMessage.FindString(tName,&date) == B_OK)
-								dailyWeather[tDay].date = date.String();
+							if (dayMessage.FindDouble(tName,&date) == B_OK)
+								dailyWeather[tDay].date = date;//date.String();
 						}
 					}
 				}
@@ -297,15 +305,17 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			}
 		}*/
 		
+		//Get forecast
 		for (int tDay = 0; tDay < maxDaysForecast; tDay++) {
-			BMessage *message = new BMessage(kForecastDataMessage);
+			auto message = std::make_shared<BMessage>(kForecastDataMessage);
 			message->AddInt32("forecast", tDay);
 			message->AddInt32("high", (int) dailyWeather[tDay].maxTemperature);
 			message->AddInt32("low", (int) dailyWeather[tDay].minTemperature);
 			message->AddInt32("condition", dailyWeather[tDay].weatherCode);
 			
-			time_t dateTime = parsedate(dailyWeather[tDay].date, PARSEDATE_RELATIVE_TIME);
-			BDate date = BDate(dateTime);
+			//time_t dateTime = parsedate(dailyWeather[tDay].date, PARSEDATE_RELATIVE_TIME);
+			//BDate date = BDate(dateTime);
+			BDate date = BDate((time_t)dailyWeather[tDay].date);
 			BString dayOfWeek;
 			switch(date.DayOfWeek())
 			{
@@ -335,19 +345,15 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			}
 			
 			message->AddString("day", dayOfWeek.String());
-			messenger.SendMessage(message);
-			delete message;
+			messenger.SendMessage(message.get());
 		}
 		
 		//Get current weather
-		BMessage* message = new BMessage(kDataMessage);
+		auto message = std::make_shared<BMessage>(kDataMessage);
 		message->AddInt32("temp", (int) 40);
 		message->AddInt32("condition", 1);
 		message->AddString("text", "test");
-		messenger.SendMessage(message);
-		delete message;
-		
-
+		messenger.SendMessage(message.get());
 }
 
 // BString
