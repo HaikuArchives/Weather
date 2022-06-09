@@ -38,7 +38,7 @@ const float kDraggerSize = 7;
 const char* kSettingsFileName = "Weather settings";
 
 const char* kDefaultCityName = "San Francisco";
-const char* kDefaultCityId = "2487956";
+const int32 kDefaultCityId = 5391959;
 const bool  kDefaultShowForecast = true;
 
 const int32 kMaxUpdateDelay = 240;
@@ -218,7 +218,7 @@ ForecastView::_ApplyState(BMessage* archive)
 	if (archive->FindString("city", &fCity)!= B_OK)
 		fCity = kDefaultCityName;
 
-	if (archive->FindString("cityId", &fCityId)!= B_OK)
+	if (archive->FindInt32("cityId", &fCityId)!= B_OK)
 		fCityId = kDefaultCityId;
 
 	int32 unit;
@@ -287,7 +287,7 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	status = into->AddString("city", fCity);
 	if (status != B_OK)
 		return status;
-	status = into->AddString("cityId", fCityId);
+	status = into->AddInt32("cityId", fCityId);
 	if (status != B_OK)
 		return status;
 	status = into->AddInt32("displayUnit", (int32)fDisplayUnit);
@@ -808,13 +808,13 @@ ForecastView::_GetDayText(const BString& dayName) const
 }
 
 void
-ForecastView::SetCityId(BString cityId)
+ForecastView::SetCityId(int32 cityId)
 {
 	fCityId = cityId;
 }
 
 
-BString
+int32
 ForecastView::CityId()
 {
 	return fCityId;
@@ -833,6 +833,17 @@ ForecastView::SetCityName(BString city)
 	fCityView->SetText(city);
 }
 
+void
+ForecastView::SetLatitude(double latitude)
+{
+	fLatitude = latitude;
+}
+
+void
+ForecastView::SetLongitude(double longitude)
+{
+	fLongitude = longitude;
+}
 
 BString
 ForecastView::CityName()
@@ -991,7 +1002,7 @@ ForecastView::_DownloadData()
 	// BString urlString("https://www.metaweather.com/api/location/");
 	// urlString << fCityId << "/";
 	WSOpenMeteo listener(this, WEATHER_REQUEST);
-	BString urlString = listener.GetUrl("");
+	BString urlString = listener.GetUrl(fLongitude, fLatitude);
 	
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),

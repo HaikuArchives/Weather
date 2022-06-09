@@ -26,14 +26,16 @@ public:
 	virtual	void		RequestCompleted(BUrlRequest* caller,
 							bool success);
 	
-	BString				GetUrl(BString cityId);
+	BString				GetUrl(double longitude, double latitude);
 	
 private:
-			void		_ProcessWeatherData(bool success);
-			void		_ProcessCityData(bool success);
-			BHandler*	fHandler;
-			RequestType fRequestType;
-			BMallocIO	fResponseData;
+		
+	void		_ProcessWeatherData(bool success);
+	void		_ProcessCityData(bool success);
+	BHandler*	fHandler;
+	RequestType fRequestType;
+	BMallocIO	fResponseData;
+	void		SerializeBMessage(BMessage* message, BString fileName);
 };
 
 

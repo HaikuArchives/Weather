@@ -21,8 +21,7 @@ const int32 kCloseCitySelectionWindowMessage = 'SUCe';
 
 class SelectionWindow : public BWindow {
 public:
-					SelectionWindow(BRect rect, MainWindow* parent,
-						BString city, BString cityId);
+					SelectionWindow(BRect rect, MainWindow* parent, BString city, int32 cityId);
 	
 	virtual void	MessageReceived(BMessage *msg);
 	virtual bool	QuitRequested();
@@ -38,7 +37,7 @@ private:
 	MainWindow*		fParent;
 
 	BString			fCity;
-	BString			fCityId;
+	int32			fCityId;
 	
 	BTextControl* 	fCityControl;
 };

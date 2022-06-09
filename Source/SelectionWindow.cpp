@@ -25,9 +25,7 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "SelectionWindow"
 
-SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city,
-	BString cityId)
-	:
+SelectionWindow::SelectionWindow(BRect rect, MainWindow* parent, BString city, int32 cityId):
 	BWindow(rect, B_TRANSLATE("Change location"), B_TITLED_WINDOW,
 		B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE
 		| B_AUTO_UPDATE_SIZE_LIMITS),
@@ -74,7 +72,7 @@ SelectionWindow::MessageReceived(BMessage *msg)
 		break;
 		}
 	case kDataMessage:
-		msg->FindString("id", &fCityId);
+		msg->FindInt32("id", &fCityId);
 		_UpdateCity();
 		QuitRequested();
 		Close();
@@ -106,7 +104,7 @@ SelectionWindow::_UpdateCity()
 	BMessage* message = new BMessage(kUpdateCityMessage);
 	
 	message->AddString("city", fCityControl->Text());
-	message->AddString("id", fCityId);
+	message->AddInt32("id", fCityId);
 	
 	messenger.SendMessage(message);
 }
@@ -146,7 +144,7 @@ SelectionWindow::_FindIdFunc(void *cookie)
 void
 SelectionWindow::_FindId()
 {
-	BString urlString("https://www.metaweather.com/api/location/search/?query=");
+	BString urlString("https://geocoding-api.open-meteo.com/v1/search?name=");
 	urlString << fCityControl->Text();
 	// Filter out characters that trip up BUrl
 	urlString.ReplaceAll(" ", "+");

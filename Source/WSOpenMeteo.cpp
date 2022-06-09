@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <memory>
 #include <parsedate.h>
+#include <string>
 
 // remove
 #include <StorageKit.h>
@@ -58,15 +59,20 @@ WSOpenMeteo::RequestCompleted(BUrlRequest* caller,
 }
 
 BString
-WSOpenMeteo::GetUrl(BString cityId) {
+WSOpenMeteo::GetUrl(double longitude, double latitude) {
 	//BString urlString("https://www.openmeteo.com/api/location/");
 	//urlString << fCityId << "/";
-	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=45.49&longitude=9.29&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin");
 	
-//	double latitude = 45.49624;
-//	double longitude= 9.29323;
-//	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin");
-https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin
+	BString sLatitude(std::to_string(latitude).c_str());
+	BString sLongitude(std::to_string(longitude).c_str());
+	
+	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=");
+	urlString << sLatitude << "&longitude=" << sLongitude << "&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin";
+	
+	//	double latitude = 45.49624;
+	//	double longitude= 9.29323;
+	//	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin");
+	// https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin
 	return urlString;
 }
 
@@ -97,19 +103,8 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		return;
 	}
 	
-//	#pragma mark - remove
-// 	temp - save parsed data to file
-	BPath p;
-	BFile f;
 
-	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) == B_OK) {
-		p.Append("weather_parsed_data");
-
-		f.SetTo(p.Path(), B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
-		if (f.InitCheck() == B_OK)
-			parsedData.Flatten(&f);
-	}
-// 	temp - save parsed data to file
+	SerializeBMessage(&parsedData, "weather_parsed_data");
 	
 	const int maxDaysForecast = 5;
 	struct {
@@ -119,254 +114,186 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		double 	weatherCode;
 	} dailyWeather[maxDaysForecast];
 
-	BString detailMessage;
-	if (!(parsedData.FindString("detail", &detailMessage) == B_OK)) {		
+//	BString detailMessage;
+//	if (!(parsedData.FindString("detail", &detailMessage) == B_OK)) {		
 		//Get name of location
-		BString title = "Milan";
+		//BString title = "Milan";
 		// TO-DO: get city name from Geocoding service;
 		//parsedData.FindString("title", &title);
 		auto message = std::make_shared<BMessage>(kUpdateCityName);
-		message->AddString("city", title);
+		//message->AddString("city", title);
 		messenger.SendMessage(message.get());
+//	}
+	
+	//Get weather forecast
+	char *name;
+	uint32 type;
+	int32 count, condition;
+	double high, low, temp;
+	BString code, text;
+	
+	int dayCount = 0;
+	
+	BMessage weatherData;
+	
+	if (parsedData.FindMessage("daily", &weatherData) == B_OK) {
 		
-		//Get weather forecast
-		
-		char *name;
-		uint32 type;
-		int32 count, condition;
-		double high, low, temp;
-		BString code, text;
-		
-		int dayCount = 0;
-		
-		BMessage weatherData;
-		
-		if (parsedData.FindMessage("daily", &weatherData) == B_OK) {
+		for (int32 i = 0; weatherData.GetInfo(B_MESSAGE_TYPE, i, &name, &type, &count) == B_OK; i++) {
 			
-			for (int32 i = 0; weatherData.GetInfo(B_MESSAGE_TYPE, i, &name, &type, &count) == B_OK; i++) {
-				
-				// time unroll
-				if (strcmp(name,"time")==0) {
-					BMessage dayMessage;
-					if (weatherData.FindMessage(name, &dayMessage) == B_OK) {
-				
-						double date;
-//						BString date;
-//						char yearStr[4];
-//						char monthStr[2];
-//						char dayStr[2];
-//						int weekDay;
-//		
-//						char id[1] = "";
-//						sprintf(id,"%d",i);
+			// time unroll
+			if (strcmp(name,"time")==0) {
+				BMessage dayMessage;
+				if (weatherData.FindMessage(name, &dayMessage) == B_OK) {
+			
+					double date;
+					int tCount;
+					uint32 tType;
+					char *tName;
+					for (int32 tDay = 0; dayMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
 						
-						int tCount;
-						uint32 tType;
-						char *tName;
-						for (int32 tDay = 0; dayMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
-							
-							if (dayMessage.FindDouble(tName,&date) == B_OK)
-								dailyWeather[tDay].date = date;//date.String();
-						}
+						if (dayMessage.FindDouble(tName,&date) == B_OK)
+							dailyWeather[tDay].date = date;//date.String();
 					}
 				}
-				
-				// min temperature unroll
-				if (strcmp(name,"temperature_2m_min")==0) {
-					BMessage tempMessage;
-					if (weatherData.FindMessage(name, &tempMessage) == B_OK) {
-				
-						double minTemperature;
-						
-						int tCount;
-						uint32 tType;
-						char *tName;
-						for (int32 tDay = 0; tempMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
-							
-							if (tempMessage.FindDouble(tName,&minTemperature) == B_OK)
-								dailyWeather[tDay].minTemperature = (int)minTemperature;
-						}
-					}
-				}
-				
-				// max temperature unroll
-				if (strcmp(name,"temperature_2m_max")==0) {
-					BMessage tempMessage;
-					if (weatherData.FindMessage(name, &tempMessage) == B_OK) {
-				
-						double minTemperature;
-						
-						int tCount;
-						uint32 tType;
-						char *tName;
-						for (int32 tDay = 0; tempMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
-							
-							if (tempMessage.FindDouble(tName,&minTemperature) == B_OK)
-								dailyWeather[tDay].maxTemperature = (int)minTemperature;
-						}
-					}
-				}
-				
-				// weathercode unroll
-				if (strcmp(name,"weathercode")==0) {
-					BMessage codeMessage;
-					if (weatherData.FindMessage(name, &codeMessage) == B_OK) {
-				
-						double code;
-						
-						int tCount;
-						uint32 tType;
-						char *tName;
-						for (int32 tDay = 0; codeMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
-							
-							if (codeMessage.FindDouble(tName,&code) == B_OK)
-								dailyWeather[tDay].weatherCode = (int)code;
-						}
-					}
-				}
-				
 			}
+			
+			// min temperature unroll
+			if (strcmp(name,"temperature_2m_min")==0) {
+				BMessage tempMessage;
+				if (weatherData.FindMessage(name, &tempMessage) == B_OK) {
+			
+					double minTemperature;
+					
+					int tCount;
+					uint32 tType;
+					char *tName;
+					for (int32 tDay = 0; tempMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
+						
+						if (tempMessage.FindDouble(tName,&minTemperature) == B_OK)
+							dailyWeather[tDay].minTemperature = (int)minTemperature;
+					}
+				}
+			}
+			
+			// max temperature unroll
+			if (strcmp(name,"temperature_2m_max")==0) {
+				BMessage tempMessage;
+				if (weatherData.FindMessage(name, &tempMessage) == B_OK) {
+			
+					double minTemperature;
+					
+					int tCount;
+					uint32 tType;
+					char *tName;
+					for (int32 tDay = 0; tempMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
+						
+						if (tempMessage.FindDouble(tName,&minTemperature) == B_OK)
+							dailyWeather[tDay].maxTemperature = (int)minTemperature;
+					}
+				}
+			}
+			
+			// weathercode unroll
+			if (strcmp(name,"weathercode")==0) {
+				BMessage codeMessage;
+				if (weatherData.FindMessage(name, &codeMessage) == B_OK) {
+			
+					double code;
+					
+					int tCount;
+					uint32 tType;
+					char *tName;
+					for (int32 tDay = 0; codeMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
+						
+						if (codeMessage.FindDouble(tName,&code) == B_OK)
+							dailyWeather[tDay].weatherCode = (int)code;
+					}
+				}
+			}
+			
 		}
-	}			
-				
-			/*
-			
-			for (int32 i = 0; weatherData.GetInfo(B_MESSAGE_TYPE, i, &name, &type, &count) == B_OK; i++) {
-				BMessage forecastDayMessage;
-				if (weatherData.FindMessage(name, &forecastDayMessage) == B_OK) {
-					forecastDayMessage.FindString("weather_state_abbr", &code);
-					forecastDayMessage.FindString("weather_state_name", &text);
-					forecastDayMessage.FindDouble("min_temp", &low);
-					forecastDayMessage.FindDouble("max_temp", &high);
-					forecastDayMessage.FindDouble("the_temp", &temp);
-
-					//Weather assumes farenheit for some reason
-					low = (low * (9/5)) + 32;
-					high = (high * (9/5)) + 32;
-					temp = (temp * (9/5)) + 32;
-
-
-					if (code == "sn" || code == "h" || code == "sl")
-						condition = WC_SNOW;
-					if (code == "t")
-						condition = WC_STORM;
-					if (code == "hr")
-						condition = WC_RAINING;
-					if (code == "lr")
-						condition = WC_DRIZZE;
-					if (code == "s")
-						condition = WC_RAINING_SCATTERED;
-					if (code == "hc")
-						condition = WC_MOSTLY_CLOUDY_DAY;
-					if (code == "lc")
-						condition = WC_CLOUD;
-					if (code == "c")
-						condition = WC_FEW_CLOUDS;
-						
-					//Get the weekday
-					static int t[] = {0, 3, 2, 5, 0, 3,
-						5, 1, 4, 6, 2, 4};
-						
-					BString date;
-					char yearStr[4];
-					char monthStr[2];
-					char dayStr[2];
-					int weekDay;
-					
-					forecastDayMessage.FindString("applicable_date", &date);
-					date.CopyInto(yearStr, 0, 4);
-					date.CopyInto(monthStr, 5, 2);
-					date.CopyInto(dayStr, 8, 2);
-					
-					int year, month, day;
-					sscanf(yearStr, "%d", &year);
-					sscanf(monthStr, "%d", &month);
-					sscanf(dayStr, "%d", &day);
-
-					year -= month < 3;
-					weekDay = (year + year / 4 - year / 100 + 
-						year / 400 + t[month - 1] + day) % 7;					
-					
-					if (i == 0) {
-						BMessage* message = new BMessage(kDataMessage);
-						message->AddInt32("temp", (int) temp);
-						message->AddInt32("condition", condition);
-						message->AddString("text", text);
-						messenger.SendMessage(message);
-					} else {
-						BMessage* message = new BMessage(kForecastDataMessage);
-						message->AddInt32("forecast", i-1);
-						message->AddInt32("high", (int) high);
-						message->AddInt32("low", (int) low);
-						message->AddInt32("condition", condition);
-						messenger.SendMessage(message);
-					}
-				}
-			}
-		}*/
+	}		
+	
+	//Get forecast
+	for (int tDay = 0; tDay < maxDaysForecast; tDay++) {
+		auto message = std::make_shared<BMessage>(kForecastDataMessage);
+		message->AddInt32("forecast", tDay);
+		message->AddInt32("high", (int) dailyWeather[tDay].maxTemperature);
+		message->AddInt32("low", (int) dailyWeather[tDay].minTemperature);
+		message->AddInt32("condition", dailyWeather[tDay].weatherCode);
 		
-		//Get forecast
-		for (int tDay = 0; tDay < maxDaysForecast; tDay++) {
-			auto message = std::make_shared<BMessage>(kForecastDataMessage);
-			message->AddInt32("forecast", tDay);
-			message->AddInt32("high", (int) dailyWeather[tDay].maxTemperature);
-			message->AddInt32("low", (int) dailyWeather[tDay].minTemperature);
-			message->AddInt32("condition", dailyWeather[tDay].weatherCode);
-			
-			//time_t dateTime = parsedate(dailyWeather[tDay].date, PARSEDATE_RELATIVE_TIME);
-			//BDate date = BDate(dateTime);
-			BDate date = BDate((time_t)dailyWeather[tDay].date);
-			BString dayOfWeek;
-			switch(date.DayOfWeek())
-			{
-				case 1:
-					dayOfWeek = "Mon";
-					break;
-				case 2:
-					dayOfWeek = "Tue";
-					break;
-				case 3:
-					dayOfWeek = "Wed";
-					break;
-				case 4:
-					dayOfWeek = "Thu";
-					break;
-				case 5:
-					dayOfWeek = "Fri";
-					break;
-				case 6:
-					dayOfWeek = "Sat";
-					break;	
-				case 7:
-					dayOfWeek = "Sun";
-					break;	
-				default:
-					dayOfWeek = "Undefined";
-			}
-			
-			message->AddString("day", dayOfWeek.String());
-			messenger.SendMessage(message.get());
+		// get unix timestamp
+		BDate date = BDate((time_t)dailyWeather[tDay].date);
+		BString dayOfWeek;
+		switch(date.DayOfWeek())
+		{
+			case 1:
+				dayOfWeek = "Mon";
+				break;
+			case 2:
+				dayOfWeek = "Tue";
+				break;
+			case 3:
+				dayOfWeek = "Wed";
+				break;
+			case 4:
+				dayOfWeek = "Thu";
+				break;
+			case 5:
+				dayOfWeek = "Fri";
+				break;
+			case 6:
+				dayOfWeek = "Sat";
+				break;	
+			case 7:
+				dayOfWeek = "Sun";
+				break;	
+			default:
+				dayOfWeek = "Undefined";
 		}
 		
-		//Get current weather
-		auto message = std::make_shared<BMessage>(kDataMessage);
-		message->AddInt32("temp", (int) 40);
-		message->AddInt32("condition", 1);
-		message->AddString("text", "test");
+		message->AddString("day", dayOfWeek.String());
 		messenger.SendMessage(message.get());
+	}
+	
+	
+	//Get current weather
+	BMessage currentWeatherData;
+	if (parsedData.FindMessage("current_weather", &currentWeatherData) == B_OK) {
+		
+		double temperature;
+		double condition;
+		double time;
+		
+		auto currentMessage = std::make_shared<BMessage>(kDataMessage);
+		
+		if (currentWeatherData.FindDouble("temperature",&temperature) == B_OK)
+			currentMessage->AddInt32("temp", (int) temperature);
+			
+		if (currentWeatherData.FindDouble("weathercode",&condition) == B_OK)
+			currentMessage->AddInt32("condition", (int) condition);
+			
+		//if (currentWeatherData.FindDouble("time",&time) == B_OK)
+		//	currentMessage->AddString("text", BString(std::to_string(temperature)));
+		
+		messenger.SendMessage(currentMessage.get());
+	
+	}
 }
 
-// BString
-// EventSync::(time_t timeT)
-// {
-	// BString timeString;
-	// BDateFormat dateFormat;
+void 
+WSOpenMeteo::SerializeBMessage(BMessage *message, BString fileName) {
+	BPath p;
+	BFile f;
 
-	// dateFormat.SetDateFormat(B_SHORT_DATE_FORMAT, "y-MM-dd'T'HH:mm:ssXXX");
-	// dateFormat.Format(timeString, timeT,
-		// B_SHORT_DATE_FORMAT);
-	// return timeString;
-// }
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) == B_OK) {
+		p.Append(fileName);
+
+		f.SetTo(p.Path(), B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
+		if (f.InitCheck() == B_OK)
+			message->Flatten(&f);
+	}
+}
 
 void
 WSOpenMeteo::_ProcessCityData(bool success)
@@ -386,6 +313,8 @@ WSOpenMeteo::_ProcessCityData(bool success)
 
 	status_t status = parser.Parse(jsonString, parsedData);
 
+	SerializeBMessage(&parsedData, "weather_parsed_location");
+
 	if (status == B_BAD_DATA) {
 		printf("JSON Parser error for data:\n%s\n", jsonString.String());
 		BMessage* message = new BMessage(kFailureMessage);
@@ -396,21 +325,48 @@ WSOpenMeteo::_ProcessCityData(bool success)
 	char *name;
 	uint32 type;
 	int32 count;
-	double woeid;
-	BString locationName;
-	BMessage *message = new BMessage(kCitiesListMessage);
-	for (int32 i = 0; parsedData.GetInfo(B_MESSAGE_TYPE, i, &name, &type, &count) == B_OK; i++) {
-		BMessage locationMessage;
-		if (parsedData.FindMessage(name, &locationMessage) == B_OK) {
-			locationMessage.FindString("title", &locationName);
-			locationMessage.FindDouble("woeid", &woeid);
-
-			char woeidStr[10];
-			sprintf(woeidStr, "%.0f", woeid);
-
-			message->AddString("city", locationName);
-			message->AddString("woeid", woeidStr);
+	
+	auto message = std::make_shared<BMessage>(kCitiesListMessage);
+	
+	BMessage results;
+	if (parsedData.FindMessage("results", &results) == B_OK)
+	{
+		for (int32 i = 0; results.GetInfo(B_MESSAGE_TYPE, i, &name, &type, &count) == B_OK; i++) {
+			
+			BMessage locationMessage;
+			BString locationName = "";
+			double	latitude = 0L;
+			double	longitude = 0L;
+			double 	countryId = 0L;
+			double 	id  = 0L;
+			BString	country = "";
+			BString admin1 = "";
+			BString admin2= "";
+			BString admin3 = "";
+			BString	extendedInfo = "";
+			
+			if (results.FindMessage(name, &locationMessage) == B_OK) {
+				locationMessage.FindDouble("id", &id);
+				locationMessage.FindString("name", &locationName);
+				locationMessage.FindString("country", &country);
+				locationMessage.FindDouble("country_id", &countryId);
+				locationMessage.FindString("admin1", &admin1);
+				locationMessage.FindString("admin2", &admin2);
+				locationMessage.FindString("admin3", &admin3);
+				extendedInfo << locationName << ", " << country << " (" << admin1 << ", " << admin2 << ", " << admin3 << ")";
+				locationMessage.FindDouble("longitude", &longitude);
+				locationMessage.FindDouble("latitude", &latitude);
+	
+				message->AddInt32("id", (int)id);
+				message->AddString("city", locationName);
+				message->AddString("country", country);
+				message->AddInt32("country_id", countryId);
+				message->AddString("extended_info", extendedInfo);		
+				message->AddDouble("longitude", longitude);
+				message->AddDouble("latitude", latitude);
+			}
 		}
 	}
-	messenger.SendMessage(message);
+	SerializeBMessage(message.get(),"weather_location_message");
+	messenger.SendMessage(message.get());
 }
