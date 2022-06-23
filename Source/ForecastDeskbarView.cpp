@@ -83,7 +83,7 @@ ForecastDeskbarView::MessageReceived(BMessage* message)
 	{
 		BString weatherDetailsText;
 		weatherDetailsText << "Temperature: " << FormatString(fForecastView->Unit(), fForecastView->Temperature()) << "\n";
-		weatherDetailsText << "Condition: " << fForecastView->GetStatus() << "\n";
+		weatherDetailsText << "Condition: " << fForecastView->GetCondition() << "\n";
 		weatherDetailsText << "Location: " << fForecastView->CityName();
 		SetToolTip(weatherDetailsText.String());
 

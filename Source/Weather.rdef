@@ -11,7 +11,7 @@ resource app_version {
 	internal = 0,
 
 	short_info = "A simple weather application",
-	long_info = "An application showing the weather forecast"
+	long_info = "An application showing the weather forecast provided by Open Meteo http://www.open-meteo.org"
 };
 
 
