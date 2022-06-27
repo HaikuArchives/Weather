@@ -40,6 +40,8 @@ const char* kSettingsFileName = "Weather settings";
 const char* kDefaultCityName = "San Francisco";
 const int32 kDefaultCityId = 5391959;
 const bool  kDefaultShowForecast = true;
+const double kDefaultLongitude =  -122.431297;
+const double kDefaultLatitude =  37.773972;
 
 const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
@@ -219,7 +221,13 @@ ForecastView::_ApplyState(BMessage* archive)
 		fCity = kDefaultCityName;
 
 	if (archive->FindInt32("cityId", &fCityId)!= B_OK)
-		fCityId = kDefaultCityId;
+		fCityId =  kDefaultCityId;
+		
+	if (archive->FindDouble("longitude", &fLongitude)!= B_OK)
+		fLongitude = kDefaultLongitude;
+		
+	if (archive->FindDouble("latitude", &fLatitude)!= B_OK)
+		fLatitude = kDefaultLatitude;
 
 	int32 unit;
 	if (archive->FindInt32("displayUnit", &unit) != B_OK) {
@@ -294,6 +302,12 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	if (status != B_OK)
 		return status;
 	status = into->AddBool("showForecast", fShowForecast);
+	if (status != B_OK)
+		return status;
+	status = into->AddDouble("latitude", fLatitude);
+	if (status != B_OK)
+		return status;
+	status = into->AddDouble("longitude", fLongitude);
 	if (status != B_OK)
 		return status;
 
