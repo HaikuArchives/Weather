@@ -128,8 +128,8 @@ MainWindow::MessageReceived(BMessage *msg)
 	case kUpdatePrefMessage:
 		int32 unit;
 		msg->FindInt32("displayUnit", &unit);
-		fForecastView->Reload();
 		fForecastView->SetDisplayUnit((DisplayUnit)unit);
+		fForecastView->Reload();
 		break;
 	case kUpdateMessage:
 		if (fForecastView->IsConnected()) {
