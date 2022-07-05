@@ -38,26 +38,27 @@ PreferencesWindow::PreferencesWindow(BRect frame, MainWindow* parent,
 	layout->SetInsets(spacing / 2);
 	this->AddChild(view);
 
-	fCelsiusButton = new BRadioButton(B_TRANSLATE("Use degrees Celsius"), NULL);
-	fFahrenheitButton = new BRadioButton(B_TRANSLATE("Use degrees Fahrenheit"), NULL);
-	fKelvinButton = new BRadioButton(B_TRANSLATE("Use units Kelvin"), NULL);
-	fRankineButton = new BRadioButton(B_TRANSLATE("Use degrees Rankine"), NULL);
-	fDelisleButton = new BRadioButton(B_TRANSLATE("Use degrees Delisle"), NULL);
+	// Open Meteo supports Celsius and Fahrenheit degrees only
+	fCelsiusButton = new BRadioButton(B_TRANSLATE("Use Celsius °C"), NULL);
+	fFahrenheitButton = new BRadioButton(B_TRANSLATE("Use Fahrenheit °F"), NULL);
+	//fKelvinButton = new BRadioButton(B_TRANSLATE("Use units Kelvin"), NULL);
+	//fRankineButton = new BRadioButton(B_TRANSLATE("Use degrees Rankine"), NULL);
+	//fDelisleButton = new BRadioButton(B_TRANSLATE("Use degrees Delisle"), NULL);
 
 	layout->AddView(fCelsiusButton);
 	layout->AddView(fFahrenheitButton);
-	layout->AddView(fKelvinButton);
-	layout->AddView(fRankineButton);
-	layout->AddView(fDelisleButton);
+	//layout->AddView(fKelvinButton);
+	//layout->AddView(fRankineButton);
+	//layout->AddView(fDelisleButton);
 	layout->AddView(new BButton("ok", B_TRANSLATE("OK"),
 		new BMessage(kSavePrefMessage)));
 
 	switch (unit) {
 		case CELSIUS: fCelsiusButton->SetValue(1);break;
 		case FAHRENHEIT: fFahrenheitButton->SetValue(1);break;
-		case KELVIN: fKelvinButton->SetValue(1);break;
-		case RANKINE: fRankineButton->SetValue(1);break;
-		case DELISLE: fDelisleButton->SetValue(1);break;
+		//case KELVIN: fKelvinButton->SetValue(1);break;
+		//case RANKINE: fRankineButton->SetValue(1);break;
+		//case DELISLE: fDelisleButton->SetValue(1);break;
 	}
 }
 
@@ -89,12 +90,12 @@ PreferencesWindow::_UpdatePreferences()
 		unit = CELSIUS;
 	if (fFahrenheitButton->Value())
 		unit = FAHRENHEIT;
-	if (fKelvinButton->Value())
-		unit = KELVIN;
-	if (fRankineButton->Value())
-		unit = RANKINE;
-	if (fDelisleButton->Value())
-		unit = DELISLE;
+	//if (fKelvinButton->Value())
+	//	unit = KELVIN;
+	//if (fRankineButton->Value())
+	//	unit = RANKINE;
+	//if (fDelisleButton->Value())
+	//	unit = DELISLE;
 
 	message->AddInt32("displayUnit", (int32)unit);
 

@@ -1012,11 +1012,8 @@ ForecastView::_DownloadDataFunc(void *cookie)
 void
 ForecastView::_DownloadData()
 {
-
-	// BString urlString("https://www.metaweather.com/api/location/");
-	// urlString << fCityId << "/";
 	WSOpenMeteo listener(this, WEATHER_REQUEST);
-	BString urlString = listener.GetUrl(fLongitude, fLatitude);
+	BString urlString = listener.GetUrl(fLongitude, fLatitude, fDisplayUnit);
 	
 	BUrlRequest* request =
 		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
@@ -1119,20 +1116,8 @@ FormatString(DisplayUnit unit, int32 temp)
 			tempString << temp << "°F";
 			break;
 		}
-		case KELVIN : {
-			tempString << static_cast<int>(floor((temp + 459.67) * 5/9)) << "K";
-			break;
-		}
-		case RANKINE : {
-			tempString << static_cast<int>(floor(temp + 459.67)) << "°R";
-			break;
-		}
-		case DELISLE : {
-			tempString << static_cast<int>(floor((212 - temp) * 5/6)) << "°D";
-			break;
-		}
 		default: {
-			tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "°C";
+			tempString << temp << "°C";
 			break;
 		}
 	}

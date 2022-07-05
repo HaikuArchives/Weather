@@ -17,6 +17,7 @@
 
 #include "WSOpenMeteo.h"
 #include "MainWindow.h"
+#include "PreferencesWindow.h"
 
 WSOpenMeteo::WSOpenMeteo(BHandler* handler, RequestType requestType)
 	:
@@ -59,7 +60,7 @@ WSOpenMeteo::RequestCompleted(BUrlRequest* caller,
 }
 
 BString
-WSOpenMeteo::GetUrl(double longitude, double latitude) {
+WSOpenMeteo::GetUrl(double longitude, double latitude, DisplayUnit unit) {
 	//BString urlString("https://www.openmeteo.com/api/location/");
 	//urlString << fCityId << "/";
 	
@@ -68,6 +69,18 @@ WSOpenMeteo::GetUrl(double longitude, double latitude) {
 	
 	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=");
 	urlString << sLatitude << "&longitude=" << sLongitude << "&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin";
+	
+	// Temperature unit measure
+	switch (unit) {
+		case FAHRENHEIT:
+			urlString << "&temperature_unit=fahrenheit";
+		break;
+		case CELSIUS:
+			urlString << "&temperature_unit=celsius";
+		break;
+		default: //CELSIUS
+			urlString << "&temperature_unit=celsius";
+	}
 	
 	//	double latitude = 45.49624;
 	//	double longitude= 9.29323;

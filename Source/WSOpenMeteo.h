@@ -11,6 +11,8 @@
 #include <String.h>
 #include <UrlProtocolListener.h>
 
+#include "PreferencesWindow.h"
+
 enum RequestType {
 	CITY_REQUEST,
 	WEATHER_REQUEST
@@ -26,7 +28,7 @@ public:
 	virtual	void		RequestCompleted(BUrlRequest* caller,
 							bool success);
 	
-	BString				GetUrl(double longitude, double latitude);
+	BString				GetUrl(double longitude, double latitude, DisplayUnit unit);
 	
 private:
 		

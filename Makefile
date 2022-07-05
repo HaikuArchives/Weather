@@ -24,7 +24,6 @@ SRCS = \
 	 Source/App.cpp  \
 	 Source/LabelView.cpp\  \
 	 Source/WSOpenMeteo.cpp  \
-	 Source/WSOpenMeteo.cpp \
 	 Source/MainWindow.cpp \
 	 Source/PreferencesWindow.cpp \
 	 Source/SelectionWindow.cpp \
@@ -64,7 +63,6 @@ RSRCS = \
 #		you need to specify the path to the library and it's name.
 #		(e.g. for mylib.a, specify "mylib.a" or "path/mylib.a")
 LIBS = be bnetapi localestub shared translation $(STDCPPLIBS)
-
 
 #	Specify additional paths to directories following the standard libXXX.so
 #	or libXXX.a naming scheme. You can specify full paths or paths relative
@@ -113,7 +111,7 @@ SYMBOLS :=
 
 #	Includes debug information, which allows the binary to be debugged easily.
 #	If set to "TRUE", debug info will be created.
-DEBUGGER := TRUE
+DEBUGGER := 
 
 #	Specify any additional compiler flags to be used.
 COMPILER_FLAGS =

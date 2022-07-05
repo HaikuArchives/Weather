@@ -21,10 +21,10 @@ const int32 kClosePrefWindowMessage = 'CPrW';
 
 enum DisplayUnit{
 	CELSIUS = 1,
-	FAHRENHEIT = 2,
-	KELVIN = 3,
-	RANKINE = 4,
-	DELISLE = 5
+	FAHRENHEIT = 2
+	//KELVIN = 3,
+	//RANKINE = 4,
+	//DELISLE = 5
 };
 typedef enum DisplayUnit DisplayUnit;
 
@@ -45,9 +45,9 @@ private:
 
 	BRadioButton*	fCelsiusButton;
 	BRadioButton*	fFahrenheitButton;
-	BRadioButton*	fKelvinButton;
-	BRadioButton*	fRankineButton;
-	BRadioButton*	fDelisleButton;
+	//BRadioButton*	fKelvinButton;
+	//BRadioButton*	fRankineButton;
+	//BRadioButton*	fDelisleButton;
 };
 
 

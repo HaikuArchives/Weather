@@ -9,6 +9,7 @@
 #include <MessageRunner.h>
 #include <Looper.h>
 #include <Roster.h>
+#include <Alert.h>
 
 #include "ForecastDeskbarView.h"
 #include "ForecastView.h"
@@ -36,18 +37,18 @@ ForecastDeskbarView::AttachedToWindow()
 {
 	fMessageRunner = new BMessageRunner(BMessenger(this), new BMessage(kUpdateForecastMessage), kToolTipDelay, -1);
 
-	fForecastView->SetShowForecast(false);
+	fForecastView->SetShowForecast(true);
 	AddChild(fForecastView);
 
 	AdoptParentColors();
 }
 
-extern "C" _EXPORT BView*
-instantiate_deskbar_item(void)
+extern "C" _EXPORT BView* instantiate_deskbar_item();
+BView* instantiate_deskbar_item()
 {
 	BMessage settings;
 	LoadSettings(settings);
-	ForecastDeskbarView* view = new ForecastDeskbarView(BRect(0, 0, 15, 15), new ForecastView(BRect(0, 0, 0, 0), &settings));
+	ForecastDeskbarView* view = new ForecastDeskbarView(BRect(0, 0, 16, 16), new ForecastView(BRect(0, 0, 0, 0), &settings));
 	entry_ref appRef;
 	settings.FindRef("appLocation", &appRef);
 	view->SetAppLocation(appRef);
@@ -60,9 +61,10 @@ ForecastDeskbarView::Draw(BRect drawRect)
 	BView::Draw(drawRect);
 
 	SetDrawingMode(B_OP_OVER);
-	SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
-	BBitmap* bitmap = fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(2));
-	DrawBitmap(bitmap);
+	//SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
+	BBitmap* bitmap = fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(1));
+	if (bitmap)
+		DrawBitmapAsync(bitmap, BPoint(0,0));
 	SetDrawingMode(B_OP_COPY);
 }
 
