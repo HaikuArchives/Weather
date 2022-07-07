@@ -20,36 +20,34 @@ APP_MIME_SIG = x-vnd.przemub.Weather
 #	The following lines tell Pe and Eddie where the SRCS, RDEFS, and RSRCS are
 #	so that Pe and Eddie can fill them in for you.
 #%{
-# @src->@
-
-#	Specify the source files to use. Full paths or paths relative to the
-#	Makefile can be included. All files, regardless of directory, will have
-#	their object files created in the common object directory. Note that this
-#	means this Makefile will not work correctly if two source files with the
-#	same name (source.c or source.cpp) are included from different directories.
-#	Also note that spaces in folder names do not work well with this Makefile.
-SRCS = Source/App.cpp \
-	   Source/LabelView.cpp\
-	   Source/NetListener.cpp\
-	   Source/MainWindow.cpp \
-	   Source/PreferencesWindow.cpp \
-	   Source/SelectionWindow.cpp \
-	   Source/ForecastDayView.cpp \
-	   Source/ForecastView.cpp \
-	   Source/ForecastDeskbarView.cpp \
-	   Source/CitiesListSelectionWindow.cpp \
-	   Source/Util.cpp
+SRCS = \
+	 Source/App.cpp  \
+	 Source/LabelView.cpp\  \
+	 Source/WSOpenMeteo.cpp  \
+	 Source/MainWindow.cpp \
+	 Source/PreferencesWindow.cpp \
+	 Source/SelectionWindow.cpp \
+	 Source/ForecastDayView.cpp \
+	 Source/ForecastView.cpp \
+	 Source/ForecastDeskbarView.cpp \
+	 Source/CitiesListSelectionWindow.cpp \
+	 Source/Util.cpp
 
 #	Specify the resource definition files to use. Full or relative paths can be
 #	used.
-RDEFS = Source/Weather.rdef
+RDEFS = \
+	 Source/Weather.rdef  \
+
 
 #	Specify the resource files to use. Full or relative paths can be used.
 #	Both RDEFS and RSRCS can be utilized in the same Makefile.
-RSRCS =
+RSRCS = \
+
 
 # End Pe/Eddie support.
 # @<-src@
+#%}
+
 #%}
 
 #	Specify libraries to link against.
@@ -113,7 +111,7 @@ SYMBOLS :=
 
 #	Includes debug information, which allows the binary to be debugged easily.
 #	If set to "TRUE", debug info will be created.
-DEBUGGER :=
+DEBUGGER := 
 
 #	Specify any additional compiler flags to be used.
 COMPILER_FLAGS =

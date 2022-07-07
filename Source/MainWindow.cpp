@@ -27,7 +27,6 @@
 #include <Roster.h>
 
 #include "MainWindow.h"
-#include "NetListener.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
 #include "ForecastDeskbarView.h"
@@ -105,14 +104,20 @@ MainWindow::MessageReceived(BMessage *msg)
 	switch (msg->what) {
 	case kUpdateCityMessage: {
 
-		BString cityName, cityId;
+		BString cityName;
+		int32 	cityId;
+		double 	latitude, longitude;
 
 		msg->FindString("city", &cityName);
-		msg->FindString("id", &cityId);
+		msg->FindInt32("id", &cityId);
+		msg->FindDouble("latitude", &latitude);
+		msg->FindDouble("longitude", &longitude);
 
 		if (fForecastView->CityId() != cityId) {
 			fForecastView->SetCityName(cityName);
 			fForecastView->SetCityId(cityId);
+			fForecastView->SetLatitude(latitude);
+			fForecastView->SetLongitude(longitude);
 			fForecastView->SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 			// forcedForecast use forecast request to retrieve full city name
 			// In the condition respond the isn't the full city name
@@ -124,6 +129,7 @@ MainWindow::MessageReceived(BMessage *msg)
 		int32 unit;
 		msg->FindInt32("displayUnit", &unit);
 		fForecastView->SetDisplayUnit((DisplayUnit)unit);
+		fForecastView->Reload();
 		break;
 	case kUpdateMessage:
 		if (fForecastView->IsConnected()) {
@@ -253,6 +259,7 @@ MainWindow::AboutRequested()
 		B_TRANSLATE_SYSTEM_NAME("Weather"), "application/x-vnd.przemub.Weather");
 
 	const char* kAuthors[] = {
+		"Davide Alfano (Nexus6)",
 		"Adrián Arroyo Calle",
 		"Akshay Agarwal",
 		"Bach Nguyen",

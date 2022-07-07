@@ -17,8 +17,9 @@
 #include <UrlRequest.h>
 #include <Window.h>
 
+#include <memory>
+
 #include "MainWindow.h"
-#include "NetListener.h"
 #include "CitiesListSelectionWindow.h"
 
 #undef B_TRANSLATION_CONTEXT
@@ -26,27 +27,35 @@
 
 
 class CityItem : public BStringItem {
+
 public:
-								CityItem(const char* text,
-									const char* woeid, const char* countryCode);
-	virtual						~CityItem();
-								BString Woeid() const {return fWoeid; };
-	virtual	void				DrawItem(BView* owner, BRect frame,
-									bool complete = false);
-	virtual	void				Update(BView* owner, const BFont* font);
+					CityItem(const int32 id, const char* city, const char* country);
+	virtual			~CityItem();
+	
+	virtual	void	DrawItem(BView* owner, BRect frame, bool complete = false);
+	virtual	void	Update(BView* owner, const BFont* font);
+
+	int32 			Id;
+	double			Longitude;
+	double			Latitude;
+	int32			CountryId;
+	BString			City;
+	BString			Country;
+	BString			ExtendedInfo;
 private:
-			BString				fWoeid;
-			BString				fCountryCode;
-			BBitmap*			fIcon;
+	BBitmap*		fIcon;
 };
 
 
-CityItem::CityItem(const char* text, const char* woeid, const char* countryCode):
-	BStringItem(text),
-	fWoeid(woeid),
-	fCountryCode(countryCode),
+CityItem::CityItem(const int32 id, const char* fullCity, const char* country):
+	BStringItem(fullCity),
+	Id(id),
+	Country(country),
 	fIcon(NULL)
 {
+	BString displayName(fullCity);
+	displayName << ", " << Country;
+	this->SetText(displayName);
 };
 
 CityItem::~CityItem()
@@ -55,8 +64,7 @@ CityItem::~CityItem()
 }
 
 void
-CityItem::DrawItem(BView* owner, BRect frame,
-	bool complete)
+CityItem::DrawItem(BView* owner, BRect frame, bool complete)
 {
 	float iconSize = 0;
 
@@ -94,13 +102,13 @@ CityItem::Update(BView* owner, const BFont* font)
 	float iconSize = Height();
 	SetWidth(Width() + iconSize + be_control_look->DefaultLabelSpacing());
 
-	if (fCountryCode.IsEmpty())
-		return;
+	BString countryIdString;
+	countryIdString << CountryId;
+	//if (CountryId.IsEmpty())
+	//	return;
 
-	fIcon = new(std::nothrow) BBitmap(BRect(0, 0, iconSize - 1, iconSize - 1),
-		B_RGBA32);
-	if (fIcon != NULL && BLocaleRoster::Default()->GetFlagIconForCountry(fIcon,
-			fCountryCode.String()) != B_OK) {
+	fIcon = new(std::nothrow) BBitmap(BRect(0, 0, iconSize - 1, iconSize - 1), B_RGBA32);
+	if (fIcon != NULL && BLocaleRoster::Default()->GetFlagIconForCountry(fIcon, countryIdString.String()) != B_OK) {
 		delete fIcon;
 		fIcon = NULL;
 	}
@@ -125,13 +133,35 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 	fCitiesListView->SetInvocationMessage(new BMessage(kSelectedCity));
 	fCitiesListView->SetSelectionMessage(new BMessage(kChangeSelectedCity));
 	int32 index = 0;
-	BString completeCity, woeid;
-	while(citiesMessage->FindString("city", index, &completeCity) == B_OK
-		&& citiesMessage->FindString("woeid", index, &woeid) == B_OK )
+	BString city;
+	while(citiesMessage->FindString("city", index, &city) == B_OK)
 	{
-		BString countryCode;
-		citiesMessage->FindString("countryCode", index, &countryCode);
-		fCitiesListView->AddItem(new CityItem(completeCity, woeid, countryCode));
+		BString city = "";
+		double	latitude = 0L;
+		double	longitude = 0L;
+		int32 	countryId = 0L;
+		int32 	id  = 0L;
+		BString	country = "";
+		BString admin1 = "";
+		BString admin2= "";
+		BString admin3 = "";
+		BString	extendedInfo = "";
+		
+		citiesMessage->FindInt32("id", index, &id);
+		citiesMessage->FindString("city", index, &city);
+		citiesMessage->FindString("country", index, &country);
+		citiesMessage->FindInt32("country_id", index, &countryId);
+		citiesMessage->FindString("extended_info", index, &extendedInfo);		
+		citiesMessage->FindDouble("longitude", index, &longitude);
+		citiesMessage->FindDouble("latitude", index, &latitude);
+		
+		CityItem *cityItem = new CityItem(id, city, country);
+		cityItem->Latitude = latitude;
+		cityItem->Longitude = longitude;
+		cityItem->ExtendedInfo = extendedInfo;
+		cityItem->CountryId = countryId;
+		
+		fCitiesListView->AddItem(cityItem);
 		index++;
 	}
 	fCitiesListView->Select(0);
@@ -172,7 +202,9 @@ CitiesListSelectionWindow::MessageReceived(BMessage *msg)
 		BMessage* message = new BMessage(kUpdateCityMessage);
 		CityItem* cityItem = dynamic_cast<CityItem*>(fCitiesListView->ItemAt(selected));
 		message->AddString("city", cityItem->Text());
-		message->AddString("id", cityItem->Woeid());
+		message->AddInt32("id", cityItem->Id);
+		message->AddDouble("longitude", cityItem->Longitude);
+		message->AddDouble("latitude", cityItem->Latitude);
 		messenger.SendMessage(message);
 		Quit();
 		}

@@ -1,4 +1,5 @@
 /*
+ * Copyright 2022 Davide Alfano (Nexus6) <nexus6.haiku@icloud.com>
  * Copyright 2015 Adrián Arroyo Calle <adrian.arroyocalle@gmail.com>
  * Copyright 2015 Przemysław Buczkowski <przemub@przemub.pl>
  * Copyright 2014 George White
@@ -45,6 +46,84 @@ enum weatherIconSize {
 	DESKBAR_ICON
 };
 
+// WMO Weather conditions
+//
+// 0			Clear sky
+// 1, 2, 3		Mainly clear, partly cloudy, and overcast
+// 45, 48		Fog and depositing rime fog
+// 51, 53, 55	Drizzle: Light, moderate, and dense intensity
+// 56, 57		Freezing Drizzle: Light and dense intensity
+// 61, 63, 65	Rain: Slight, moderate and heavy intensity
+// 66, 67		Freezing Rain: Light and heavy intensity
+// 71, 73, 75	Snow fall: Slight, moderate, and heavy intensity
+// 77			Snow grains
+// 80, 81, 82	Rain showers: Slight, moderate, and violent
+// 85, 86		Snow showers slight and heavy
+// 95 			*Thunderstorm: Slight or moderate
+// 96, 99 		*Thunderstorm with slight and heavy hail
+
+enum weatherConditions {
+	WC_CLEAR_SKY = 0,
+	WC_MAINLY_CLEAR = 1,
+	WC_PARTLY_CLOUDY = 2,
+	WC_OVERCAST = 3,
+	WC_FOG = 45,
+	WC_DEPOSITING_RIME_FOG = 48,
+	WC_LIGHT_DRIZZLE = 51,
+	WC_MODERATE_DRIZZLE = 53,
+	WC_DENSE_DRIZZLE = 55,
+	WC_FREEZING_LIGHT_DRIZZLE = 56,
+	WC_FREEZING_DENSE_DRIZZLE = 57,
+	WC_SLIGHT_RAIN = 61,
+	WC_MODERATE_RAIN = 63,
+	WC_HEAVY_RAIN = 65,
+	WC_LIGHT_FREEZING_RAIN = 66,
+	WC_HEAVY_FREEZING_RAIN = 67,
+	WC_SLIGHT_SNOW_FALL = 71,
+	WC_MODERATE_SNOW_FALL = 73,
+	WC_HEAVY_SNOW_FALL = 75,
+	WC_SNOW_GRAINS = 77,
+	WC_SLIGHT_RAIN_SHOWERS = 80,
+	WC_MODERATE_RAIN_SHOWERS = 81,
+	WC_HEAVY_RAIN_SHOWERS = 82,
+	WC_SLIGHT_SNOW_SHOWERS = 85,
+	WC_HEAVY_SNOW_SHOWERS = 86,
+	WC_THUNDERSTORM = 95,
+	WC_THUNDERSTORM_SLIGHT_HAIL = 96,
+	WC_THUNDERSTORM_HEAVY_HAIL = 99
+};
+
+//enum weatherConditions {
+//	WC_TORNADO,
+//	WC_TROPICAL_STORM,
+//	WC_HURRICANE,
+//	WC_SEVERE_THUNDERSTORM,
+//	WC_STORM,
+//	WC_MIXED_SNOW_RAIN,
+//	WC_SNOW,
+//	WC_FREEZING_DRIZZLE,
+//	WC_DRIZZE,
+//	WC_RAINING,
+//	WC_RAINING_SCATTERED,
+//	WC_LIGHT_SNOW,
+//	WC_FOG,
+//	WC_SMOKY,
+//	WC_WINDY,
+//	WC_COLD,
+//	WC_CLOUD,
+//	WC_MOSTLY_CLOUDY_NIGHT,
+//	WC_MOSTLY_CLOUDY_DAY,
+//	WC_NIGHT_FEW_CLOUDS,
+//	WC_CLEAR_NIGHT,
+//	WC_FEW_CLOUDS,
+//	WC_ISOLATED_THUNDERSTORM,
+//	WC_SCATTERED_SNOW_SHOWERS,
+//	WC_SNOW_SHOWERS,
+//	WC_ISOLATED_THUNDERSHOWERS,
+//	WC_SHINING,
+//	WC_NOT_AVALIABLE,
+//};
+
 class _EXPORT ForecastView;
 
 
@@ -65,8 +144,10 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	void			StopReload();
 	void			SetCityName(BString city);
 	BString			CityName();
-	void			SetCityId(BString cityId);
-	BString			CityId();
+	void			SetCityId(int32 cityId);
+	int32			CityId();
+	void			SetLatitude(double latitude);
+	void			SetLongitude(double longitude);
 	void 			SetCondition(BString condition);
 	void			SetUpdateDelay(int32 delay);
 	int32			UpdateDelay();
@@ -83,6 +164,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	int32			GetCondition();
 	BString			GetStatus();
 	int32			Temperature();
+
 private:
 	void			_Init();
 	void			_DownloadData();
@@ -109,10 +191,13 @@ private:
 	bool			fReplicated;
 
 	BString			fCity;
-	BString			fCityId;
+	int32			fCityId;
 	int32			fUpdateDelay;
 	DisplayUnit		fDisplayUnit;
 	bool			fShowForecast;
+	
+	double			fLatitude;
+	double			fLongitude;
 
 	int32			fTemperature;
 	int32			fCondition;
@@ -130,7 +215,8 @@ private:
 	BBitmap* 		fClear[3];
 	BBitmap* 		fClouds[3];
 	BBitmap* 		fCold[3];
-	BBitmap* 		fDrizzle[3];
+	BBitmap* 		fLightDrizzle[3];
+	BBitmap* 		fModerateDenseDrizzle[3];
 	BBitmap* 		fFewClouds[3];
 	BBitmap* 		fFog[3];
 	BBitmap* 		fFreezingDrizzle[3];
@@ -140,7 +226,6 @@ private:
 	BBitmap* 		fNightFewClouds[3];
 	BBitmap* 		fRainingScattered[3];
 	BBitmap* 		fRaining[3];
-	BBitmap* 		fSevereThunderstorm[3];
 	BBitmap* 		fShining[3];
 	BBitmap* 		fShiny[3];
 	BBitmap* 		fSnow[3];
@@ -149,8 +234,10 @@ private:
 	BBitmap* 		fTornado[3];
 	BBitmap* 		fTropicalStorm[3];
 	BBitmap* 		fCloud[3];
+	BBitmap* 		fPartlyCloudy[3];
 	BBitmap* 		fIsolatedThunderstorm[3];
 	BBitmap* 		fIsolatedThundershowers[3];
+	BBitmap* 		fSevereThunderstorm[3];
 	BBitmap* 		fHurricane[3];
 	BBitmap* 		fScatteredSnowShowers[3];
 	BBitmap* 		fSmoky[3];
