@@ -63,13 +63,15 @@ BString
 WSOpenMeteo::GetUrl(double longitude, double latitude, DisplayUnit unit) {
 	//BString urlString("https://www.openmeteo.com/api/location/");
 	//urlString << fCityId << "/";
-	
-	BString sLatitude(std::to_string(latitude).c_str());
-	BString sLongitude(std::to_string(longitude).c_str());
-	
+
+	char lati[12];
+	char longi[12];
+	snprintf(lati, sizeof(lati), "%f", latitude);
+	snprintf(longi, sizeof(longi), "%f", longitude);
+
 	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=");
-	urlString << sLatitude << "&longitude=" << sLongitude << "&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin";
-	
+	urlString << lati << "&longitude=" << longi << "&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin";
+
 	// Temperature unit measure
 	switch (unit) {
 		case FAHRENHEIT:
@@ -96,8 +98,8 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 	BString jsonString;
 
 	if (!success) {
-		auto message = std::make_shared<BMessage>(kFailureMessage);
-		messenger.SendMessage(message.get());
+		BMessage* message = new BMessage(kFailureMessage);
+		messenger.SendMessage(message);
 		return;
 	}
 
@@ -111,8 +113,8 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 	status_t status = parser.Parse(jsonString, parsedData);
 	if (status == B_BAD_DATA) {
 		printf("JSON Parser error for data:\n%s\n", jsonString.String());
-		auto message = std::make_shared<BMessage>(kFailureMessage);
-		messenger.SendMessage(message.get());
+		BMessage* message = new BMessage(kFailureMessage);
+		messenger.SendMessage(message);
 		return;
 	}
 	
@@ -133,9 +135,9 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		//BString title = "Milan";
 		// TO-DO: get city name from Geocoding service;
 		//parsedData.FindString("title", &title);
-		auto message = std::make_shared<BMessage>(kUpdateCityName);
+		BMessage* message = new BMessage(kUpdateCityName);
 		//message->AddString("city", title);
-		messenger.SendMessage(message.get());
+		messenger.SendMessage(message);
 //	}
 	
 	//Get weather forecast
@@ -159,7 +161,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 				if (weatherData.FindMessage(name, &dayMessage) == B_OK) {
 			
 					double date;
-					int tCount;
+					int32 tCount;
 					uint32 tType;
 					char *tName;
 					for (int32 tDay = 0; dayMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
@@ -177,7 +179,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			
 					double minTemperature;
 					
-					int tCount;
+					int32 tCount;
 					uint32 tType;
 					char *tName;
 					for (int32 tDay = 0; tempMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
@@ -195,7 +197,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			
 					double minTemperature;
 					
-					int tCount;
+					int32 tCount;
 					uint32 tType;
 					char *tName;
 					for (int32 tDay = 0; tempMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
@@ -213,7 +215,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			
 					double code;
 					
-					int tCount;
+					int32 tCount;
 					uint32 tType;
 					char *tName;
 					for (int32 tDay = 0; codeMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
@@ -229,7 +231,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 	
 	//Get forecast
 	for (int tDay = 0; tDay < maxDaysForecast; tDay++) {
-		auto message = std::make_shared<BMessage>(kForecastDataMessage);
+		BMessage* message = new BMessage(kForecastDataMessage);
 		message->AddInt32("forecast", tDay);
 		message->AddInt32("high", (int) dailyWeather[tDay].maxTemperature);
 		message->AddInt32("low", (int) dailyWeather[tDay].minTemperature);
@@ -266,7 +268,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		}
 		
 		message->AddString("day", dayOfWeek.String());
-		messenger.SendMessage(message.get());
+		messenger.SendMessage(message);
 	}
 	
 	
@@ -278,7 +280,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		double condition;
 		double time;
 		
-		auto currentMessage = std::make_shared<BMessage>(kDataMessage);
+		BMessage* currentMessage = new BMessage(kDataMessage);
 		
 		if (currentWeatherData.FindDouble("temperature",&temperature) == B_OK)
 			currentMessage->AddInt32("temp", (int) temperature);
@@ -289,7 +291,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		//if (currentWeatherData.FindDouble("time",&time) == B_OK)
 		//	currentMessage->AddString("text", BString(std::to_string(temperature)));
 		
-		messenger.SendMessage(currentMessage.get());
+		messenger.SendMessage(currentMessage);
 	
 	}
 }
@@ -339,7 +341,7 @@ WSOpenMeteo::_ProcessCityData(bool success)
 	uint32 type;
 	int32 count;
 	
-	auto message = std::make_shared<BMessage>(kCitiesListMessage);
+	BMessage* message = new BMessage(kCitiesListMessage);
 	
 	BMessage results;
 	if (parsedData.FindMessage("results", &results) == B_OK)
@@ -380,6 +382,6 @@ WSOpenMeteo::_ProcessCityData(bool success)
 			}
 		}
 	}
-	SerializeBMessage(message.get(),"weather_location_message");
-	messenger.SendMessage(message.get());
+	SerializeBMessage(message,"weather_location_message");
+	messenger.SendMessage(message);
 }
