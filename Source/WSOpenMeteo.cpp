@@ -159,7 +159,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 				if (weatherData.FindMessage(name, &dayMessage) == B_OK) {
 			
 					double date;
-					int tCount;
+					int32 tCount;
 					uint32 tType;
 					char *tName;
 					for (int32 tDay = 0; dayMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
@@ -177,7 +177,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			
 					double minTemperature;
 					
-					int tCount;
+					int32 tCount;
 					uint32 tType;
 					char *tName;
 					for (int32 tDay = 0; tempMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
@@ -195,7 +195,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			
 					double minTemperature;
 					
-					int tCount;
+					int32 tCount;
 					uint32 tType;
 					char *tName;
 					for (int32 tDay = 0; tempMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
@@ -213,7 +213,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 			
 					double code;
 					
-					int tCount;
+					int32 tCount;
 					uint32 tType;
 					char *tName;
 					for (int32 tDay = 0; codeMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, &tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
