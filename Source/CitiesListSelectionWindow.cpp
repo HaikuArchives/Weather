@@ -165,7 +165,7 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 		index++;
 	}
 	fCitiesListView->Select(0);
-	BButton* fButtonOk = new BButton("ok", B_TRANSLATE("Ok"),
+	BButton* fButtonOk = new BButton("ok", B_TRANSLATE("OK"),
 		new BMessage(kSelectedCity));
 	BButton* fButtonCancel = new BButton("cancel", B_TRANSLATE("Cancel"),
 		new BMessage(kCancelCity));

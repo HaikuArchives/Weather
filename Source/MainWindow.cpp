@@ -193,7 +193,7 @@ MainWindow::MessageReceived(BMessage *msg)
 				BString errorMessage = B_TRANSLATE("Unable to create a deskbar replicant. The error is: \"");
 				errorMessage << strerror(result) << "\".";
 
-				BAlert* alert = new BAlert("Error", errorMessage.String(), "Ok", NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
+				BAlert* alert = new BAlert("Error", errorMessage.String(), B_TRANSLATE("OK"), NULL, NULL, B_WIDTH_AS_USUAL, B_STOP_ALERT);
 				alert->Go();
 				delete alert;
 			}

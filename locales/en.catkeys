@@ -1,9 +1,10 @@
-1	English	x-vnd.przemub.Weather	145290235
+1	English	x-vnd.przemub.Weather	2316394853
 No network	ForecastView		No network
 OK	ForecastView		OK
 Slight snow showers	ForecastView		Slight snow showers
 Slight rain	ForecastView		Slight rain
 Loading…	ForecastView		Loading…
+OK	MainWindow		OK
 Freezing dense drizze	ForecastView		Freezing dense drizze
 Quit	MainWindow		Quit
 Heavy snow showers	ForecastView		Heavy snow showers
@@ -39,6 +40,7 @@ Heavy rain	ForecastView		Heavy rain
 Light drizzle	ForecastView		Light drizzle
 View	MainWindow		View
 Change location…	MainWindow		Change location…
+OK	CitiesListSelectionWindow		OK
 Freezing light drizzle	ForecastView		Freezing light drizzle
 Use Fahrenheit °F	PreferencesWindow		Use Fahrenheit °F
 Thunderstorm with slight hail	ForecastView		Thunderstorm with slight hail
@@ -52,13 +54,12 @@ Connection error	ForecastView		Connection error
 Change location	SelectionWindow		Change location
 Thunderstorm	ForecastView		Thunderstorm
 Fog	ForecastView		Fog
-Default	ForecastView		Default
 Text	ForecastView		Text
+Default	ForecastView		Default
 Thunderstorm with heavy hail	ForecastView		Thunderstorm with heavy hail
 Transparent	ForecastView		Transparent
 Slight snow fall	ForecastView		Slight snow fall
 Cancel	CitiesListSelectionWindow		Cancel
-Ok	CitiesListSelectionWindow		Ok
 About Weather	ForecastView		About Weather
 Moderate snow fall	ForecastView		Moderate snow fall
 Deskbar Replicant	MainWindow		Deskbar Replicant
