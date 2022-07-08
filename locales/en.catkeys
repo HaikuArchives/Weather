@@ -1,17 +1,17 @@
-1	English	x-vnd.przemub.Weather	2316394853
+1	English	x-vnd.przemub.Weather	1423632369
 No network	ForecastView		No network
 OK	ForecastView		OK
 Slight snow showers	ForecastView		Slight snow showers
 Slight rain	ForecastView		Slight rain
 Loading…	ForecastView		Loading…
 OK	MainWindow		OK
-Freezing dense drizze	ForecastView		Freezing dense drizze
 Quit	MainWindow		Quit
 Heavy snow showers	ForecastView		Heavy snow showers
 Dense drizzle	ForecastView		Dense drizzle
 Select city: city, country, region	SelectionWindow		Select city: city, country, region
 Background	ForecastView		Background
 Preferences…	MainWindow		Preferences…
+Freezing dense drizzle	ForecastView		Freezing dense drizzle
 Use Celsius °C	PreferencesWindow		Use Celsius °C
 Heavy snow fall	ForecastView		Heavy snow fall
 Weather (The Replicant version)	ForecastView		Weather (The Replicant version)

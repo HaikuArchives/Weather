@@ -696,7 +696,7 @@ ForecastView::_GetWeatherMessage(int32 condition)
 		case WC_MODERATE_DRIZZLE:			return B_TRANSLATE("Moderate drizzle");
 		case WC_DENSE_DRIZZLE:				return B_TRANSLATE("Dense drizzle");
 		case WC_FREEZING_LIGHT_DRIZZLE:		return B_TRANSLATE("Freezing light drizzle");
-		case WC_FREEZING_DENSE_DRIZZLE:		return B_TRANSLATE("Freezing dense drizze");
+		case WC_FREEZING_DENSE_DRIZZLE:		return B_TRANSLATE("Freezing dense drizzle");
 		case WC_SLIGHT_RAIN:				return B_TRANSLATE("Slight rain");
 		case WC_MODERATE_RAIN:				return B_TRANSLATE("Moderate rain");
 		case WC_HEAVY_RAIN:					return B_TRANSLATE("Heavy rain");
