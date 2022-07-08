@@ -708,12 +708,12 @@ ForecastView::_GetWeatherMessage(int32 condition)
 		case WC_SNOW_GRAINS:				return B_TRANSLATE("Snow grains");
 		case WC_SLIGHT_RAIN_SHOWERS:		return B_TRANSLATE("Slight rain showers");
 		case WC_MODERATE_RAIN_SHOWERS:		return B_TRANSLATE("Moderate rain showers");
-		case WC_HEAVY_RAIN_SHOWERS:			return B_TRANSLATE("heavy rain showers");
+		case WC_HEAVY_RAIN_SHOWERS:			return B_TRANSLATE("Heavy rain showers");
 		case WC_SLIGHT_SNOW_SHOWERS:		return B_TRANSLATE("Slight snow showers");
 		case WC_HEAVY_SNOW_SHOWERS:			return B_TRANSLATE("Heavy snow showers");
 		case WC_THUNDERSTORM:				return B_TRANSLATE("Thunderstorm");
 		case WC_THUNDERSTORM_SLIGHT_HAIL:	return B_TRANSLATE("Thunderstorm with slight hail");
-		case WC_THUNDERSTORM_HEAVY_HAIL:	return B_TRANSLATE("Thunderstorm with heavey hail");
+		case WC_THUNDERSTORM_HEAVY_HAIL:	return B_TRANSLATE("Thunderstorm with heavy hail");
 	}
 	return B_TRANSLATE("Not available");
 }

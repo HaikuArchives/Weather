@@ -1,73 +1,64 @@
-1	English	x-vnd.przemub.Weather	3662372937
-About Weather	ForecastView		About Weather
-Background	ForecastView		Background
-Blowing snow	ForecastView		Blowing snow
-Blustery	ForecastView		Blustery
-Clear	ForecastView		Clear
-Cloudy	ForecastView		Cloudy
-Cold	ForecastView		Cold
-Connecting…	ForecastView		Connecting…
-Connection error	ForecastView		Connection error
-Default	ForecastView		Default
-Drizzle	ForecastView		Drizzle
-Dust	ForecastView		Dust
-Fair	ForecastView		Fair
-Fog	ForecastView		Fog
-Freezing drizzle	ForecastView		Freezing drizzle
-Freezing rain	ForecastView		Freezing rain
-Hail	ForecastView		Hail
-Haze	ForecastView		Haze
-Heavy snow	ForecastView		Heavy snow
-Hot	ForecastView		Hot
-Hurricane	ForecastView		Hurricane
-Isolated thundershowers	ForecastView		Isolated thundershowers
-Isolated thunderstorms	ForecastView		Isolated thunderstorms
-Light snow showers	ForecastView		Light snow showers
-Loading…	ForecastView		Loading…
-Mixed rain and hail	ForecastView		Mixed rain and hail
-Mixed rain and sleet	ForecastView		Mixed rain and sleet
-Mixed rain and snow	ForecastView		Mixed rain and snow
-Mixed snow and sleet	ForecastView		Mixed snow and sleet
-Mostly cloudy	ForecastView		Mostly cloudy
+1	English	x-vnd.przemub.Weather	145290235
 No network	ForecastView		No network
-Not available	ForecastView		Not available
 OK	ForecastView		OK
-Partly cloudy	ForecastView		Partly cloudy
-Scattered showers	ForecastView		Scattered showers
-Scattered snow showers	ForecastView		Scattered snow showers
-Scattered thunderstorms	ForecastView		Scattered thunderstorms
-Severe thunderstorms	ForecastView		Severe thunderstorms
-Showers	ForecastView		Showers
-Sleet	ForecastView		Sleet
-Smoky	ForecastView		Smoky
-Snow	ForecastView		Snow
-Snow flurries	ForecastView		Snow flurries
-Snow showers	ForecastView		Snow showers
-Sunny	ForecastView		Sunny
-Text	ForecastView		Text
-Thundershowers	ForecastView		Thundershowers
-Thunderstorms	ForecastView		Thunderstorms
-Tornado	ForecastView		Tornado
-Transparent	ForecastView		Transparent
-Tropical storm	ForecastView		Tropical storm
-Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
-Windy	ForecastView		Windy
-Change location…	MainWindow		Change location…
-Edit	MainWindow		Edit
-Loading…	MainWindow		Loading…
-Preferences…	MainWindow		Preferences…
+Slight snow showers	ForecastView		Slight snow showers
+Slight rain	ForecastView		Slight rain
+Loading…	ForecastView		Loading…
+Freezing dense drizze	ForecastView		Freezing dense drizze
 Quit	MainWindow		Quit
-Refresh	MainWindow		Refresh
-View	MainWindow		View
-OK	PreferencesWindow		OK
-Preferences	PreferencesWindow		Preferences
-Use degrees Celsius	PreferencesWindow		Use degrees Celsius
-Use degrees Delisle	PreferencesWindow		Use degrees Delisle
-Use degrees Fahrenheit	PreferencesWindow		Use degrees Fahrenheit
-Use degrees Rankine	PreferencesWindow		Use degrees Rankine
-Use units Kelvin	PreferencesWindow		Use units Kelvin
-Change location	SelectionWindow		Change location
-City:	SelectionWindow		City:
-OK	SelectionWindow		OK
+Heavy snow showers	ForecastView		Heavy snow showers
+Dense drizzle	ForecastView		Dense drizzle
 Select city: city, country, region	SelectionWindow		Select city: city, country, region
+Background	ForecastView		Background
+Preferences…	MainWindow		Preferences…
+Use Celsius °C	PreferencesWindow		Use Celsius °C
+Heavy snow fall	ForecastView		Heavy snow fall
+Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
+City:	SelectionWindow		City:
+Edit	MainWindow		Edit
 Weather	System name		Weather
+Loading…	MainWindow		Loading…
+Mainly clear	ForecastView		Mainly clear
+Partly cloudy	ForecastView		Partly cloudy
+OK	PreferencesWindow		OK
+An open source weather app showing a forecast for the next 5 days.	MainWindow		An open source weather app showing a forecast for the next 5 days.
+Choose location	CitiesListSelectionWindow		Choose location
+Connecting…	ForecastView		Connecting…
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Unable to create a deskbar replicant. The error is: \"
+Overcast	ForecastView		Overcast
+Moderate rain	ForecastView		Moderate rain
+OK	SelectionWindow		OK
+Depositing rime fog	ForecastView		Depositing rime fog
+About Weather	MainWindow		About Weather
+Moderate drizzle	ForecastView		Moderate drizzle
+Moderate rain showers	ForecastView		Moderate rain showers
+Clear sky	ForecastView		Clear sky
+Snow grains	ForecastView		Snow grains
+Slight rain showers	ForecastView		Slight rain showers
+Heavy rain	ForecastView		Heavy rain
+Light drizzle	ForecastView		Light drizzle
+View	MainWindow		View
+Change location…	MainWindow		Change location…
+Freezing light drizzle	ForecastView		Freezing light drizzle
+Use Fahrenheit °F	PreferencesWindow		Use Fahrenheit °F
+Thunderstorm with slight hail	ForecastView		Thunderstorm with slight hail
+Heavy rain showers	ForecastView		Heavy rain showers
+Not available	ForecastView		Not available
+Light freezing rain	ForecastView		Light freezing rain
+Heavy freezing rain	ForecastView		Heavy freezing rain
+Preferences	PreferencesWindow		Preferences
+Refresh	MainWindow		Refresh
+Connection error	ForecastView		Connection error
+Change location	SelectionWindow		Change location
+Thunderstorm	ForecastView		Thunderstorm
+Fog	ForecastView		Fog
+Default	ForecastView		Default
+Text	ForecastView		Text
+Thunderstorm with heavy hail	ForecastView		Thunderstorm with heavy hail
+Transparent	ForecastView		Transparent
+Slight snow fall	ForecastView		Slight snow fall
+Cancel	CitiesListSelectionWindow		Cancel
+Ok	CitiesListSelectionWindow		Ok
+About Weather	ForecastView		About Weather
+Moderate snow fall	ForecastView		Moderate snow fall
+Deskbar Replicant	MainWindow		Deskbar Replicant

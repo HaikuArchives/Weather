@@ -22,7 +22,7 @@ APP_MIME_SIG = x-vnd.przemub.Weather
 #%{
 SRCS = \
 	 Source/App.cpp  \
-	 Source/LabelView.cpp\  \
+	 Source/LabelView.cpp \
 	 Source/WSOpenMeteo.cpp  \
 	 Source/MainWindow.cpp \
 	 Source/PreferencesWindow.cpp \
