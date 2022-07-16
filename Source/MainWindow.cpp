@@ -58,8 +58,10 @@ MainWindow::_PrepareMenuBar(void)
 	//menu->AddSeparatorItem();
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Refresh"),
 		new BMessage(kUpdateMessage), 'R'));
-	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar Replicant"),
-		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
+
+//	Remove menu item until Deskbar replicant is fixed
+//	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar Replicant"),
+//		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
 	menubar->AddItem(menu);
 
 	return menubar;
@@ -247,8 +249,9 @@ MainWindow::_SaveSettings()
 void
 MainWindow::MenusBeginning()
 {
-	BDeskbar deskbar;
-	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
+//	Menu item removed until Deskbar replicant is fixed
+//	BDeskbar deskbar;
+//	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
 }
 
 
