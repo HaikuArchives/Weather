@@ -19,18 +19,17 @@ LabelView::LabelView(const char* name, const char* text, uint32 flags)
 
 void
 LabelView::Draw(BRect updateRect)
-{	
-	rgb_color	color = HighColor();
+{
+	rgb_color color = HighColor();
 	if (ViewColor() == B_TRANSPARENT_COLOR) {
-		rgb_color low =  BScreen(Window()).DesktopColor();
-	
-		if (low.red + low.green + low.blue > 128 * 3) {
+		rgb_color low = BScreen(Window()).DesktopColor();
+
+		if (low.red + low.green + low.blue > 128 * 3)
 			color = tint_color(low, B_DARKEN_MAX_TINT);
-		} else {
+		else
 			color = tint_color(low, B_LIGHTEN_MAX_TINT);
-		}
 	}
-	SetHighColor(color);	
+	SetHighColor(color);
 	drawing_mode oldMode = DrawingMode();
 	SetDrawingMode(B_OP_OVER);
 	BStringView::Draw(updateRect);

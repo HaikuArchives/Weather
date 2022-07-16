@@ -18,26 +18,26 @@ enum RequestType {
 	WEATHER_REQUEST
 };
 
-class WSOpenMeteo : public BUrlProtocolListener {
+class WSOpenMeteo : public BUrlProtocolListener
+{
 public:
 						WSOpenMeteo(BHandler* fHandler, RequestType requestType);
 	virtual				~WSOpenMeteo();
+
 	virtual	void		ResponseStarted(BUrlRequest* caller);
 	virtual	void		DataReceived(BUrlRequest* caller, const char* data,
 							off_t position, ssize_t size);
-	virtual	void		RequestCompleted(BUrlRequest* caller,
-							bool success);
-	
+	virtual	void		RequestCompleted(BUrlRequest* caller, bool success);
+
 	BString				GetUrl(double longitude, double latitude, DisplayUnit unit);
-	
+
 private:
-		
-	void		_ProcessWeatherData(bool success);
-	void		_ProcessCityData(bool success);
-	BHandler*	fHandler;
-	RequestType fRequestType;
-	BMallocIO	fResponseData;
-	void		SerializeBMessage(BMessage* message, BString fileName);
+	void			_ProcessWeatherData(bool success);
+	void			_ProcessCityData(bool success);
+	BHandler*		fHandler;
+	RequestType 	fRequestType;
+	BMallocIO		fResponseData;
+	void			SerializeBMessage(BMessage* message, BString fileName);
 };
 
 

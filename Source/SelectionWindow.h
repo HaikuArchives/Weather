@@ -19,12 +19,14 @@ const int32 kUpdateCityMessage = 'Updt';
 const int32 kCloseCitySelectionWindowMessage = 'SUCe';
 
 
-class SelectionWindow : public BWindow {
+class SelectionWindow : public BWindow
+{
 public:
 					SelectionWindow(BRect rect, MainWindow* parent, BString city, int32 cityId);
-	
+
 	virtual void	MessageReceived(BMessage *msg);
 	virtual bool	QuitRequested();
+
 private:
 	void			_StartSearch();
 	void			_StopSearch();
@@ -38,8 +40,8 @@ private:
 
 	BString			fCity;
 	int32			fCityId;
-	
-	BTextControl* 	fCityControl;
+
+	BTextControl*	fCityControl;
 };
 
 

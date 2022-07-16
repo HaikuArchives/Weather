@@ -8,6 +8,7 @@
 
 #include <Bitmap.h>
 #include <Button.h>
+#include <Deskbar.h>
 #include <GridLayout.h>
 #include <GridView.h>
 #include <GroupView.h>
@@ -17,15 +18,14 @@
 #include <StringView.h>
 #include <View.h>
 #include <Window.h>
-#include <Deskbar.h>
 
-#include "ForecastView.h"
 #include "ForecastDayView.h"
+#include "ForecastDeskbarView.h"
+#include "ForecastView.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
-#include "ForecastDeskbarView.h"
 
-const BRect kDefaultMainWindowRect = BRect(150,150,0,0);
+const BRect kDefaultMainWindowRect = BRect(150, 150, 0, 0);
 const uint32 kCitySelectionMessage = 'SelC';
 const uint32 kOpenPreferencesMessage = 'OPrf';
 const uint32 kToggleDeskbarReplicantMessage = 'TDkB';
@@ -37,13 +37,16 @@ const uint32 kFailureMessage = 'Fail';
 const uint32 kUpdateCityName = 'UpCN';
 const uint32 kUpdateTTLMessage = 'TTLm';
 
-class MainWindow : public BWindow {
+class MainWindow : public BWindow
+{
 public:
 					MainWindow(void);
 	virtual void	MessageReceived(BMessage* msg);
+
 	virtual bool	QuitRequested();
 	virtual void	AboutRequested();
 	virtual void	MenusBeginning();
+
 private:
 	status_t		_SaveSettings();
 	BMenuBar*		_PrepareMenuBar(void);
@@ -57,7 +60,6 @@ private:
 
 	BMenuItem*		fShowForecastMenuItem;
 	BMenuItem*		fReplicantMenuItem;
-
 };
 
 #endif // _MAINWINDOW_H_

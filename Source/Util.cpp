@@ -3,16 +3,18 @@
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
-#include <Message.h>
 #include <Entry.h>
-#include <Path.h>
-#include <FindDirectory.h>
 #include <File.h>
+#include <FindDirectory.h>
+#include <Message.h>
+#include <Path.h>
 
-#include "Util.h"
 #include "ForecastView.h"
+#include "Util.h"
 
-status_t LoadSettings(BMessage& m)
+
+status_t
+LoadSettings(BMessage& m)
 {
 	BPath p;
 	BFile f;

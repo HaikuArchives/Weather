@@ -13,7 +13,8 @@
 enum RequestType {
 	CITY_REQUEST,
 	WEATHER_REQUEST
-} ;
+};
+
 const uint32 kCitiesListMessage = 'lstC';
 const uint32 kDataMessage = 'Data';
 const uint32 kForecastDataMessage = 'FDta';
@@ -21,15 +22,17 @@ const uint32 kFailureMessage = 'Fail';
 const uint32 kUpdateCityName = 'UpCN';
 const uint32 kUpdateTTLMessage = 'TTLm';
 
-class NetListener : public BUrlProtocolListener {
+class NetListener : public BUrlProtocolListener
+{
 public:
 						NetListener(BHandler* fHandler, RequestType requestType);
 	virtual				~NetListener();
+
 	virtual	void		ResponseStarted(BUrlRequest* caller);
-	virtual	void		DataReceived(BUrlRequest* caller, const char* data,
-							off_t position, ssize_t size);
-	virtual	void		RequestCompleted(BUrlRequest* caller,
-							bool success);
+	virtual	void		DataReceived(
+							BUrlRequest* caller, const char* data, off_t position, ssize_t size);
+	virtual	void		RequestCompleted(BUrlRequest* caller, bool success);
+
 private:
 			void		_ProcessWeatherData(bool success);
 			void		_ProcessCityData(bool success);

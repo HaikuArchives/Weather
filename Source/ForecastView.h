@@ -93,7 +93,7 @@ enum weatherConditions {
 	WC_THUNDERSTORM_HEAVY_HAIL = 99
 };
 
-//enum weatherConditions {
+// enum weatherConditions {
 //	WC_TORNADO,
 //	WC_TROPICAL_STORM,
 //	WC_HURRICANE,
@@ -127,17 +127,20 @@ enum weatherConditions {
 class _EXPORT ForecastView;
 
 
-class ForecastView : public BView {
+class ForecastView : public BView
+{
 public:
 					ForecastView(BRect frame, BMessage* settings);
 					ForecastView(BMessage* archive);
 	virtual			~ForecastView();
+
 	virtual void	MessageReceived(BMessage* msg);
 	virtual void	AttachedToWindow();
 	virtual void	AllAttached();
 	virtual void	Draw(BRect updateRect);
 virtual status_t	Archive(BMessage* into, bool deep = true) const;
 static	BArchivable* Instantiate(BMessage* archive);
+
 status_t			SaveState(BMessage* into, bool deep = true) const;
 	void			SetDisplayUnit(DisplayUnit unit);
 	void			Reload(bool forcedForecast = false);
@@ -168,14 +171,14 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 private:
 	void			_Init();
 	void			_DownloadData();
-	static int32	_DownloadDataFunc(void *cookie);
+	static int32	_DownloadDataFunc(void* cookie);
 	void 			_LoadBitmaps();
 	void			_DeleteBitmaps();
 	void			_DeleteIcons(BBitmap* bitmap[2]);
-	const char *    _GetWeatherMessage(int32 condition);
+	const char*		_GetWeatherMessage(int32 condition);
 	BString			_GetDayText(const BString& day) const;
 
-	status_t		_ApplyState(BMessage *settings);
+	status_t		_ApplyState(BMessage* settings);
 
 	void			_ShowForecast(bool);
 	void			_LoadIcons(BBitmap*	bitmap[2], uint32 type, const char* name);
@@ -195,7 +198,7 @@ private:
 	int32			fUpdateDelay;
 	DisplayUnit		fDisplayUnit;
 	bool			fShowForecast;
-	
+
 	double			fLatitude;
 	double			fLongitude;
 

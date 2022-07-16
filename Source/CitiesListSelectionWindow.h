@@ -10,23 +10,22 @@
 #include <Window.h>
 
 
-
 const int32 kCloseCityCitiesListSelectionWindowMessage = 'CsSe';
 
 
-class CitiesListSelectionWindow : public BWindow {
+class CitiesListSelectionWindow : public BWindow
+{
 public:
 					CitiesListSelectionWindow(BRect rect, BWindow* parent,
 						BMessage* citiesMessage);
 	virtual			~CitiesListSelectionWindow();
-	virtual void	MessageReceived(BMessage *msg);
-	virtual bool	QuitRequested();
-private:
 
+	virtual void	MessageReceived(BMessage* msg);
+	virtual bool	QuitRequested();
+
+private:
 	BListView*		fCitiesListView;
 	BWindow*		fParent;
-
-
 };
 
 

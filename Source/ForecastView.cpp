@@ -13,8 +13,8 @@
 #include <FindDirectory.h>
 #include <Font.h>
 #include <GroupLayout.h>
-#include <LayoutBuilder.h>
 #include <IconUtils.h>
+#include <LayoutBuilder.h>
 #include <Locale.h>
 #include <Menu.h>
 #include <MenuBar.h>
@@ -29,19 +29,19 @@
 #include <UrlRequest.h>
 
 #include "ForecastView.h"
-#include "WSOpenMeteo.h"
+#include "MainWindow.h"
 #include "PreferencesWindow.h"
 #include "SelectionWindow.h"
-#include "MainWindow.h"
+#include "WSOpenMeteo.h"
 
 const float kDraggerSize = 7;
 const char* kSettingsFileName = "Weather settings";
 
 const char* kDefaultCityName = "San Francisco";
 const int32 kDefaultCityId = 5391959;
-const bool  kDefaultShowForecast = true;
-const double kDefaultLongitude =  -122.431297;
-const double kDefaultLatitude =  37.773972;
+const bool kDefaultShowForecast = true;
+const double kDefaultLongitude = -122.431297;
+const double kDefaultLatitude = 37.773972;
 
 const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
@@ -52,14 +52,16 @@ extern const char* kSignature;
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "ForecastView"
 
-class TransparentButton : public BButton {
-	public:
-		TransparentButton(const char* name, const char* label, BMessage* message);
-		virtual void Draw (BRect updateRect);
+class TransparentButton : public BButton
+{
+public:
+	TransparentButton(const char* name, const char* label, BMessage* message);
+	virtual void Draw(BRect updateRect);
 };
 
 
-TransparentButton::TransparentButton(const char* name, const char* label, BMessage* message)
+TransparentButton::TransparentButton(
+	const char* name, const char* label, BMessage* message)
 	:
 	BButton(name, label, message, B_DRAW_ON_CHILDREN)
 {
@@ -82,9 +84,9 @@ TransparentButton::Draw(BRect updateRect)
 	// always leave some room around the label
 	rect.InsetBy(kLabelMargin, kLabelMargin);
 
-	const BBitmap* icon = IconBitmap(
-		(Value() == B_CONTROL_OFF
-				? B_INACTIVE_ICON_BITMAP : B_ACTIVE_ICON_BITMAP)
+	const BBitmap* icon
+		= IconBitmap((Value() == B_CONTROL_OFF ? B_INACTIVE_ICON_BITMAP
+											   : B_ACTIVE_ICON_BITMAP)
 			| (IsEnabled() ? 0 : B_DISABLED_ICON_BITMAP));
 
 	be_control_look->DrawLabel(this, Label(), icon, rect, updateRect, base,
@@ -122,16 +124,16 @@ ForecastView::_Init()
 	_LoadBitmaps();
 	fCondition = 34;
 	// Icon for weather
-	fConditionButton = new TransparentButton("condition", "",
-		new BMessage(kUpdateMessage));
+	fConditionButton
+		= new TransparentButton("condition", "", new BMessage(kUpdateMessage));
 	fConditionButton->SetIcon(fFewClouds[LARGE_ICON]);
 	fConditionButton->SetFlat(true);
 
 	// Description (e.g. "Mostly showers", "Cloudy", "Sunny").
 	BFont bold_font(be_bold_font);
 	bold_font.SetSize(18);
-	fConditionView = new LabelView("description",
-		B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+	fConditionView
+		= new LabelView("description", B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
 	fConditionView->SetFont(&bold_font);
 
 	BFont plain_font(be_plain_font);
@@ -157,29 +159,27 @@ ForecastView::_Init()
 		forecastLayout->AddView(fForecastDayView[i]);
 	}
 
-	if (!fShowForecast) {
+	if (!fShowForecast)
 		fForecastView->Hide();
-	}
 
 	BLayoutBuilder::Group<>(this, B_VERTICAL, 0)
-		.SetInsets(5, 5,
-				5, 5)
+		.SetInsets(5, 5, 5, 5)
 		.AddGrid()
-				.Add(fConditionButton, 0, 0)
-				.AddGroup(B_VERTICAL,0, 1,0)
-					.Add(fConditionView)
-					.AddGroup(B_HORIZONTAL)
-						.Add(fTemperatureView)
-						.Add(fCityView)
+			.Add(fConditionButton, 0, 0)
+			.AddGroup(B_VERTICAL, 0, 1, 0)
+				.Add(fConditionView)
+				.AddGroup(B_HORIZONTAL)
+					.Add(fTemperatureView)
+					.Add(fCityView)
 					.End()
 				.End()
-				.Add(fForecastView, 0, 1, 2)
-		.End()
+			.Add(fForecastView, 0, 1, 2)
+			.End()
 		.AddGroup(B_HORIZONTAL, 0)
-				.AddGlue()
-				.Add(fDragger = new BDragger(this))
-		.End()
-	.End();
+			.AddGlue()
+			.Add(fDragger = new BDragger(this))
+			.End()
+		.End();
 
 	SetViewColor(fBackgroundColor);
 	fDragger->SetExplicitMinSize(BSize(kDraggerSize, kDraggerSize));
@@ -217,49 +217,51 @@ ForecastView::ForecastView(BMessage* archive)
 status_t
 ForecastView::_ApplyState(BMessage* archive)
 {
-	if (archive->FindString("city", &fCity)!= B_OK)
+	if (archive->FindString("city", &fCity) != B_OK)
 		fCity = kDefaultCityName;
 
-	if (archive->FindInt32("cityId", &fCityId)!= B_OK)
-		fCityId =  kDefaultCityId;
-		
-	if (archive->FindDouble("longitude", &fLongitude)!= B_OK)
+	if (archive->FindInt32("cityId", &fCityId) != B_OK)
+		fCityId = kDefaultCityId;
+
+	if (archive->FindDouble("longitude", &fLongitude) != B_OK)
 		fLongitude = kDefaultLongitude;
-		
-	if (archive->FindDouble("latitude", &fLatitude)!= B_OK)
+
+	if (archive->FindDouble("latitude", &fLatitude) != B_OK)
 		fLatitude = kDefaultLatitude;
 
 	int32 unit;
 	if (archive->FindInt32("displayUnit", &unit) != B_OK) {
 		bool fahrenheit;
 		if (archive->FindBool("fahrenheit", &fahrenheit) == B_OK) {
-			if (fahrenheit) {
+			if (fahrenheit)
 				fDisplayUnit = FAHRENHEIT;
-			} else {
+			else
 				fDisplayUnit = CELSIUS;
-			}
 		} else {
-			if (IsFahrenheitDefault()) {
+			if (IsFahrenheitDefault())
 				fDisplayUnit = FAHRENHEIT;
-			} else {
+			else
 				fDisplayUnit = CELSIUS;
-			}
 		}
-	} else {
+	} else
 		fDisplayUnit = (DisplayUnit) unit;
-	}
 
 	if (archive->FindBool("showForecast", &fShowForecast) != B_OK)
 		fShowForecast = kDefaultShowForecast;
 
-	rgb_color *color;
+	rgb_color* color;
 	ssize_t colorsize;
 	status_t status;
 
-	status = archive->FindData("backgroundColor", B_RGB_COLOR_TYPE, (const void **)&color, &colorsize);
-	fBackgroundColor = (status == B_NO_ERROR) ? *color : (fReplicated ? B_TRANSPARENT_COLOR : ui_color(B_PANEL_BACKGROUND_COLOR));
+	status = archive->FindData(
+		"backgroundColor", B_RGB_COLOR_TYPE, (const void**) &color, &colorsize);
+	fBackgroundColor = (status == B_NO_ERROR)
+		? *color
+		: (fReplicated ? B_TRANSPARENT_COLOR
+					   : ui_color(B_PANEL_BACKGROUND_COLOR));
 
-	status = archive->FindData("textColor", B_RGB_COLOR_TYPE, (const void **)&color, &colorsize);
+	status = archive->FindData(
+		"textColor", B_RGB_COLOR_TYPE, (const void**) &color, &colorsize);
 	fTextColor = (status == B_NO_ERROR) ? *color : ui_color(B_PANEL_TEXT_COLOR);
 
 	return B_OK;
@@ -298,7 +300,7 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 	status = into->AddInt32("cityId", fCityId);
 	if (status != B_OK)
 		return status;
-	status = into->AddInt32("displayUnit", (int32)fDisplayUnit);
+	status = into->AddInt32("displayUnit", (int32) fDisplayUnit);
 	if (status != B_OK)
 		return status;
 	status = into->AddBool("showForecast", fShowForecast);
@@ -312,10 +314,12 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 		return status;
 
 	if (!IsDefaultColor() || fReplicated) {
-		status = into->AddData("textColor", B_RGB_COLOR_TYPE, &fTextColor, sizeof(rgb_color));
+		status = into->AddData(
+			"textColor", B_RGB_COLOR_TYPE, &fTextColor, sizeof(rgb_color));
 		if (status != B_OK)
 			return status;
-		status = into->AddData("backgroundColor", B_RGB_COLOR_TYPE, &fBackgroundColor, sizeof(rgb_color));
+		status = into->AddData("backgroundColor", B_RGB_COLOR_TYPE,
+			&fBackgroundColor, sizeof(rgb_color));
 		if (status != B_OK)
 			return status;
 	}
@@ -332,14 +336,15 @@ ForecastView::AttachedToWindow()
 
 	BMessenger view(this);
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
-	fAutoUpdate = new BMessageRunner(view,  &autoUpdateMessage, (bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
+	fAutoUpdate = new BMessageRunner(
+		view, &autoUpdateMessage, (bigtime_t) fUpdateDelay * 60 * 1000 * 1000);
 	fConnected = _NetworkConnected();
 	if (!fConnected) {
 		SetCondition(B_TRANSLATE("No network"));
 		start_watching_network(
-		B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
-	}
-	else
+			B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES,
+			this);
+	} else
 		view.SendMessage(new BMessage(kUpdateMessage));
 	BView::AttachedToWindow();
 }
@@ -351,7 +356,7 @@ ForecastView::AllAttached()
 	BView::AllAttached();
 	SetTextColor(fTextColor);
 	if (!_SupportTransparent() && fBackgroundColor == B_TRANSPARENT_COLOR)
-			fBackgroundColor = ui_color(B_PANEL_BACKGROUND_COLOR);
+		fBackgroundColor = ui_color(B_PANEL_BACKGROUND_COLOR);
 	SetBackgroundColor(fBackgroundColor);
 }
 
@@ -367,31 +372,39 @@ ForecastView::Draw(BRect updateRect)
 
 
 bool
-ForecastView::_SupportTransparent() {
-	return 	fReplicated && Parent() && (Parent()->Flags() & B_DRAW_ON_CHILDREN) != 0;
+ForecastView::_SupportTransparent()
+{
+	return fReplicated && Parent()
+		&& (Parent()->Flags() & B_DRAW_ON_CHILDREN) != 0;
 }
 
+
 void
-ForecastView::MessageReceived(BMessage *msg)
+ForecastView::MessageReceived(BMessage* msg)
 {
 	if (msg->WasDropped()) {
 		rgb_color* color = NULL;
 		ssize_t size = 0;
 
-		if (msg->FindData("RGBColor", (type_code)'RGBC', (const void**)&color,
-				&size) == B_OK) {
+		if (msg->FindData(
+				"RGBColor", (type_code) 'RGBC', (const void**) &color, &size)
+			== B_OK) {
 			BPoint point;
-			uint32	buttons;
+			uint32 buttons;
 			GetMouse(&point, &buttons, true);
 			BMenuItem* item;
 			BPopUpMenu* popup = new BPopUpMenu("PopUp", false);
-			popup->AddItem(item = new BMenuItem(B_TRANSLATE("Background"), new BMessage('BACC')));
-			popup->AddItem(item = new BMenuItem(B_TRANSLATE("Text"), new BMessage('TEXC')));
+			popup->AddItem(item = new BMenuItem(B_TRANSLATE("Background"),
+							   new BMessage('BACC')));
+			popup->AddItem(item
+				= new BMenuItem(B_TRANSLATE("Text"), new BMessage('TEXC')));
 			popup->AddSeparatorItem();
-			popup->AddItem(item = new BMenuItem(B_TRANSLATE("Default"), new BMessage('DEFT')));
+			popup->AddItem(item
+				= new BMenuItem(B_TRANSLATE("Default"), new BMessage('DEFT')));
 			item->SetEnabled(!IsDefaultColor());
 			if (_SupportTransparent()) {
-				popup->AddItem(item = new BMenuItem(B_TRANSLATE("Transparent"), new BMessage('TRAS')));
+				popup->AddItem(item = new BMenuItem(B_TRANSLATE("Transparent"),
+								   new BMessage('TRAS')));
 				item->SetEnabled(ViewColor() != B_TRANSPARENT_COLOR);
 			}
 			ConvertToScreen(&point);
@@ -407,112 +420,120 @@ ForecastView::MessageReceived(BMessage *msg)
 				SetBackgroundColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 				SetTextColor(ui_color(B_PANEL_TEXT_COLOR));
 			}
-			if (item && item->Message()->what == 'TRAS') {
+			if (item && item->Message()->what == 'TRAS')
 				SetBackgroundColor(B_TRANSPARENT_COLOR);
-			}
 			return;
 		}
 	}
 
 	uint32 what = msg->what;
 	switch (msg->what) {
-	case kDataMessage: {
-		//BString text("");
+		case kDataMessage:
+		{
+			// BString text("");
 
-		msg->FindInt32("temp", &fTemperature);
-		msg->FindInt32("condition", &fCondition);
-		//msg->FindString("text", &text);
+			msg->FindInt32("temp", &fTemperature);
+			msg->FindInt32("condition", &fCondition);
+			// msg->FindString("text", &text);
 
-		BString tempText = FormatString(fDisplayUnit,fTemperature);
-		fTemperatureView->SetText(tempText.String());
-		SetCondition(_GetWeatherMessage(fCondition));
-		fConditionButton->SetIcon(GetWeatherIcon(fCondition, LARGE_ICON));
-		break;
-	}
-	case kForecastDataMessage: {
-		BString text("");
-		int32 forecastNum;
-		BString day;
-		int32 condition;
-		int32 high, low;
-
-		msg->FindInt32("forecast", &forecastNum);
-		msg->FindInt32("high", &high);
-		msg->FindInt32("low", &low);
-		msg->FindInt32("condition", &condition);
-		msg->FindString("text", &text);
-		msg->FindString("day", &day);
-
-		text = _GetWeatherMessage(condition);
-		day = _GetDayText(day);
-
-		if (forecastNum < 0 || forecastNum >= kMaxForecastDay)
+			BString tempText = FormatString(fDisplayUnit, fTemperature);
+			fTemperatureView->SetText(tempText.String());
+			SetCondition(_GetWeatherMessage(fCondition));
+			fConditionButton->SetIcon(GetWeatherIcon(fCondition, LARGE_ICON));
 			break;
+		}
+		case kForecastDataMessage:
+		{
+			BString text("");
+			int32 forecastNum;
+			BString day;
+			int32 condition;
+			int32 high, low;
 
-		fForecastDayView[forecastNum]->SetDayLabel(day);
-		fForecastDayView[forecastNum]->SetIcon(GetWeatherIcon(condition, SMALL_ICON));
-		fForecastDayView[forecastNum]->SetHighTemp(high);
-		fForecastDayView[forecastNum]->SetLowTemp(low);
-		fForecastDayView[forecastNum]->SetToolTip(text);
-		break;
-	}
-	case kFailureMessage: {
-		fConnected = _NetworkConnected();
-		if (!fConnected) {
-			SetCondition(B_TRANSLATE("No network"));
-			start_watching_network(
-				B_WATCH_NETWORK_INTERFACE_CHANGES | B_WATCH_NETWORK_LINK_CHANGES, this);
-		} else {
-			SetCondition(B_TRANSLATE("Connection error"));
+			msg->FindInt32("forecast", &forecastNum);
+			msg->FindInt32("high", &high);
+			msg->FindInt32("low", &low);
+			msg->FindInt32("condition", &condition);
+			msg->FindString("text", &text);
+			msg->FindString("day", &day);
+
+			text = _GetWeatherMessage(condition);
+			day = _GetDayText(day);
+
+			if (forecastNum < 0 || forecastNum >= kMaxForecastDay)
+				break;
+
+			fForecastDayView[forecastNum]->SetDayLabel(day);
+			fForecastDayView[forecastNum]->SetIcon(
+				GetWeatherIcon(condition, SMALL_ICON));
+			fForecastDayView[forecastNum]->SetHighTemp(high);
+			fForecastDayView[forecastNum]->SetLowTemp(low);
+			fForecastDayView[forecastNum]->SetToolTip(text);
+			break;
 		}
-		break;
-	}
-	case kUpdateMessage:
-		if (fConnected) {
-			SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+		case kFailureMessage:
+		{
+			fConnected = _NetworkConnected();
+			if (!fConnected) {
+				SetCondition(B_TRANSLATE("No network"));
+				start_watching_network(B_WATCH_NETWORK_INTERFACE_CHANGES
+						| B_WATCH_NETWORK_LINK_CHANGES,
+					this);
+			} else
+				SetCondition(B_TRANSLATE("Connection error"));
+			break;
 		}
-	case kAutoUpdateMessage:
-		Reload();
-		break;
-	case kShowForecastMessage:
-		_ShowForecast(!fShowForecast);
-		if (fShowForecast)
+		case kUpdateMessage:
+			if (fConnected)
+				SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+		case kAutoUpdateMessage:
 			Reload();
-		break;
-	case kUpdateCityName: {
-		BString newCityName;
-		if (msg->FindString("city", &newCityName) == B_OK)
-			SetCityName(newCityName);
-		break;
-	}
-	case kUpdateTTLMessage: {
-		int32 ttl;
-		msg->FindInt32("ttl", &ttl);
-		SetUpdateDelay(ttl < kMaxUpdateDelay ? ttl : kMaxUpdateDelay);
-		break;
-	}
-	case B_NETWORK_MONITOR:{
-		fConnected = _NetworkConnected();
-		if (fConnected) {
-			SetCondition(B_TRANSLATE("Connecting" B_UTF8_ELLIPSIS));
-			BMessenger view(this);
-			BMessage updateMessage(kUpdateMessage);
-			delete fDelayUpdateAfterReconnection;
-			fDelayUpdateAfterReconnection = new BMessageRunner(view, &updateMessage, (bigtime_t) kReconnectionDelay  *1000 * 1000, 1);
-			stop_watching_network(this);
+			break;
+		case kShowForecastMessage:
+			_ShowForecast(!fShowForecast);
+			if (fShowForecast)
+				Reload();
+			break;
+		case kUpdateCityName:
+		{
+			BString newCityName;
+			if (msg->FindString("city", &newCityName) == B_OK)
+				SetCityName(newCityName);
+			break;
 		}
-		break;
-	}
-	case B_ABOUT_REQUESTED: {
-		BAlert *alert = new BAlert(B_TRANSLATE("About Weather"),
-			B_TRANSLATE("Weather (The Replicant version)"),
-			B_TRANSLATE("OK"));
-		alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
-		alert->Go();
-		break;
-	}
-	default:
-		BView::MessageReceived(msg);
+		case kUpdateTTLMessage:
+		{
+			int32 ttl;
+			msg->FindInt32("ttl", &ttl);
+			SetUpdateDelay(ttl < kMaxUpdateDelay ? ttl : kMaxUpdateDelay);
+			break;
+		}
+		case B_NETWORK_MONITOR:
+		{
+			fConnected = _NetworkConnected();
+			if (fConnected) {
+				SetCondition(B_TRANSLATE("Connecting" B_UTF8_ELLIPSIS));
+				BMessenger view(this);
+				BMessage updateMessage(kUpdateMessage);
+				delete fDelayUpdateAfterReconnection;
+				fDelayUpdateAfterReconnection
+					= new BMessageRunner(view, &updateMessage,
+						(bigtime_t) kReconnectionDelay * 1000 * 1000, 1);
+				stop_watching_network(this);
+			}
+			break;
+		}
+		case B_ABOUT_REQUESTED:
+		{
+			BAlert* alert = new BAlert(B_TRANSLATE("About Weather"),
+				B_TRANSLATE("Weather (The Replicant version)"),
+				B_TRANSLATE("OK"));
+			alert->SetFlags(alert->Flags() | B_CLOSE_ON_ESCAPE);
+			alert->Go();
+			break;
+		}
+		default:
+			BView::MessageReceived(msg);
 	}
 }
 
@@ -521,12 +542,12 @@ void
 ForecastView::_LoadBitmaps()
 {
 	_LoadIcons(fAlert, 'rGFX', "Artwork/weather_alert.hvif");
-	_LoadIcons(fClearNight, 'rGFX',	"Artwork/weather_clear_night.hvif");
+	_LoadIcons(fClearNight, 'rGFX', "Artwork/weather_clear_night.hvif");
 	_LoadIcons(fClear, 'rGFX', "Artwork/weather_clear.hvif");
-	_LoadIcons(fClouds, 'rGFX',	"Artwork/weather_clouds.hvif");
-	_LoadIcons(fCold, 'rGFX',	"Artwork/weather_cold.hvif");
-	_LoadIcons(fLightDrizzle, 'rGFX',	"Artwork/weather_drizzle.hvif");
-	_LoadIcons(fModerateDenseDrizzle, 'rGFX',	"Artwork/weather_icon.hvif");
+	_LoadIcons(fClouds, 'rGFX', "Artwork/weather_clouds.hvif");
+	_LoadIcons(fCold, 'rGFX', "Artwork/weather_cold.hvif");
+	_LoadIcons(fLightDrizzle, 'rGFX', "Artwork/weather_drizzle.hvif");
+	_LoadIcons(fModerateDenseDrizzle, 'rGFX', "Artwork/weather_icon.hvif");
 	_LoadIcons(fFewClouds, 'rGFX', "Artwork/weather_few_clouds.hvif");
 	_LoadIcons(fFog, 'rGFX', "Artwork/weather_fog.hvif");
 	_LoadIcons(fFreezingDrizzle, 'rGFX', "Artwork/weather_freezing_drizzle.hvif");
@@ -553,7 +574,6 @@ ForecastView::_LoadBitmaps()
 	_LoadIcons(fScatteredSnowShowers, 'rGFX', "Artwork/weather_scattered_snow_showers.hvif");
 	_LoadIcons(fSnowShowers, 'rGFX', "Artwork/weather_snow_showers.hvif");
 }
-
 
 
 void
@@ -623,13 +643,14 @@ dummy_label:
 	if (status == B_OK)
 		data = resources.LoadResource(type, name, &dataSize);
 
-	if (data != NULL){
+	if (data != NULL) {
 
-		BBitmap* smallBitmap = new BBitmap(BRect(0, 0, kSizeSmallIcon - 1, kSizeSmallIcon - 1), 0,
-			B_RGBA32);
-		BBitmap* largeBitmap = new BBitmap(BRect(0, 0, kSizeLargeIcon - 1, kSizeLargeIcon - 1), 0,
-			B_RGBA32);
-		BBitmap* deskbarBitmap = new BBitmap(BRect(0, 0, kSizeDeskBarIcon - 1, kSizeDeskBarIcon - 1), 0,
+		BBitmap* smallBitmap = new BBitmap(
+			BRect(0, 0, kSizeSmallIcon - 1, kSizeSmallIcon - 1), 0, B_RGBA32);
+		BBitmap* largeBitmap = new BBitmap(
+			BRect(0, 0, kSizeLargeIcon - 1, kSizeLargeIcon - 1), 0, B_RGBA32);
+		BBitmap* deskbarBitmap = new BBitmap(
+			BRect(0, 0, kSizeDeskBarIcon - 1, kSizeDeskBarIcon - 1), 0,
 			B_RGBA32);
 
 		status_t status = smallBitmap->InitCheck();
@@ -653,70 +674,102 @@ dummy_label:
 	};
 }
 
-const char *
+
+const char*
 ForecastView::_GetWeatherMessage(int32 condition)
 {
-//	switch (condition) {
-//		case WC_TORNADO:				return B_TRANSLATE("Tornado");
-//		case WC_TROPICAL_STORM:			return B_TRANSLATE("Tropical storm");
-//		case WC_HURRICANE:				return B_TRANSLATE("Hurricane");
-//		case WC_SEVERE_THUNDERSTORM:	return B_TRANSLATE("Severe thunderstorms");
-//		case WC_STORM:					return B_TRANSLATE("Thunderstorms");
-//		case WC_MIXED_SNOW_RAIN:		return B_TRANSLATE("Mixed rain and snow");
-//		case WC_FREEZING_DRIZZLE:		return B_TRANSLATE("Freezing drizzle");
-//		case WC_DRIZZE:					return B_TRANSLATE("Drizzle");
-//		case WC_RAINING: 				return B_TRANSLATE("Raining");
-//		case WC_RAINING_SCATTERED: 		return B_TRANSLATE("Showers");
-//		case WC_LIGHT_SNOW: 			return B_TRANSLATE("Light snow showers");
-//		case WC_SNOW: 					return B_TRANSLATE("Snow");
-//		case WC_FOG: 					return B_TRANSLATE("Fog");
-//		case WC_SMOKY: 					return B_TRANSLATE("Smoky");
-//		case WC_WINDY: 					return B_TRANSLATE("Windy");
-//		case WC_COLD: 					return B_TRANSLATE("Cold");
-//		case WC_CLOUD: 					return B_TRANSLATE("Cloudy");
-//		case WC_MOSTLY_CLOUDY_NIGHT: 	return B_TRANSLATE("Mostly cloudy");
-//		case WC_MOSTLY_CLOUDY_DAY: 		return B_TRANSLATE("Mostly cloudy");
-//		case WC_FEW_CLOUDS: 			return B_TRANSLATE("Partly cloudy");
-//		case WC_CLEAR_NIGHT: 			return B_TRANSLATE("Clear");
-//		case WC_ISOLATED_THUNDERSTORM: 	return B_TRANSLATE("Isolated thunderstorms");
-//		case WC_SCATTERED_SNOW_SHOWERS: return B_TRANSLATE("Scattered showers");
-//		case WC_SNOW_SHOWERS: 			return B_TRANSLATE("Snow showers");
-//		case WC_ISOLATED_THUNDERSHOWERS:return B_TRANSLATE("Isolated thundershowers");
-//		case WC_NOT_AVALIABLE: 			return B_TRANSLATE("Not available");
-//	}
-	
+	//	switch (condition) {
+	//		case WC_TORNADO:				return B_TRANSLATE("Tornado");
+	//		case WC_TROPICAL_STORM:			return B_TRANSLATE("Tropical
+	//storm"); 		case WC_HURRICANE:				return B_TRANSLATE("Hurricane");
+	//		case WC_SEVERE_THUNDERSTORM:	return B_TRANSLATE("Severe
+	//thunderstorms"); 		case WC_STORM:					return
+	//B_TRANSLATE("Thunderstorms"); 		case WC_MIXED_SNOW_RAIN:		return
+	//B_TRANSLATE("Mixed rain and snow"); 		case WC_FREEZING_DRIZZLE:		return
+	//B_TRANSLATE("Freezing drizzle"); 		case WC_DRIZZE:					return
+	//B_TRANSLATE("Drizzle"); 		case WC_RAINING: 				return
+	//B_TRANSLATE("Raining"); 		case WC_RAINING_SCATTERED: 		return
+	//B_TRANSLATE("Showers"); 		case WC_LIGHT_SNOW: 			return
+	//B_TRANSLATE("Light snow showers"); 		case WC_SNOW: 					return
+	//B_TRANSLATE("Snow"); 		case WC_FOG: 					return
+	//B_TRANSLATE("Fog"); 		case WC_SMOKY: 					return
+	//B_TRANSLATE("Smoky"); 		case WC_WINDY: 					return
+	//B_TRANSLATE("Windy"); 		case WC_COLD: 					return
+	//B_TRANSLATE("Cold"); 		case WC_CLOUD: 					return
+	//B_TRANSLATE("Cloudy"); 		case WC_MOSTLY_CLOUDY_NIGHT: 	return
+	//B_TRANSLATE("Mostly cloudy"); 		case WC_MOSTLY_CLOUDY_DAY: 		return
+	//B_TRANSLATE("Mostly cloudy"); 		case WC_FEW_CLOUDS: 			return
+	//B_TRANSLATE("Partly cloudy"); 		case WC_CLEAR_NIGHT: 			return
+	//B_TRANSLATE("Clear"); 		case WC_ISOLATED_THUNDERSTORM: 	return
+	//B_TRANSLATE("Isolated thunderstorms"); 		case WC_SCATTERED_SNOW_SHOWERS:
+	//return B_TRANSLATE("Scattered showers");
+	//		case WC_SNOW_SHOWERS: 			return B_TRANSLATE("Snow showers");
+	//		case WC_ISOLATED_THUNDERSHOWERS:return B_TRANSLATE("Isolated
+	//thundershowers"); 		case WC_NOT_AVALIABLE: 			return B_TRANSLATE("Not
+	//available");
+	//	}
+
 	switch (condition) {
-		case WC_CLEAR_SKY:					return B_TRANSLATE("Clear sky");
-		case WC_MAINLY_CLEAR:				return B_TRANSLATE("Mainly clear");
-		case WC_PARTLY_CLOUDY:				return B_TRANSLATE("Partly cloudy");
-		case WC_OVERCAST:					return B_TRANSLATE("Overcast");
-		case WC_FOG:						return B_TRANSLATE("Fog");
-		case WC_DEPOSITING_RIME_FOG:		return B_TRANSLATE("Depositing rime fog");
-		case WC_LIGHT_DRIZZLE:				return B_TRANSLATE("Light drizzle");
-		case WC_MODERATE_DRIZZLE:			return B_TRANSLATE("Moderate drizzle");
-		case WC_DENSE_DRIZZLE:				return B_TRANSLATE("Dense drizzle");
-		case WC_FREEZING_LIGHT_DRIZZLE:		return B_TRANSLATE("Freezing light drizzle");
-		case WC_FREEZING_DENSE_DRIZZLE:		return B_TRANSLATE("Freezing dense drizzle");
-		case WC_SLIGHT_RAIN:				return B_TRANSLATE("Slight rain");
-		case WC_MODERATE_RAIN:				return B_TRANSLATE("Moderate rain");
-		case WC_HEAVY_RAIN:					return B_TRANSLATE("Heavy rain");
-		case WC_LIGHT_FREEZING_RAIN:		return B_TRANSLATE("Light freezing rain");
-		case WC_HEAVY_FREEZING_RAIN:		return B_TRANSLATE("Heavy freezing rain");
-		case WC_SLIGHT_SNOW_FALL:			return B_TRANSLATE("Slight snow fall");
-		case WC_MODERATE_SNOW_FALL:			return B_TRANSLATE("Moderate snow fall");
-		case WC_HEAVY_SNOW_FALL:			return B_TRANSLATE("Heavy snow fall");
-		case WC_SNOW_GRAINS:				return B_TRANSLATE("Snow grains");
-		case WC_SLIGHT_RAIN_SHOWERS:		return B_TRANSLATE("Slight rain showers");
-		case WC_MODERATE_RAIN_SHOWERS:		return B_TRANSLATE("Moderate rain showers");
-		case WC_HEAVY_RAIN_SHOWERS:			return B_TRANSLATE("Heavy rain showers");
-		case WC_SLIGHT_SNOW_SHOWERS:		return B_TRANSLATE("Slight snow showers");
-		case WC_HEAVY_SNOW_SHOWERS:			return B_TRANSLATE("Heavy snow showers");
-		case WC_THUNDERSTORM:				return B_TRANSLATE("Thunderstorm");
-		case WC_THUNDERSTORM_SLIGHT_HAIL:	return B_TRANSLATE("Thunderstorm with slight hail");
-		case WC_THUNDERSTORM_HEAVY_HAIL:	return B_TRANSLATE("Thunderstorm with heavy hail");
+		case WC_CLEAR_SKY:
+			return B_TRANSLATE("Clear sky");
+		case WC_MAINLY_CLEAR:
+			return B_TRANSLATE("Mainly clear");
+		case WC_PARTLY_CLOUDY:
+			return B_TRANSLATE("Partly cloudy");
+		case WC_OVERCAST:
+			return B_TRANSLATE("Overcast");
+		case WC_FOG:
+			return B_TRANSLATE("Fog");
+		case WC_DEPOSITING_RIME_FOG:
+			return B_TRANSLATE("Depositing rime fog");
+		case WC_LIGHT_DRIZZLE:
+			return B_TRANSLATE("Light drizzle");
+		case WC_MODERATE_DRIZZLE:
+			return B_TRANSLATE("Moderate drizzle");
+		case WC_DENSE_DRIZZLE:
+			return B_TRANSLATE("Dense drizzle");
+		case WC_FREEZING_LIGHT_DRIZZLE:
+			return B_TRANSLATE("Freezing light drizzle");
+		case WC_FREEZING_DENSE_DRIZZLE:
+			return B_TRANSLATE("Freezing dense drizzle");
+		case WC_SLIGHT_RAIN:
+			return B_TRANSLATE("Slight rain");
+		case WC_MODERATE_RAIN:
+			return B_TRANSLATE("Moderate rain");
+		case WC_HEAVY_RAIN:
+			return B_TRANSLATE("Heavy rain");
+		case WC_LIGHT_FREEZING_RAIN:
+			return B_TRANSLATE("Light freezing rain");
+		case WC_HEAVY_FREEZING_RAIN:
+			return B_TRANSLATE("Heavy freezing rain");
+		case WC_SLIGHT_SNOW_FALL:
+			return B_TRANSLATE("Slight snow fall");
+		case WC_MODERATE_SNOW_FALL:
+			return B_TRANSLATE("Moderate snow fall");
+		case WC_HEAVY_SNOW_FALL:
+			return B_TRANSLATE("Heavy snow fall");
+		case WC_SNOW_GRAINS:
+			return B_TRANSLATE("Snow grains");
+		case WC_SLIGHT_RAIN_SHOWERS:
+			return B_TRANSLATE("Slight rain showers");
+		case WC_MODERATE_RAIN_SHOWERS:
+			return B_TRANSLATE("Moderate rain showers");
+		case WC_HEAVY_RAIN_SHOWERS:
+			return B_TRANSLATE("Heavy rain showers");
+		case WC_SLIGHT_SNOW_SHOWERS:
+			return B_TRANSLATE("Slight snow showers");
+		case WC_HEAVY_SNOW_SHOWERS:
+			return B_TRANSLATE("Heavy snow showers");
+		case WC_THUNDERSTORM:
+			return B_TRANSLATE("Thunderstorm");
+		case WC_THUNDERSTORM_SLIGHT_HAIL:
+			return B_TRANSLATE("Thunderstorm with slight hail");
+		case WC_THUNDERSTORM_HEAVY_HAIL:
+			return B_TRANSLATE("Thunderstorm with heavy hail");
 	}
 	return B_TRANSLATE("Not available");
 }
+
 
 BBitmap*
 ForecastView::GetWeatherIcon(weatherIconSize iconSize)
@@ -724,102 +777,142 @@ ForecastView::GetWeatherIcon(weatherIconSize iconSize)
 	return GetWeatherIcon(fCondition, iconSize);
 }
 
-int32 ForecastView::Temperature()
+
+int32
+ForecastView::Temperature()
 {
 	return fTemperature;
 }
 
+
 BBitmap*
 ForecastView::GetWeatherIcon(int32 condition, weatherIconSize iconSize)
 {
-//	switch (condition) {
-//		case WC_TORNADO:				return fTornado[iconSize];
-//		case WC_TROPICAL_STORM:			return fTropicalStorm[iconSize];
-//		case WC_HURRICANE:				return fHurricane[iconSize];
-//		case WC_SEVERE_THUNDERSTORM:	return fSevereThunderstorm[iconSize];
-//		case WC_STORM:					return fStorm[iconSize];
-//		case WC_MIXED_SNOW_RAIN:		return fMixedSnowRain[iconSize];
-//		case WC_SNOW:					return fSnow[iconSize];
-//		case WC_FREEZING_DRIZZLE:		return fFreezingDrizzle[iconSize];
-//		case WC_DRIZZE:					return fDrizzle[iconSize];
-//		case WC_RAINING: 				return fRaining[iconSize];
-//		case WC_LIGHT_SNOW: 			return fLightSnow[iconSize];
-//		case WC_FOG: 					return fFog[iconSize];
-//		case WC_SMOKY: 					return fSmoky[iconSize];
-//		case WC_WINDY: 					return fWindy[iconSize];
-//		case WC_CLOUD: 					return	fCloud[iconSize];
-//		case WC_MOSTLY_CLOUDY_NIGHT: 	return fMostlyCloudyNight[iconSize];
-//		case WC_MOSTLY_CLOUDY_DAY: 		return fClouds[iconSize];
-//		case WC_NIGHT_FEW_CLOUDS: 		return fNightFewClouds[iconSize];
-//		case WC_CLEAR_NIGHT:			return fClearNight[iconSize];
-//		case WC_FEW_CLOUDS: 			return fFewClouds[iconSize];
-//		case WC_RAINING_SCATTERED: 		return fRainingScattered[iconSize];
-//		case WC_SHINING: 				return fShining[iconSize];
-//		case WC_SCATTERED_SNOW_SHOWERS: return fScatteredSnowShowers[iconSize];
-//		case WC_SNOW_SHOWERS: 			return fSnowShowers[iconSize];
-//		case WC_ISOLATED_THUNDERSHOWERS:return fIsolatedThundershowers[iconSize];
-//		case WC_NOT_AVALIABLE: break;
-//	}
-	
+	//	switch (condition) {
+	//		case WC_TORNADO:				return fTornado[iconSize];
+	//		case WC_TROPICAL_STORM:			return fTropicalStorm[iconSize];
+	//		case WC_HURRICANE:				return fHurricane[iconSize];
+	//		case WC_SEVERE_THUNDERSTORM:	return
+	//fSevereThunderstorm[iconSize]; 		case WC_STORM:					return
+	//fStorm[iconSize]; 		case WC_MIXED_SNOW_RAIN:		return
+	//fMixedSnowRain[iconSize]; 		case WC_SNOW:					return
+	//fSnow[iconSize]; 		case WC_FREEZING_DRIZZLE:		return
+	//fFreezingDrizzle[iconSize]; 		case WC_DRIZZE:					return
+	//fDrizzle[iconSize]; 		case WC_RAINING: 				return
+	//fRaining[iconSize]; 		case WC_LIGHT_SNOW: 			return
+	//fLightSnow[iconSize]; 		case WC_FOG: 					return
+	//fFog[iconSize]; 		case WC_SMOKY: 					return fSmoky[iconSize];
+	//		case WC_WINDY: 					return fWindy[iconSize];
+	//		case WC_CLOUD: 					return	fCloud[iconSize];
+	//		case WC_MOSTLY_CLOUDY_NIGHT: 	return fMostlyCloudyNight[iconSize];
+	//		case WC_MOSTLY_CLOUDY_DAY: 		return fClouds[iconSize];
+	//		case WC_NIGHT_FEW_CLOUDS: 		return fNightFewClouds[iconSize];
+	//		case WC_CLEAR_NIGHT:			return fClearNight[iconSize];
+	//		case WC_FEW_CLOUDS: 			return fFewClouds[iconSize];
+	//		case WC_RAINING_SCATTERED: 		return fRainingScattered[iconSize];
+	//		case WC_SHINING: 				return fShining[iconSize];
+	//		case WC_SCATTERED_SNOW_SHOWERS: return
+	//fScatteredSnowShowers[iconSize]; 		case WC_SNOW_SHOWERS: 			return
+	//fSnowShowers[iconSize]; 		case WC_ISOLATED_THUNDERSHOWERS:return
+	//fIsolatedThundershowers[iconSize]; 		case WC_NOT_AVALIABLE: break;
+	//	}
+
 	switch (condition) {
-		
-		case WC_CLEAR_SKY: 					return fClear[iconSize];
-		case WC_MAINLY_CLEAR: 				return fFewClouds[iconSize];
-		case WC_PARTLY_CLOUDY: 				return fPartlyCloudy[iconSize];
-		case WC_OVERCAST: 					return fClouds[iconSize];
-		
-		case WC_FOG: 						return fFog[iconSize];
-		case WC_DEPOSITING_RIME_FOG: 		return fSmoky[iconSize];
-		
-		case WC_LIGHT_DRIZZLE:				return fLightDrizzle[iconSize];
-		case WC_MODERATE_DRIZZLE:			return fModerateDenseDrizzle[iconSize];
-		case WC_DENSE_DRIZZLE:				return fModerateDenseDrizzle[iconSize];
-		case WC_FREEZING_LIGHT_DRIZZLE:		return fFreezingDrizzle[iconSize];
-		case WC_FREEZING_DENSE_DRIZZLE:		return fFreezingDrizzle[iconSize];
-		
-		case WC_SLIGHT_RAIN: 				return fRainingScattered[iconSize];
-		case WC_MODERATE_RAIN:				return fRaining[iconSize];		
-		case WC_HEAVY_RAIN:					return fIsolatedThundershowers[iconSize];
-		
-		case WC_SLIGHT_RAIN_SHOWERS: 		return fRainingScattered[iconSize];	
-		case WC_MODERATE_RAIN_SHOWERS:		return fIsolatedThundershowers[iconSize];
-		case WC_HEAVY_RAIN_SHOWERS:			return fIsolatedThundershowers[iconSize];
-		
-		case WC_LIGHT_FREEZING_RAIN:		return fMixedSnowRain[iconSize];
-		case WC_HEAVY_FREEZING_RAIN:		return fSnow[iconSize];
-		
-		case WC_SLIGHT_SNOW_FALL:			return fSnowShowers[iconSize];
-		case WC_MODERATE_SNOW_FALL:			return fScatteredSnowShowers[iconSize];
-		case WC_HEAVY_SNOW_FALL:			return fSnow[iconSize];
-		
-		case WC_SNOW_GRAINS:				return fMixedSnowRain[iconSize];
-		
-		case WC_SLIGHT_SNOW_SHOWERS:		return fScatteredSnowShowers[iconSize];
-		case WC_HEAVY_SNOW_SHOWERS:			return fSnowShowers[iconSize];
-		
-		case WC_THUNDERSTORM:				return fIsolatedThunderstorm[iconSize];
-		case WC_THUNDERSTORM_SLIGHT_HAIL:	return fAlert[iconSize];
-		case WC_THUNDERSTORM_HEAVY_HAIL:	return fSevereThunderstorm[iconSize];
-		
+
+		case WC_CLEAR_SKY:
+			return fClear[iconSize];
+		case WC_MAINLY_CLEAR:
+			return fFewClouds[iconSize];
+		case WC_PARTLY_CLOUDY:
+			return fPartlyCloudy[iconSize];
+		case WC_OVERCAST:
+			return fClouds[iconSize];
+
+		case WC_FOG:
+			return fFog[iconSize];
+		case WC_DEPOSITING_RIME_FOG:
+			return fSmoky[iconSize];
+
+		case WC_LIGHT_DRIZZLE:
+			return fLightDrizzle[iconSize];
+		case WC_MODERATE_DRIZZLE:
+			return fModerateDenseDrizzle[iconSize];
+		case WC_DENSE_DRIZZLE:
+			return fModerateDenseDrizzle[iconSize];
+		case WC_FREEZING_LIGHT_DRIZZLE:
+			return fFreezingDrizzle[iconSize];
+		case WC_FREEZING_DENSE_DRIZZLE:
+			return fFreezingDrizzle[iconSize];
+
+		case WC_SLIGHT_RAIN:
+			return fRainingScattered[iconSize];
+		case WC_MODERATE_RAIN:
+			return fRaining[iconSize];
+		case WC_HEAVY_RAIN:
+			return fIsolatedThundershowers[iconSize];
+
+		case WC_SLIGHT_RAIN_SHOWERS:
+			return fRainingScattered[iconSize];
+		case WC_MODERATE_RAIN_SHOWERS:
+			return fIsolatedThundershowers[iconSize];
+		case WC_HEAVY_RAIN_SHOWERS:
+			return fIsolatedThundershowers[iconSize];
+
+		case WC_LIGHT_FREEZING_RAIN:
+			return fMixedSnowRain[iconSize];
+		case WC_HEAVY_FREEZING_RAIN:
+			return fSnow[iconSize];
+
+		case WC_SLIGHT_SNOW_FALL:
+			return fSnowShowers[iconSize];
+		case WC_MODERATE_SNOW_FALL:
+			return fScatteredSnowShowers[iconSize];
+		case WC_HEAVY_SNOW_FALL:
+			return fSnow[iconSize];
+
+		case WC_SNOW_GRAINS:
+			return fMixedSnowRain[iconSize];
+
+		case WC_SLIGHT_SNOW_SHOWERS:
+			return fScatteredSnowShowers[iconSize];
+		case WC_HEAVY_SNOW_SHOWERS:
+			return fSnowShowers[iconSize];
+
+		case WC_THUNDERSTORM:
+			return fIsolatedThunderstorm[iconSize];
+		case WC_THUNDERSTORM_SLIGHT_HAIL:
+			return fAlert[iconSize];
+		case WC_THUNDERSTORM_HEAVY_HAIL:
+			return fSevereThunderstorm[iconSize];
 	}
 	return NULL; // Change to N/A
 }
+
 
 BString
 ForecastView::_GetDayText(const BString& dayName) const
 {
 	BWeekday day;
-	if (strcmp(dayName.String(), "Mon") == 0) day = B_WEEKDAY_MONDAY;
-	if (strcmp(dayName.String(), "Tue") == 0) day = B_WEEKDAY_TUESDAY;
-	if (strcmp(dayName.String(), "Wed") == 0) day = B_WEEKDAY_WEDNESDAY;
-	if (strcmp(dayName.String(), "Thu") == 0) day = B_WEEKDAY_THURSDAY;
-	if (strcmp(dayName.String(), "Fri") == 0) day = B_WEEKDAY_FRIDAY;
-	if (strcmp(dayName.String(), "Sat") == 0) day = B_WEEKDAY_SATURDAY;
-	if (strcmp(dayName.String(), "Sun") == 0) day = B_WEEKDAY_SUNDAY;
+	if (strcmp(dayName.String(), "Mon") == 0)
+		day = B_WEEKDAY_MONDAY;
+	if (strcmp(dayName.String(), "Tue") == 0)
+		day = B_WEEKDAY_TUESDAY;
+	if (strcmp(dayName.String(), "Wed") == 0)
+		day = B_WEEKDAY_WEDNESDAY;
+	if (strcmp(dayName.String(), "Thu") == 0)
+		day = B_WEEKDAY_THURSDAY;
+	if (strcmp(dayName.String(), "Fri") == 0)
+		day = B_WEEKDAY_FRIDAY;
+	if (strcmp(dayName.String(), "Sat") == 0)
+		day = B_WEEKDAY_SATURDAY;
+	if (strcmp(dayName.String(), "Sun") == 0)
+		day = B_WEEKDAY_SUNDAY;
 	BString translateDayName;
-	status_t result = fDateFormat.GetDayName(day, translateDayName, B_LONG_DATE_FORMAT);
-	return result == B_OK  ? translateDayName : dayName;
+	status_t result
+		= fDateFormat.GetDayName(day, translateDayName, B_LONG_DATE_FORMAT);
+	return result == B_OK ? translateDayName : dayName;
 }
+
 
 void
 ForecastView::SetCityId(int32 cityId)
@@ -839,13 +932,14 @@ void
 ForecastView::SetCityName(BString city)
 {
 	fCity = city;
-    fCityView->TruncateString(&city, B_TRUNCATE_END, 150);
-    if (city != fCity)
+	fCityView->TruncateString(&city, B_TRUNCATE_END, 150);
+	if (city != fCity)
 		fCityView->SetToolTip(fCity);
-    else
+	else
 		fCityView->SetToolTip("");
 	fCityView->SetText(city);
 }
+
 
 void
 ForecastView::SetLatitude(double latitude)
@@ -853,11 +947,13 @@ ForecastView::SetLatitude(double latitude)
 	fLatitude = latitude;
 }
 
+
 void
 ForecastView::SetLongitude(double longitude)
 {
 	fLongitude = longitude;
 }
+
 
 BString
 ForecastView::CityName()
@@ -871,7 +967,7 @@ ForecastView::SetUpdateDelay(int32 delay)
 {
 	if (fUpdateDelay != delay) {
 		fUpdateDelay = delay;
-		fAutoUpdate->SetInterval((bigtime_t)fUpdateDelay * 60 * 1000 * 1000);
+		fAutoUpdate->SetInterval((bigtime_t) fUpdateDelay * 60 * 1000 * 1000);
 	}
 }
 
@@ -889,14 +985,12 @@ ForecastView::SetDisplayUnit(DisplayUnit unit)
 	BString tempString;
 	fDisplayUnit = unit;
 
-	tempString = FormatString(fDisplayUnit,fTemperature);
+	tempString = FormatString(fDisplayUnit, fTemperature);
 
 	fTemperatureView->SetText(tempString);
 
 	for (int32 i = 0; i < kMaxForecastDay; i++)
-	{
 		fForecastDayView[i]->SetDisplayUnit(fDisplayUnit);
-	}
 }
 
 
@@ -912,8 +1006,8 @@ bool
 ForecastView::IsFahrenheitDefault()
 {
 	BFormattingConventions conventions;
-	if (BLocale::Default()->GetFormattingConventions(&conventions)
-			== B_OK && conventions.CountryCode() != NULL) {
+	if (BLocale::Default()->GetFormattingConventions(&conventions) == B_OK
+		&& conventions.CountryCode() != NULL) {
 		if (strcmp(conventions.CountryCode(), "US") == 0)
 			return true;
 		if (strcmp(conventions.CountryCode(), "BS") == 0)
@@ -934,11 +1028,13 @@ ForecastView::IsFahrenheitDefault()
 	return false;
 }
 
+
 int32
 ForecastView::GetCondition()
 {
 	return fCondition;
 }
+
 
 BString
 ForecastView::GetStatus()
@@ -946,14 +1042,15 @@ ForecastView::GetStatus()
 	return fConditionView->Text();
 }
 
+
 void
 ForecastView::SetCondition(BString condition)
 {
 	BString conditionTruncated(condition);
 	fConditionView->TruncateString(&conditionTruncated, B_TRUNCATE_END, 196);
-    if (conditionTruncated != condition)
+	if (conditionTruncated != condition)
 		fConditionView->SetToolTip(condition);
-    else
+	else
 		fConditionView->SetToolTip("");
 	fConditionView->SetText(conditionTruncated);
 }
@@ -983,8 +1080,8 @@ ForecastView::Reload(bool forcedForecast)
 
 	fForcedForecast = forcedForecast;
 
-	fDownloadThread = spawn_thread(&_DownloadDataFunc,
-		"Download Data", B_NORMAL_PRIORITY, this);
+	fDownloadThread = spawn_thread(
+		&_DownloadDataFunc, "Download Data", B_NORMAL_PRIORITY, this);
 	if (fDownloadThread >= 0)
 		resume_thread(fDownloadThread);
 }
@@ -1001,7 +1098,7 @@ ForecastView::StopReload()
 
 
 int32
-ForecastView::_DownloadDataFunc(void *cookie)
+ForecastView::_DownloadDataFunc(void* cookie)
 {
 	ForecastView* forecastView = static_cast<ForecastView*>(cookie);
 	forecastView->_DownloadData();
@@ -1014,10 +1111,9 @@ ForecastView::_DownloadData()
 {
 	WSOpenMeteo listener(this, WEATHER_REQUEST);
 	BString urlString = listener.GetUrl(fLongitude, fLatitude, fDisplayUnit);
-	
-	BUrlRequest* request =
-		BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()),
-		&listener);
+
+	BUrlRequest* request
+		= BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()), &listener);
 
 	thread_id thread = request->Run();
 	wait_for_thread(thread, NULL);
@@ -1049,9 +1145,10 @@ ForecastView::SetTextColor(rgb_color color)
 	fTemperatureView->SetHighColor(color);
 	fCityView->SetHighColor(color);
 	fForecastView->SetHighColor(color);
-	for (int32 i = 0; i < kMaxForecastDay; i++) {
+
+	for (int32 i = 0; i < kMaxForecastDay; i++)
 		fForecastDayView[i]->SetTextColor(color);
-	}
+
 	fConditionButton->Invalidate();
 	fConditionView->Invalidate();
 	fTemperatureView->Invalidate();
@@ -1070,6 +1167,7 @@ ForecastView::SetBackgroundColor(rgb_color color)
 	fTemperatureView->SetViewColor(color);
 	fCityView->SetViewColor(color);
 	fForecastView->SetViewColor(color);
+
 	for (int32 i = 0; i < kMaxForecastDay; i++) {
 		fForecastDayView[i]->SetViewColor(color);
 		fForecastDayView[i]->Invalidate();
@@ -1101,22 +1199,27 @@ ForecastView::IsConnected() const
 BString
 FormatString(DisplayUnit unit, int32 temp)
 {
-	BString tempString="";
+	BString tempString = "";
 	switch (unit) {
-		case CELSIUS : {
-			// Open Meteo allows to request temperatures either in Fahreneit or Celsius
-			// the response contains the unit measure so no conversion is required
-			// and the unit measure settings should only be used to request temperatures in a given unit measure
-			// Other unit measures are unsupported by Open Meteo and should be removed from the preference panel
-			// tempString << static_cast<int>(floor((temp - 32) * 5/9)) << "°C";
+		case CELSIUS:
+		{
+			// Open Meteo allows to request temperatures either in Fahreneit or
+			// Celsius the response contains the unit measure so no conversion
+			// is required and the unit measure settings should only be used to
+			// request temperatures in a given unit measure Other unit measures
+			// are unsupported by Open Meteo and should be removed from the
+			// preference panel tempString << static_cast<int>(floor((temp - 32)
+			// * 5/9)) << "°C";
 			tempString << temp << "°C";
 			break;
 		}
-		case FAHRENHEIT : {
+		case FAHRENHEIT:
+		{
 			tempString << temp << "°F";
 			break;
 		}
-		default: {
+		default:
+		{
 			tempString << temp << "°C";
 			break;
 		}
@@ -1134,9 +1237,8 @@ ForecastView::_NetworkConnected()
 	while (roster.GetNextInterface(&cookie, interface) == B_OK) {
 		uint32 flags = interface.Flags();
 		if ((flags & IFF_LOOPBACK) == 0) {
-			if ((flags & (IFF_UP | IFF_LINK)) == (IFF_UP | IFF_LINK)) {
+			if ((flags & (IFF_UP | IFF_LINK)) == (IFF_UP | IFF_LINK))
 				return true;
-			}
 		}
 	}
 	return false;

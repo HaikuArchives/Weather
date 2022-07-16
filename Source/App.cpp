@@ -7,13 +7,20 @@ const char* kSignature = "application/x-vnd.przemub.Weather";
 #include "App.h"
 #include "MainWindow.h"
 
-App::App(void) : BApplication(kSignature) {
-	MainWindow *mw = new MainWindow();
+
+App::App(void)
+	:
+	BApplication(kSignature)
+{
+	MainWindow* mw = new MainWindow();
 	mw->Show();
 }
 
-int main() {
-	App *mApp = new App();
+
+int
+main()
+{
+	App* mApp = new App();
 	mApp->Run();
 	delete mApp;
 	return 0;

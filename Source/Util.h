@@ -5,8 +5,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <SupportDefs.h>
 #include <Message.h>
+#include <SupportDefs.h>
 
 status_t LoadSettings(BMessage& m);
 

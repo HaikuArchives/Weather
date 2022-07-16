@@ -11,14 +11,13 @@
 #include <StringView.h>
 
 
-class LabelView : public BStringView {
+class LabelView : public BStringView
+{
 public:
-			
-			LabelView(const char* name, const char* text,
-									uint32 flags = B_WILL_DRAW);
-			virtual void Draw (BRect updateRect);
-};
+					LabelView(const char* name, const char* text, uint32 flags = B_WILL_DRAW);
 
+	virtual void	Draw(BRect updateRect);
+};
 
 
 #endif // _LABELVIEW_H_

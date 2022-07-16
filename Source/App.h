@@ -6,9 +6,10 @@
 #include <Application.h>
 #include <Window.h>
 
-class App : public BApplication {
+class App : public BApplication
+{
 private:
-	BWindow *window;
+	BWindow* window;
 
 public:
 	App(void);

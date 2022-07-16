@@ -8,6 +8,7 @@
 
 #include "NetListener.h"
 
+
 NetListener::NetListener(BHandler* handler, RequestType requestType)
 	:
 	BUrlProtocolListener(),
@@ -29,24 +30,21 @@ NetListener::ResponseStarted(BUrlRequest* caller)
 
 
 void
-NetListener::DataReceived(BUrlRequest* caller, const char* data,
-	off_t position, ssize_t size) {
-
+NetListener::DataReceived(
+	BUrlRequest* caller, const char* data, off_t position, ssize_t size)
+{
 	fResponseData.Write(data, size);
-
 }
 
 
 void
-NetListener::RequestCompleted(BUrlRequest* caller,
-	bool success) {
-
+NetListener::RequestCompleted(BUrlRequest* caller, bool success)
+{
 	if (fRequestType == WEATHER_REQUEST)
 		_ProcessWeatherData(success);
 
 	if (fRequestType == CITY_REQUEST)
 		_ProcessCityData(success);
-
 }
 
 
@@ -80,11 +78,9 @@ NetListener::_ProcessWeatherData(bool success)
 	BMessage queryMessage, resultsMessage, channelMessage, locationMessage;
 	if (parsedData.FindMessage("query", &queryMessage) == B_OK
 		&& queryMessage.FindMessage("results", &resultsMessage) == B_OK
-		&& resultsMessage.FindMessage("channel", &channelMessage) == B_OK)
-	{
+		&& resultsMessage.FindMessage("channel", &channelMessage) == B_OK) {
 		// Location: Retrieve Full City Name
-		if (channelMessage.FindMessage("location", &locationMessage) == B_OK)
-		{
+		if (channelMessage.FindMessage("location", &locationMessage) == B_OK) {
 			BString city, country, region;
 
 			locationMessage.FindString("city", &city);
@@ -98,8 +94,7 @@ NetListener::_ProcessWeatherData(bool success)
 
 		// TTL: Retrieve Time To live
 		BString timeToLive;
-		if (channelMessage.FindString("ttl", &timeToLive) == B_OK)
-		{
+		if (channelMessage.FindString("ttl", &timeToLive) == B_OK) {
 			int ttl;
 			sscanf(timeToLive.String(), "%d", &ttl);
 			BMessage* message = new BMessage(kUpdateTTLMessage);
@@ -108,9 +103,10 @@ NetListener::_ProcessWeatherData(bool success)
 		}
 
 		BMessage itemMessage;
-		if (channelMessage.FindMessage("item", &itemMessage) == B_OK){
+		if (channelMessage.FindMessage("item", &itemMessage) == B_OK) {
 			// Current Condition
-			if (itemMessage.FindMessage("condition", &conditionMessage) == B_OK){
+			if (itemMessage.FindMessage("condition", &conditionMessage)
+				== B_OK) {
 				BString code;
 				BString temp;
 				BString text;
@@ -131,15 +127,19 @@ NetListener::_ProcessWeatherData(bool success)
 				messenger.SendMessage(message);
 			}
 			// Forecast
-			if (itemMessage.FindMessage("forecast", &forecastMessage) == B_OK){
-				char *name;
+			if (itemMessage.FindMessage("forecast", &forecastMessage) == B_OK) {
+				char* name;
 				uint32 type;
 				int32 count;
 				BString code, highStr, lowStr, text, day;
 
-				for (int32 i = 0; forecastMessage.GetInfo(B_MESSAGE_TYPE, i, &name, &type, &count) == B_OK; i++) {
+				for (int32 i = 0; forecastMessage.GetInfo(
+									  B_MESSAGE_TYPE, i, &name, &type, &count)
+					 == B_OK;
+					i++) {
 					BMessage forecastDayMessage;
-					if (forecastMessage.FindMessage(name, &forecastDayMessage) == B_OK){
+					if (forecastMessage.FindMessage(name, &forecastDayMessage)
+						== B_OK) {
 						forecastDayMessage.FindString("code", &code);
 						forecastDayMessage.FindString("low", &lowStr);
 						forecastDayMessage.FindString("high", &highStr);
@@ -199,34 +199,32 @@ NetListener::_ProcessCityData(bool success)
 	if (parsedData.FindMessage("query", &queryMessage) == B_OK
 		&& queryMessage.FindMessage("results", &resultsMessage) == B_OK
 		&& resultsMessage.FindMessage("place", &placeMessage) == B_OK
-		&& placeMessage.FindString("woeid", &woeid) == B_OK)
-	{
+		&& placeMessage.FindString("woeid", &woeid) == B_OK) {
 		BMessage* message = new BMessage(kDataMessage);
 		message->AddString("id", woeid);
 		messenger.SendMessage(message);
 	}
 	if (parsedData.FindMessage("query", &queryMessage) == B_OK
 		&& queryMessage.FindMessage("results", &resultsMessage) == B_OK
-		&& resultsMessage.FindMessage("place", &placeMessage) == B_OK)
-	{
+		&& resultsMessage.FindMessage("place", &placeMessage) == B_OK) {
 		int32 index = 0;
 		BMessage placeIndexMessage;
 		BString messageIndex("0");
 		BMessage* message = new BMessage(kCitiesListMessage);
-		while (placeMessage.FindMessage(messageIndex, &placeIndexMessage) == B_OK)
-		{
+		while (placeMessage.FindMessage(messageIndex, &placeIndexMessage)
+			== B_OK) {
 			BMessage countryMessage, admin1Message, localityMessage;
 			BString country, admin1, locality, woeid, countryCode;
-			if (placeIndexMessage.FindMessage("country", &countryMessage) == B_OK)
-			{
+			if (placeIndexMessage.FindMessage("country", &countryMessage)
+				== B_OK) {
 				countryMessage.FindString("content", &country);
 				countryMessage.FindString("code", &countryCode);
 			}
 			if (placeIndexMessage.FindMessage("admin1", &admin1Message) == B_OK)
 				admin1Message.FindString("content", &admin1);
 
-			if (placeIndexMessage.FindMessage("locality1", &localityMessage) == B_OK)
-			{
+			if (placeIndexMessage.FindMessage("locality1", &localityMessage)
+				== B_OK) {
 				localityMessage.FindString("content", &locality);
 				localityMessage.FindString("woeid", &woeid);
 			}
@@ -240,9 +238,7 @@ NetListener::_ProcessCityData(bool success)
 			messageIndex << index;
 		}
 		messenger.SendMessage(message);
-	}
-	else
-	{
+	} else {
 		BMessage* message = new BMessage(kFailureMessage);
 		messenger.SendMessage(message);
 	}
