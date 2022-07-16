@@ -42,8 +42,8 @@ private:
 	int32 			fUpdateDelay;
 	DisplayUnit 	fDisplayUnit;
 
-	BRadioButton* 	fCelsiusButton;
-	BRadioButton* 	fFahrenheitButton;
+	BRadioButton* 	fCelsiusRadio;
+	BRadioButton* 	fFahrenheitRadio;
 };
 
 

@@ -7,8 +7,8 @@
 #include <Button.h>
 #include <Catalog.h>
 #include <ControlLook.h>
-#include <GroupLayout.h>
-#include <GroupView.h>
+#include <LayoutBuilder.h>
+#include <SeparatorView.h>
 #include <StringView.h>
 #include <Window.h>
 
@@ -23,40 +23,40 @@ PreferencesWindow::PreferencesWindow(
 	BRect frame, MainWindow* parent, int32 updateDelay, DisplayUnit unit)
 	:
 	BWindow(frame, B_TRANSLATE("Preferences"), B_TITLED_WINDOW,
-		B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS)
+		B_NOT_ZOOMABLE | B_NOT_RESIZABLE | B_ASYNCHRONOUS_CONTROLS
+		| B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	fParent = parent;
 	fUpdateDelay = updateDelay;
 	fDisplayUnit = unit;
 
-	BGroupLayout* root = new BGroupLayout(B_VERTICAL);
-	this->SetLayout(root);
-
-	BGroupView* view = new BGroupView(B_VERTICAL);
-	BGroupLayout* layout = view->GroupLayout();
-
-	static const float spacing = be_control_look->DefaultItemSpacing();
-	layout->SetInsets(spacing / 2);
-	this->AddChild(view);
-
-	// Open Meteo supports Celsius and Fahrenheit degrees only
-	fCelsiusButton = new BRadioButton(B_TRANSLATE("Use Celsius °C"), NULL);
-	fFahrenheitButton
+	fCelsiusRadio = new BRadioButton(B_TRANSLATE("Use Celsius °C"), NULL);
+	fFahrenheitRadio
 		= new BRadioButton(B_TRANSLATE("Use Fahrenheit °F"), NULL);
+	fFahrenheitRadio->SetExplicitMinSize(
+		BSize(be_plain_font->StringWidth(B_TRANSLATE("Use Fahrenheit °F")) + 50, B_SIZE_UNSET));
 
-	layout->AddView(fCelsiusButton);
-	layout->AddView(fFahrenheitButton);
-	layout->AddView(
-		new BButton("ok", B_TRANSLATE("OK"), new BMessage(kSavePrefMessage)));
+	BLayoutBuilder::Group<>(this, B_VERTICAL)
+		.AddGroup(B_VERTICAL)
+			.SetInsets(B_USE_WINDOW_SPACING)
+			.Add(fCelsiusRadio)
+			.Add(fFahrenheitRadio)
+			.End()
+		.Add(new BSeparatorView(B_HORIZONTAL))
+		.Add(new BButton("ok", B_TRANSLATE("OK"), new BMessage(kSavePrefMessage)))
+		.SetInsets(0, 0, 0, B_USE_WINDOW_SPACING)
+		.End();
 
 	switch (unit) {
 		case CELSIUS:
-			fCelsiusButton->SetValue(1);
+			fCelsiusRadio->SetValue(1);
 			break;
 		case FAHRENHEIT:
-			fFahrenheitButton->SetValue(1);
+			fFahrenheitRadio->SetValue(1);
 			break;
 	}
+
+	CenterIn(frame);
 }
 
 
@@ -85,9 +85,9 @@ PreferencesWindow::_UpdatePreferences()
 
 	DisplayUnit unit;
 
-	if (fCelsiusButton->Value())
+	if (fCelsiusRadio->Value())
 		unit = CELSIUS;
-	if (fFahrenheitButton->Value())
+	if (fFahrenheitRadio->Value())
 		unit = FAHRENHEIT;
 
 	message->AddInt32("displayUnit", (int32) unit);
