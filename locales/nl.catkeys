@@ -1,0 +1,65 @@
+1	Dutch	x-vnd.przemub.Weather	1423632369
+About Weather	ForecastView		Over Weather
+Background	ForecastView		Achtergrond
+Clear sky	ForecastView		Heldere hemel
+Connecting…	ForecastView		Verbinden...
+Connection error	ForecastView		Verbinding fout
+Default	ForecastView		Standaard
+Dense drizzle	ForecastView		Dichte motregen
+Depositing rime fog	ForecastView		Rijmmist neerslaan
+Fog	ForecastView		Mist
+Freezing dense drizzle	ForecastView		Bevriezende dichte motregen
+Freezing light drizzle	ForecastView		Bevriezende lichte motregen
+Heavy freezing rain	ForecastView		Zware ijsregen
+Heavy rain	ForecastView		Zware regen
+Heavy rain showers	ForecastView		Zware regenbuien
+Heavy snow fall	ForecastView		Zware sneeuwval
+Heavy snow showers	ForecastView		Zware sneeuwbuien
+Light drizzle	ForecastView		Lichte motregen
+Light freezing rain	ForecastView		Lichte ijsregen
+Loading…	ForecastView		Laden...
+Mainly clear	ForecastView		Meestal helder
+Moderate drizzle	ForecastView		Matige mist
+Moderate rain	ForecastView		Matige regen
+Moderate rain showers	ForecastView		Matige regenbuien
+Moderate snow fall	ForecastView		Matige sneeuwval
+No network	ForecastView		Geen netwerk
+Not available	ForecastView		Niet beschikbaar
+OK	ForecastView		OK
+Overcast	ForecastView		Bewolkt
+Partly cloudy	ForecastView		Half bewolkt
+Slight rain	ForecastView		Lichte regen
+Slight rain showers	ForecastView		Lichte regenbuien
+Slight snow fall	ForecastView		Lichte sneeuwval
+Slight snow showers	ForecastView		Lichte sneeuwbuien
+Snow grains	ForecastView		Sneeuwkorrels
+Text	ForecastView		Tekst
+Thunderstorm	ForecastView		Onweersbui
+Thunderstorm with heavy hail	ForecastView		Onweersbui met zware hagel
+Thunderstorm with slight hail	ForecastView		Onweersbui met lichte hagel
+Transparent	ForecastView		Transparant
+Weather (The Replicant version)	ForecastView		Weather (De Replicant versie)
+About Weather	MainWindow		Over Weather
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Een open source weer toepassing die voorspelling doet voor de volgende 5 dagen.
+Change location…	MainWindow		Locatie aanpassen...
+Deskbar Replicant	MainWindow		Deskbar Replicant
+Edit	MainWindow		Bewerken
+Loading…	MainWindow		Laden...
+OK	MainWindow		OK
+Preferences…	MainWindow		Voorkeuren...
+Quit	MainWindow		Afsluiten
+Refresh	MainWindow		Ververs
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Aanmaken deskbar replicant is mislukt. De fout is: \"
+View	MainWindow		Toon
+Cancel	CitiesListSelectionWindow		Annuleer
+Choose location	CitiesListSelectionWindow		Kies locatie
+OK	CitiesListSelectionWindow		OK
+Change location	SelectionWindow		Locatie aanpassen
+City:	SelectionWindow		Stad:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Selecteer stad: stad, land, regio
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Voorkeuren
+Use Celsius °C	PreferencesWindow		Gebruik Celsius °C
+Use Fahrenheit °F	PreferencesWindow		Gebruik Fahrenheit °F
+Weather	System name		Weather

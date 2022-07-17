@@ -1,73 +1,65 @@
-1	Swedish	x-vnd.przemub.Weather	3662372937
+1	Swedish	x-vnd.przemub.Weather	1423632369
 About Weather	ForecastView		Om Väder
 Background	ForecastView		Bakgrund
-Blowing snow	ForecastView		Högt snödrev
-Blustery	ForecastView		Stormig
-Clear	ForecastView		Klart
-Cloudy	ForecastView		Molnigt
-Cold	ForecastView		Kallt
+Clear sky	ForecastView		Klart
 Connecting…	ForecastView		Ansluter…
 Connection error	ForecastView		Anslutningsfel
 Default	ForecastView		Standardinställning
-Drizzle	ForecastView		Duggregn
-Dust	ForecastView		Damm
-Fair	ForecastView		Vackert
+Dense drizzle	ForecastView		Ihållande duggregn
+Depositing rime fog	ForecastView		Rimfrostdimma
 Fog	ForecastView		Dimma
-Freezing drizzle	ForecastView		Iskallt duggregn
-Freezing rain	ForecastView		Iskallt regn
-Hail	ForecastView		Hagel
-Haze	ForecastView		Dis
-Heavy snow	ForecastView		Kraftigt snöfall
-Hot	ForecastView		Varmt
-Hurricane	ForecastView		Orkan
-Isolated thundershowers	ForecastView		Lokala åskskurar
-Isolated thunderstorms	ForecastView		Lokal åska
-Light snow showers	ForecastView		Lätt snöfall
+Freezing dense drizzle	ForecastView		Underkylt tätt duggregn
+Freezing light drizzle	ForecastView		Underkylt måttligt duggregn
+Heavy freezing rain	ForecastView		Rikligt underkylt regn
+Heavy rain	ForecastView		Rikligt regn
+Heavy rain showers	ForecastView		Rikliga regnskurar
+Heavy snow fall	ForecastView		Rikligt med snö
+Heavy snow showers	ForecastView		Kraftiga snöbyar
+Light drizzle	ForecastView		Lätt duggregn
+Light freezing rain	ForecastView		Lätt underkylt regn
 Loading…	ForecastView		Laddar…
-Mixed rain and hail	ForecastView		Blandat regn och hagel
-Mixed rain and sleet	ForecastView		Snöblandat regn
-Mixed rain and snow	ForecastView		Blandat regn och snö
-Mixed snow and sleet	ForecastView		Snöblandat regn
-Mostly cloudy	ForecastView		Mestadels molnigt
+Mainly clear	ForecastView		Nästan klart
+Moderate drizzle	ForecastView		Måttligt duggregn
+Moderate rain	ForecastView		Måttligt regn
+Moderate rain showers	ForecastView		Måttliga regnskurar
+Moderate snow fall	ForecastView		Måttligt snöfall
 No network	ForecastView		Inget nätverk
 Not available	ForecastView		Inte tillgängligt
 OK	ForecastView		OK
+Overcast	ForecastView		Mulet
 Partly cloudy	ForecastView		Delvis molnigt
-Scattered showers	ForecastView		Spridda skurar
-Scattered snow showers	ForecastView		Spridda snöbyar
-Scattered thunderstorms	ForecastView		Spridda åskväder
-Severe thunderstorms	ForecastView		Kraftiga åskoväder
-Showers	ForecastView		Skurar
-Sleet	ForecastView		Snöblandat regn
-Smoky	ForecastView		Mulet
-Snow	ForecastView		Snö
-Snow flurries	ForecastView		Snöblåsningar
-Snow showers	ForecastView		Snöfall
-Sunny	ForecastView		Soligt
+Slight rain	ForecastView		Lätt regn
+Slight rain showers	ForecastView		Lätta regnskurar
+Slight snow fall	ForecastView		Lätt snöfall
+Slight snow showers	ForecastView		Lätta snöskurar
+Snow grains	ForecastView		Snökorn
 Text	ForecastView		Text
-Thundershowers	ForecastView		Åskskurar
-Thunderstorms	ForecastView		Åska
-Tornado	ForecastView		Tornado
+Thunderstorm	ForecastView		Åska
+Thunderstorm with heavy hail	ForecastView		Åska med tungt hagel
+Thunderstorm with slight hail	ForecastView		Åska med lätt hagel
 Transparent	ForecastView		Transparent
-Tropical storm	ForecastView		Tropisk storm
 Weather (The Replicant version)	ForecastView		Väder (Replikantversionen)
-Windy	ForecastView		Blåsigt
+About Weather	MainWindow		Om Väder
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Ett öppen-källkodprogram som visar en väderleksrapport för de närmsta fem dagarna.
 Change location…	MainWindow		Ändra plats…
+Deskbar Replicant	MainWindow		Skrivbords Replikant
 Edit	MainWindow		Ändra
 Loading…	MainWindow		Laddar…
+OK	MainWindow		OK
 Preferences…	MainWindow		Inställningar…
 Quit	MainWindow		Avsluta
 Refresh	MainWindow		Uppdatera
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Kan ej skapa deskbar replikant. Felet är: \"
 View	MainWindow		Visa
-OK	PreferencesWindow		OK
-Preferences	PreferencesWindow		Inställningar
-Use degrees Celsius	PreferencesWindow		Använd enheten Celsius
-Use degrees Delisle	PreferencesWindow		Använd enheten Delisle
-Use degrees Fahrenheit	PreferencesWindow		Använd enheten Fahrenheit
-Use degrees Rankine	PreferencesWindow		Använd enheten Rankine
-Use units Kelvin	PreferencesWindow		Använd enheten Kelvin
+Cancel	CitiesListSelectionWindow		Avbryt
+Choose location	CitiesListSelectionWindow		Välj plats
+OK	CitiesListSelectionWindow		OK
 Change location	SelectionWindow		Ändra plats
 City:	SelectionWindow		Stad:
 OK	SelectionWindow		OK
 Select city: city, country, region	SelectionWindow		Välj stad: stad, land, region
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Inställningar
+Use Celsius °C	PreferencesWindow		Använd Celsius °C
+Use Fahrenheit °F	PreferencesWindow		Använd Fahrenheit °F
 Weather	System name		Väder

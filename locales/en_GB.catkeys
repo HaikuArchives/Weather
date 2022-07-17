@@ -1,73 +1,65 @@
-1	English (British)	x-vnd.przemub.Weather	3662372937
+1	English (British)	x-vnd.przemub.Weather	1423632369
 About Weather	ForecastView		About Weather
 Background	ForecastView		Background
-Blowing snow	ForecastView		Blowing snow
-Blustery	ForecastView		Blustery
-Clear	ForecastView		Clear
-Cloudy	ForecastView		Cloudy
-Cold	ForecastView		Cold
+Clear sky	ForecastView		Clear sky
 Connecting…	ForecastView		Connecting…
 Connection error	ForecastView		Connection error
 Default	ForecastView		Default
-Drizzle	ForecastView		Drizzle
-Dust	ForecastView		Dust
-Fair	ForecastView		Fair
+Dense drizzle	ForecastView		Dense drizzle
+Depositing rime fog	ForecastView		Depositing rime fog
 Fog	ForecastView		Fog
-Freezing drizzle	ForecastView		Freezing drizzle
-Freezing rain	ForecastView		Freezing rain
-Hail	ForecastView		Hail
-Haze	ForecastView		Haze
-Heavy snow	ForecastView		Heavy snow
-Hot	ForecastView		Hot
-Hurricane	ForecastView		Hurricane
-Isolated thundershowers	ForecastView		Isolated thundershowers
-Isolated thunderstorms	ForecastView		Isolated thunderstorms
-Light snow showers	ForecastView		Light snow showers
+Freezing dense drizzle	ForecastView		Freezing dense drizzle
+Freezing light drizzle	ForecastView		Freezing light drizzle
+Heavy freezing rain	ForecastView		Heavy freezing rain
+Heavy rain	ForecastView		Heavy rain
+Heavy rain showers	ForecastView		Heavy rain showers
+Heavy snow fall	ForecastView		Heavy snow fall
+Heavy snow showers	ForecastView		Heavy snow showers
+Light drizzle	ForecastView		Light drizzle
+Light freezing rain	ForecastView		Light freezing rain
 Loading…	ForecastView		Loading…
-Mixed rain and hail	ForecastView		Mixed rain and hail
-Mixed rain and sleet	ForecastView		Mixed rain and sleet
-Mixed rain and snow	ForecastView		Mixed rain and snow
-Mixed snow and sleet	ForecastView		Mixed snow and sleet
-Mostly cloudy	ForecastView		Mostly cloudy
+Mainly clear	ForecastView		Mainly clear
+Moderate drizzle	ForecastView		Moderate drizzle
+Moderate rain	ForecastView		Moderate rain
+Moderate rain showers	ForecastView		Moderate rain showers
+Moderate snow fall	ForecastView		Moderate snow fall
 No network	ForecastView		No network
 Not available	ForecastView		Not available
 OK	ForecastView		Alright
+Overcast	ForecastView		Overcast
 Partly cloudy	ForecastView		Partly cloudy
-Scattered showers	ForecastView		Scattered showers
-Scattered snow showers	ForecastView		Scattered snow showers
-Scattered thunderstorms	ForecastView		Scattered thunderstorms
-Severe thunderstorms	ForecastView		Severe thunderstorms
-Showers	ForecastView		Showers
-Sleet	ForecastView		Sleet
-Smoky	ForecastView		Smoky
-Snow	ForecastView		Snow
-Snow flurries	ForecastView		Snow flurries
-Snow showers	ForecastView		Snow showers
-Sunny	ForecastView		Sunny
+Slight rain	ForecastView		Slight rain
+Slight rain showers	ForecastView		Slight rain showers
+Slight snow fall	ForecastView		Slight snow fall
+Slight snow showers	ForecastView		Slight snow showers
+Snow grains	ForecastView		Snow grains
 Text	ForecastView		Text
-Thundershowers	ForecastView		Thundershowers
-Thunderstorms	ForecastView		Thunderstorms
-Tornado	ForecastView		Tornado
+Thunderstorm	ForecastView		Thunderstorm
+Thunderstorm with heavy hail	ForecastView		Thunderstorm with heavy hail
+Thunderstorm with slight hail	ForecastView		Thunderstorm with slight hail
 Transparent	ForecastView		Transparent
-Tropical storm	ForecastView		Tropical storm
 Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
-Windy	ForecastView		Windy
+About Weather	MainWindow		About Weather
+An open source weather app showing a forecast for the next 5 days.	MainWindow		An open source weather app showing a forecast for the next 5 days.
+Change location…	MainWindow		Change location…
+Deskbar Replicant	MainWindow		Deskbar Replicant
+Edit	MainWindow		Edit
+Loading…	MainWindow		Loading…
+OK	MainWindow		Alright
+Preferences…	MainWindow		Preferences…
+Quit	MainWindow		Quit
+Refresh	MainWindow		Refresh
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Unable to create a deskbar replicant. The error is: \"
+View	MainWindow		View
+Cancel	CitiesListSelectionWindow		Cancel
+Choose location	CitiesListSelectionWindow		Choose location
+OK	CitiesListSelectionWindow		Alright
 Change location	SelectionWindow		Change location
 City:	SelectionWindow		City:
 OK	SelectionWindow		Alright
 Select city: city, country, region	SelectionWindow		Select city: city, country, region
-Change location…	MainWindow		Change location…
-Edit	MainWindow		Edit
-Loading…	MainWindow		Loading…
-Preferences…	MainWindow		Preferences…
-Quit	MainWindow		Quit
-Refresh	MainWindow		Refresh
-View	MainWindow		View
 OK	PreferencesWindow		Alright
 Preferences	PreferencesWindow		Preferences
-Use degrees Celsius	PreferencesWindow		Use degrees Celsius
-Use degrees Delisle	PreferencesWindow		Use degrees Delisle
-Use degrees Fahrenheit	PreferencesWindow		Use degrees Fahrenheit
-Use degrees Rankine	PreferencesWindow		Use degrees Rankine
-Use units Kelvin	PreferencesWindow		Use units Kelvin
+Use Celsius °C	PreferencesWindow		Use Celsius °C
+Use Fahrenheit °F	PreferencesWindow		Use Fahrenheit °F
 Weather	System name		Weather

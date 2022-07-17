@@ -1,0 +1,65 @@
+1	Esperanto	x-vnd.przemub.Weather	1423632369
+About Weather	ForecastView		Pri Vetero
+Background	ForecastView		Fonto
+Clear sky	ForecastView		Klara ĉielo
+Connecting…	ForecastView		Konektado…
+Connection error	ForecastView		Konektada eraro
+Default	ForecastView		Defaŭlte
+Dense drizzle	ForecastView		Densa pluveto
+Depositing rime fog	ForecastView		Frosta nebulo
+Fog	ForecastView		Nebulo
+Freezing dense drizzle	ForecastView		Frosta densa pluveto
+Freezing light drizzle	ForecastView		Frosta malforta pluveto
+Heavy freezing rain	ForecastView		Forta frosta pluvo
+Heavy rain	ForecastView		Forta pluvo
+Heavy rain showers	ForecastView		Fortaj pluvoj
+Heavy snow fall	ForecastView		Forta neĝado
+Heavy snow showers	ForecastView		Fortaj neĝadoj
+Light drizzle	ForecastView		Malforta pluveto
+Light freezing rain	ForecastView		Malforta frosta pluvo
+Loading…	ForecastView		Ŝarĝante…
+Mainly clear	ForecastView		Plejparte klara
+Moderate drizzle	ForecastView		Modera pluveto
+Moderate rain	ForecastView		Modera pluvo
+Moderate rain showers	ForecastView		Moderaj pluvoj
+Moderate snow fall	ForecastView		Modera neĝado
+No network	ForecastView		Senkonekta
+Not available	ForecastView		Ne alirebla
+OK	ForecastView		Bone
+Overcast	ForecastView		Nuba
+Partly cloudy	ForecastView		Parte nuba
+Slight rain	ForecastView		Ioma pluvo
+Slight rain showers	ForecastView		Iomaj pluvoj
+Slight snow fall	ForecastView		Ioma neĝado
+Slight snow showers	ForecastView		Iomaj neĝadoj
+Snow grains	ForecastView		Neĝetado
+Text	ForecastView		Teksto
+Thunderstorm	ForecastView		Fulmotondro
+Thunderstorm with heavy hail	ForecastView		Fulmotondro kun pezaj hajloj
+Thunderstorm with slight hail	ForecastView		Fulmotondro kun fojfojaj hajloj
+Transparent	ForecastView		Travidebla
+Weather (The Replicant version)	ForecastView		Vetero (La Replikila versio)
+About Weather	MainWindow		Pri Vetero
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Liberkoda programo kiu montras la veterprognozon por la venontaj 5 tagoj.
+Change location…	MainWindow		Ŝanĝi lokon…
+Deskbar Replicant	MainWindow		Laborstria Replikilo
+Edit	MainWindow		Redakti
+Loading…	MainWindow		Ŝarĝante…
+OK	MainWindow		Bone
+Preferences…	MainWindow		Agordoj…
+Quit	MainWindow		Ĉesi
+Refresh	MainWindow		Reŝarĝi
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Neeblis fari laborstrian replikilon. La eraro estas: \"
+View	MainWindow		Vido
+Cancel	CitiesListSelectionWindow		Nuligi
+Choose location	CitiesListSelectionWindow		Elekti lokon
+OK	CitiesListSelectionWindow		Bone
+Change location	SelectionWindow		Interŝanĝi lokon
+City:	SelectionWindow		Urbo:
+OK	SelectionWindow		Bone
+Select city: city, country, region	SelectionWindow		Elektu urbon: urbo, lando, regiono
+OK	PreferencesWindow		Bone
+Preferences	PreferencesWindow		Agordoj
+Use Celsius °C	PreferencesWindow		Montri celsie (°C)
+Use Fahrenheit °F	PreferencesWindow		Montri farenhejte (°F)
+Weather	System name		Vetero

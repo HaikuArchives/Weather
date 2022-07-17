@@ -1,73 +1,65 @@
-1	Portuguese	x-vnd.przemub.Weather	3662372937
+1	Portuguese	x-vnd.przemub.Weather	1423632369
 About Weather	ForecastView		Acerca da Meteorologia
 Background	ForecastView		Fundo
-Blowing snow	ForecastView		Tempestade de neve
-Blustery	ForecastView		Tempestuoso
-Clear	ForecastView		Céu limpo
-Cloudy	ForecastView		Céu nublado
-Cold	ForecastView		Frio
+Clear sky	ForecastView		Céu claro
 Connecting…	ForecastView		A estabelecer ligação…
 Connection error	ForecastView		Erro de ligação
 Default	ForecastView		Predefinição
-Drizzle	ForecastView		Chuvisco
-Dust	ForecastView		Poeira
-Fair	ForecastView		Bom tempo
+Dense drizzle	ForecastView		Chuvisco denso
+Depositing rime fog	ForecastView		Depositante de névoa de aro
 Fog	ForecastView		Nevoeiro
-Freezing drizzle	ForecastView		Geada
-Freezing rain	ForecastView		Chuva gelada
-Hail	ForecastView		Saraiva
-Haze	ForecastView		Neblina
-Heavy snow	ForecastView		Neve intensa
-Hot	ForecastView		Quente
-Hurricane	ForecastView		Furacão
-Isolated thundershowers	ForecastView		Trovoadas com chuva isoladas
-Isolated thunderstorms	ForecastView		Trovoadas isoladas
-Light snow showers	ForecastView		Aguaceiros ligeiros de neve
+Freezing dense drizzle	ForecastView		Chuvisco denso de congelação
+Freezing light drizzle	ForecastView		Chuvisco de luz congelada
+Heavy freezing rain	ForecastView		Chuva gelada
+Heavy rain	ForecastView		Chuva forte
+Heavy rain showers	ForecastView		Chuvas fortes
+Heavy snow fall	ForecastView		Queda de neve pesada
+Heavy snow showers	ForecastView		Fortes chuvas de neve
+Light drizzle	ForecastView		Chuvisco leve
+Light freezing rain	ForecastView		Chuva gelada
 Loading…	ForecastView		A carregar…
-Mixed rain and hail	ForecastView		Chuva com saraiva
-Mixed rain and sleet	ForecastView		Chuva com granizo
-Mixed rain and snow	ForecastView		Chuva com neve
-Mixed snow and sleet	ForecastView		Neve com granizo
-Mostly cloudy	ForecastView		Muito nublado
+Mainly clear	ForecastView		Principalmente claro
+Moderate drizzle	ForecastView		Chuvisco moderado
+Moderate rain	ForecastView		Chuva moderada
+Moderate rain showers	ForecastView		Chuvas moderadas
+Moderate snow fall	ForecastView		Queda moderada de neve
 No network	ForecastView		Sem rede
 Not available	ForecastView		Não disponível
 OK	ForecastView		OK
+Overcast	ForecastView		Nublado
 Partly cloudy	ForecastView		Parcialmente nublado
-Scattered showers	ForecastView		Aguaceiros dispersos
-Scattered snow showers	ForecastView		Aguaceiros de neve dispersos
-Scattered thunderstorms	ForecastView		Trovoadas dispersas
-Severe thunderstorms	ForecastView		Trovoadas intensas
-Showers	ForecastView		Aguaceiros
-Sleet	ForecastView		Granizo
-Smoky	ForecastView		Fumo
-Snow	ForecastView		Neve
-Snow flurries	ForecastView		Queda de neve
-Snow showers	ForecastView		Aguaceiros de neve
-Sunny	ForecastView		Soalheiro
+Slight rain	ForecastView		Chuva ligeira
+Slight rain showers	ForecastView		Pequenos aguaceiros
+Slight snow fall	ForecastView		Ligeira queda de neve
+Slight snow showers	ForecastView		Leves chuveiros de neve
+Snow grains	ForecastView		Grãos de neve
 Text	ForecastView		Texto
-Thundershowers	ForecastView		Trovoadas com aguaceiros
-Thunderstorms	ForecastView		Trovoadas
-Tornado	ForecastView		Tornado
+Thunderstorm	ForecastView		Trovoada
+Thunderstorm with heavy hail	ForecastView		Trovoada com granizo pesado
+Thunderstorm with slight hail	ForecastView		Trovoada com granizo ligeiro
 Transparent	ForecastView		Transparente
-Tropical storm	ForecastView		Tempestade tropical
 Weather (The Replicant version)	ForecastView		Meteorologia (a versão em Replicante)
-Windy	ForecastView		Ventoso
+About Weather	MainWindow		Sobre o tempo
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Uma aplicação meteorológica de código aberto que mostra uma previsão para os próximos 5 dias.
+Change location…	MainWindow		Alterar localização…
+Deskbar Replicant	MainWindow		Replicante da barra de mesa
+Edit	MainWindow		Editar
+Loading…	MainWindow		A carregar…
+OK	MainWindow		OK
+Preferences…	MainWindow		Preferências…
+Quit	MainWindow		Sair
+Refresh	MainWindow		Atualizar
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Incapaz de criar uma réplica de mesa. O erro é: \"
+View	MainWindow		Visualização
+Cancel	CitiesListSelectionWindow		Cancelar
+Choose location	CitiesListSelectionWindow		Escolha a localização
+OK	CitiesListSelectionWindow		OK
 Change location	SelectionWindow		Alterar localização
 City:	SelectionWindow		Cidade:
 OK	SelectionWindow		OK
 Select city: city, country, region	SelectionWindow		Selecione cidade: cidade, país, região
-Change location…	MainWindow		Alterar localização…
-Edit	MainWindow		Editar
-Loading…	MainWindow		A carregar…
-Preferences…	MainWindow		Preferências…
-Quit	MainWindow		Sair
-Refresh	MainWindow		Atualizar
-View	MainWindow		Visualização
 OK	PreferencesWindow		OK
 Preferences	PreferencesWindow		Preferências
-Use degrees Celsius	PreferencesWindow		Usar graus Celsius
-Use degrees Delisle	PreferencesWindow		Usar graus Delisle
-Use degrees Fahrenheit	PreferencesWindow		Usar graus Fahrenheit
-Use degrees Rankine	PreferencesWindow		Usar graus Rankine
-Use units Kelvin	PreferencesWindow		Usar unidades Kelvin
+Use Celsius °C	PreferencesWindow		Utilização Celsius °C
+Use Fahrenheit °F	PreferencesWindow		Utilizar Fahrenheit °F
 Weather	System name		Meteorologia
