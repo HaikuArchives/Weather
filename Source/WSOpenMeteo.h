@@ -6,7 +6,7 @@
 #ifndef _WSOPENMETEO_H_
 #define _WSOPENMETEO_H_
 
-
+#include <DataIO.h>
 #include <Looper.h>
 #include <String.h>
 #include <UrlProtocolListener.h>
@@ -18,10 +18,12 @@ enum RequestType {
 	WEATHER_REQUEST
 };
 
+using namespace BPrivate::Network;
+
 class WSOpenMeteo : public BUrlProtocolListener
 {
 public:
-						WSOpenMeteo(BHandler* fHandler, RequestType requestType);
+						WSOpenMeteo(BHandler* fHandler, BMallocIO* responseData, RequestType requestType);
 	virtual				~WSOpenMeteo();
 
 	virtual	void		ResponseStarted(BUrlRequest* caller);
@@ -36,7 +38,7 @@ private:
 	void			_ProcessCityData(bool success);
 	BHandler*		fHandler;
 	RequestType 	fRequestType;
-	BMallocIO		fResponseData;
+	BMallocIO*		fResponseData;
 	void			SerializeBMessage(BMessage* message, BString fileName);
 };
 

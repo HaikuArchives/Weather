@@ -20,11 +20,12 @@
 #include "WSOpenMeteo.h"
 
 
-WSOpenMeteo::WSOpenMeteo(BHandler* handler, RequestType requestType)
+WSOpenMeteo::WSOpenMeteo(BHandler* handler, BMallocIO* responseData, RequestType requestType)
 	:
 	BUrlProtocolListener(),
 	fHandler(handler),
-	fRequestType(requestType)
+	fRequestType(requestType),
+	fResponseData(responseData)
 {
 }
 
@@ -44,8 +45,8 @@ void
 WSOpenMeteo::DataReceived(
 	BUrlRequest* caller, const char* data, off_t position, ssize_t size)
 {
-
-	fResponseData.Write(data, size);
+	// libnetservices does not seem to require it as it is handled now by BUrlProtocolRoster::MakeRequest()
+	//fResponseData->Write(data, size);
 }
 
 
@@ -111,8 +112,8 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		return;
 	}
 
-	jsonString.SetTo(static_cast<const char*>(fResponseData.Buffer()),
-		fResponseData.BufferLength());
+	jsonString.SetTo(static_cast<const char*>(fResponseData->Buffer()),
+		fResponseData->BufferLength());
 
 
 	BMessage parsedData;
@@ -347,8 +348,8 @@ WSOpenMeteo::_ProcessCityData(bool success)
 
 	BMessage parsedData;
 	BJson parser;
-	jsonString.SetTo(static_cast<const char*>(fResponseData.Buffer()),
-		fResponseData.BufferLength());
+	jsonString.SetTo(static_cast<const char*>(fResponseData->Buffer()),
+		fResponseData->BufferLength());
 
 	status_t status = parser.Parse(jsonString, parsedData);
 

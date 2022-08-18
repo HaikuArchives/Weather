@@ -25,6 +25,7 @@
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "SelectionWindow"
 
+using namespace BPrivate::Network;
 
 SelectionWindow::SelectionWindow(
 	BRect rect, MainWindow* parent, BString city, int32 cityId)
@@ -159,10 +160,12 @@ SelectionWindow::_FindId()
 	urlString.ReplaceAll("<", "");
 	urlString.ReplaceAll(">", "");
 	urlString.ReplaceAll("\"", "");
-	WSOpenMeteo listener(this, CITY_REQUEST);
+	
+	BMallocIO responseData;
+	WSOpenMeteo listener(this, &responseData, CITY_REQUEST);
 
 	BUrlRequest* request
-		= BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()), &listener);
+		= BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()), &responseData, &listener);
 
 	thread_id thread = request->Run();
 	wait_for_thread(thread, NULL);
