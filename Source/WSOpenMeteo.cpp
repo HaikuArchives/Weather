@@ -76,7 +76,7 @@ WSOpenMeteo::GetUrl(double longitude, double latitude, DisplayUnit unit)
 	urlString
 		<< lati << "&longitude=" << longi
 		<< "&daily=weathercode,temperature_2m_max,temperature_2m_min&current_"
-		   "weather=true&timeformat=unixtime&timezone=Europe%2FBerlin";
+		   "weather=true&timeformat=unixtime&timezone=auto";
 
 	// Temperature unit measure
 	switch (unit) {
@@ -147,14 +147,19 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 	// message->AddString("city", title);
 	messenger.SendMessage(message);
 	//	}
+	
+	// Get UTC timezone offset, use 0 as default
+	double utc_offset;
+	if (parsedData.FindDouble("utc_offset_seconds", &utc_offset) != B_OK)
+		utc_offset = 0;
 
 	// Get weather forecast
 	char* name;
 	uint32 type;
 	int32 count, condition;
 	double high, low, temp;
-	BString code, text;
-
+	BString code, text;		
+		
 	int dayCount = 0;
 
 	BMessage weatherData;
@@ -180,7 +185,8 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 							tDay++) {
 
 						if (dayMessage.FindDouble(tName, &date) == B_OK)
-							dailyWeather[tDay].date = date; // date.String();
+							// Offset is added to get the correct date for the timezone selected
+							dailyWeather[tDay].date = date + utc_offset; // date.String();
 					}
 				}
 			}
