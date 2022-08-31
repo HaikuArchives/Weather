@@ -10,6 +10,7 @@
 #include <GroupView.h>
 #include <LayoutBuilder.h>
 #include <ListView.h>
+#include <Locale.h>
 #include <ScrollView.h>
 #include <StringView.h>
 #include <Url.h>
@@ -21,6 +22,7 @@
 
 #include "CitiesListSelectionWindow.h"
 #include "MainWindow.h"
+#include "WSOpenMeteo.h"
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "CitiesListSelectionWindow"
@@ -29,36 +31,38 @@
 class CityItem : public BStringItem
 {
 
-public:
-	CityItem(const int32 id, const char* city, const char* country);
-	virtual ~CityItem();
-
-	virtual void DrawItem(BView* owner, BRect frame, bool complete = false);
-	virtual void Update(BView* owner, const BFont* font);
-
-	int32 Id;
-	double Longitude;
-	double Latitude;
-	int32 CountryId;
-	BString City;
-	BString Country;
-	BString ExtendedInfo;
-
-private:
-	BBitmap* fIcon;
+	public:
+		CityItem(const int32 id, const char* city, const char* country, const char* extendedInfo);
+		virtual ~CityItem();
+	
+		virtual void DrawItem(BView* owner, BRect frame, bool complete = false);
+		virtual void Update(BView* owner, const BFont* font);
+	
+		int32 Id;
+		double Longitude;
+		double Latitude;
+		int32 CountryId;
+		BString City;
+		BString DisplayName;
+		BString Country;
+		BString ExtendedInfo;
+	
+	private:
+		BBitmap* fIcon;
 };
 
 
-CityItem::CityItem(const int32 id, const char* fullCity, const char* country)
+CityItem::CityItem(const int32 id, const char* city, const char* country, const char* extendedInfo)
 	:
-	BStringItem(fullCity),
+	BStringItem(city),
 	Id(id),
+	City(city),
+	ExtendedInfo(extendedInfo),
 	Country(country),
 	fIcon(NULL)
 {
-	BString displayName(fullCity);
-	displayName << ", " << Country;
-	this->SetText(displayName);
+	DisplayName << ExtendedInfo;
+	this->SetText(DisplayName);
 };
 
 
@@ -125,13 +129,13 @@ CityItem::Update(BView* owner, const BFont* font)
 
 const uint32 kSelectedCity = 'SeCy';
 const uint32 kCancelCity = 'CncC';
-const uint32 kChangeSelectedCity = 'CeCy';
 
 
 CitiesListSelectionWindow::CitiesListSelectionWindow(
-	BRect rect, BWindow* parent, BMessage* citiesMessage)
+	BRect rect, BWindow* parent, BString city, int32 cityId)
 	:
-	BWindow(rect, B_TRANSLATE("Choose location"), B_MODAL_WINDOW,
+	BWindow(rect, B_TRANSLATE("Choose location"), 
+		B_TITLED_WINDOW,
 		B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE
 			| B_AUTO_UPDATE_SIZE_LIMITS)
 {
@@ -140,46 +144,24 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(
 	BScrollView* fCitiesListSV
 		= new BScrollView("citiesList", fCitiesListView, 0, false, true);
 	fCitiesListView->SetInvocationMessage(new BMessage(kSelectedCity));
-	fCitiesListView->SetSelectionMessage(new BMessage(kChangeSelectedCity));
-	int32 index = 0;
-	BString city;
-	while (citiesMessage->FindString("city", index, &city) == B_OK) {
-		BString city = "";
-		double latitude = 0L;
-		double longitude = 0L;
-		int32 countryId = 0L;
-		int32 id = 0L;
-		BString country = "";
-		BString admin1 = "";
-		BString admin2 = "";
-		BString admin3 = "";
-		BString extendedInfo = "";
-
-		citiesMessage->FindInt32("id", index, &id);
-		citiesMessage->FindString("city", index, &city);
-		citiesMessage->FindString("country", index, &country);
-		citiesMessage->FindInt32("country_id", index, &countryId);
-		citiesMessage->FindString("extended_info", index, &extendedInfo);
-		citiesMessage->FindDouble("longitude", index, &longitude);
-		citiesMessage->FindDouble("latitude", index, &latitude);
-
-		CityItem* cityItem = new CityItem(id, city, country);
-		cityItem->Latitude = latitude;
-		cityItem->Longitude = longitude;
-		cityItem->ExtendedInfo = extendedInfo;
-		cityItem->CountryId = countryId;
-
-		fCitiesListView->AddItem(cityItem);
-		index++;
-	}
+	fCityId = cityId;
 	fCitiesListView->Select(0);
+	
+	fCityControl = new BTextControl(NULL, B_TRANSLATE("City:"), fCity, NULL);
+	fCityControl->SetToolTip(B_TRANSLATE("Select city: city, country, region"));
+	fCityControl->SetModificationMessage(
+		new BMessage(kSearchMessage));
+	fCityControl->MakeFocus(true);
+	
 	BButton* fButtonOk
 		= new BButton("ok", B_TRANSLATE("OK"), new BMessage(kSelectedCity));
 	BButton* fButtonCancel = new BButton(
-		"cancel", B_TRANSLATE("Cancel"), new BMessage(kCancelCity));
+		"cancel", B_TRANSLATE("Cancel"), new BMessage(kCancelCity));	
+	
 	fCitiesListView->ResizeToPreferred();
 	BLayoutBuilder::Group<>(this, B_VERTICAL)
 		.SetInsets(B_USE_WINDOW_INSETS)
+		.Add(fCityControl)
 		.Add(fCitiesListSV)
 		.AddGroup(B_HORIZONTAL)
 			.AddGlue()
@@ -188,6 +170,8 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(
 			.End()
 		.End();
 	fButtonOk->MakeDefault(true);
+	
+	_StartSearch();
 }
 
 
@@ -203,6 +187,56 @@ void
 CitiesListSelectionWindow::MessageReceived(BMessage* msg)
 {
 	switch (msg->what) {
+		case kCitiesListMessage:
+		{
+			fCitiesListView->MakeEmpty();
+			int index = 0;
+			while (msg->FindString("city", index, &fCity) == B_OK) {
+				BString city;
+				double latitude = 0L;
+				double longitude = 0L;
+				int32 countryId = 0L;
+				int32 id = 0L;
+				BString country = "";
+				BString extendedInfo = "";
+		
+				msg->FindInt32("id", index, &id);
+				msg->FindString("city", index, &city);
+				msg->FindString("country", index, &country);
+				msg->FindInt32("country_id", index, &countryId);
+				msg->FindString("extended_info", index, &extendedInfo);
+				msg->FindDouble("longitude", index, &longitude);
+				msg->FindDouble("latitude", index, &latitude);
+		
+				CityItem* cityItem = new CityItem(id, city, country, extendedInfo);
+				cityItem->Latitude = latitude;
+				cityItem->Longitude = longitude;
+				cityItem->CountryId = countryId;
+		
+				fCitiesListView->AddItem(cityItem);
+				index++;
+			}
+			fCitiesListView->Select(0);
+			break;
+		}
+		case kSearchMessage:
+		{
+			_StartSearch();
+			break;
+		}
+		case kDataMessage:
+		{
+			msg->FindInt32("id", &fCityId);
+			_UpdateCity();
+			QuitRequested();
+			Close();
+			break;
+		}
+		case kFailureMessage:
+		{
+			// TODO add a message to the window
+			break;
+		}
 		case kSelectedCity:
 		{
 			BMessenger messenger(fParent);
@@ -214,36 +248,108 @@ CitiesListSelectionWindow::MessageReceived(BMessage* msg)
 				= dynamic_cast<CityItem*>(fCitiesListView->ItemAt(selected));
 			message->AddString("city", cityItem->Text());
 			message->AddInt32("id", cityItem->Id);
+			message->AddString("country", cityItem->Country);
+			message->AddInt32("country_id", cityItem->CountryId);
+			message->AddString("extended_info", cityItem->ExtendedInfo);
 			message->AddDouble("longitude", cityItem->Longitude);
 			message->AddDouble("latitude", cityItem->Latitude);
 			messenger.SendMessage(message);
-			Quit();
-		} break;
+			QuitRequested();
+			Close();
+			break;
+		}
 		case kCancelCity:
 		{
-			BMessenger messenger(fParent);
-			BMessage* message = new BMessage(kCitySelectionMessage);
-			messenger.SendMessage(message);
-			Quit();
-		} break;
-		case kChangeSelectedCity:
-		{
-			int32 selected = fCitiesListView->CurrentSelection();
-			if (selected < 0)
-				fCitiesListView->Select(fCitiesListView->CountItems() - 1);
-		} break;
+			//BMessenger messenger(fParent);
+			//BMessage* message = new BMessage(kCitySelectionMessage);
+			//messenger.SendMessage(message);
+			QuitRequested();
+			Close();
+			break;
+		}
 		default:
 			BWindow::MessageReceived(msg);
 	}
 }
 
+void
+CitiesListSelectionWindow::_UpdateCity()
+{
+	BMessenger messenger(fParent);
+	BMessage* message = new BMessage(kUpdateCityMessage);
+
+	message->AddString("city", fCityControl->Text());
+	message->AddInt32("id", fCityId);
+
+	messenger.SendMessage(message);
+}
+
+void
+CitiesListSelectionWindow::_StartSearch()
+{
+	_StopSearch();
+
+	fDownloadThread
+		= spawn_thread(&_FindIdFunc, "Download Data", B_NORMAL_PRIORITY, this);
+	if (fDownloadThread >= 0)
+		resume_thread(fDownloadThread);
+}
+
+int32
+CitiesListSelectionWindow::_FindIdFunc(void* cookie)
+{
+	CitiesListSelectionWindow* selectionWindow = static_cast<CitiesListSelectionWindow*>(cookie);
+	selectionWindow->_FindId();
+	return 0;
+}
+
+void
+CitiesListSelectionWindow::_StopSearch()
+{
+	if (fDownloadThread < 0)
+		return;
+	wait_for_thread(fDownloadThread, NULL);
+	fDownloadThread = -1;
+}
+
+void
+CitiesListSelectionWindow::_FindId()
+{
+	BString urlString("https://geocoding-api.open-meteo.com/v1/search?name=");
+	urlString << fCityControl->Text();
+	
+	// use translated queries and results in local language if available
+	// otherwise return english or the native location name. Lower-cased.
+	BFormattingConventions conventions;
+	if (BLocale::Default()->GetFormattingConventions(&conventions) == B_OK
+		&& conventions.CountryCode() != NULL)
+	{
+		BString countryCode = conventions.CountryCode();
+		urlString << "&language=" << countryCode.ToLower();
+	}
+	
+	// Filter out characters that trip up BUrl
+	urlString.ReplaceAll(" ", "+");
+	urlString.ReplaceAll("<", "");
+	urlString.ReplaceAll(">", "");
+	urlString.ReplaceAll("\"", "");
+	
+	BMallocIO requestData;
+	WSOpenMeteo listener(this, &requestData, CITY_REQUEST);
+
+	BUrlRequest* request
+		= BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()), &requestData, &listener);
+
+	thread_id thread = request->Run();
+	wait_for_thread(thread, NULL);
+	delete request;
+}
 
 bool
 CitiesListSelectionWindow::QuitRequested()
 {
 	BMessenger messenger(fParent);
-	BMessage* message
-		= new BMessage(kCloseCityCitiesListSelectionWindowMessage);
+	BMessage* message = new BMessage(kCloseCitySelectionWindowMessage);
 	messenger.SendMessage(message);
 	return true;
 }

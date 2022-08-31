@@ -23,7 +23,7 @@
 #include "ForecastDeskbarView.h"
 #include "ForecastView.h"
 #include "PreferencesWindow.h"
-#include "SelectionWindow.h"
+#include "CitiesListSelectionWindow.h"
 
 const BRect kDefaultMainWindowRect = BRect(150, 150, 0, 0);
 const uint32 kCitySelectionMessage = 'SelC';
@@ -55,7 +55,7 @@ private:
 	bool			fShowForecast;
 
 	BRect			fMainWindowRect;
-	SelectionWindow*	fSelectionWindow;
+	CitiesListSelectionWindow*	fSelectionWindow;
 	PreferencesWindow* fPreferencesWindow;
 
 	BMenuItem*		fShowForecastMenuItem;

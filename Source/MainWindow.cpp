@@ -30,7 +30,7 @@
 #include "ForecastView.h"
 #include "MainWindow.h"
 #include "PreferencesWindow.h"
-#include "SelectionWindow.h"
+#include "CitiesListSelectionWindow.h"
 #include "Util.h"
 
 #undef B_TRANSLATION_CONTEXT
@@ -159,7 +159,7 @@ MainWindow::MessageReceived(BMessage* msg)
 			if (fSelectionWindow == NULL) {
 				BRect frame(Frame().LeftTop(), BSize(400, 200));
 				frame.OffsetBy(30, 30);
-				fSelectionWindow = new SelectionWindow(frame, this,
+				fSelectionWindow = new CitiesListSelectionWindow(frame, this,
 					fForecastView->CityName(), fForecastView->CityId());
 				fSelectionWindow->Show();
 			} else {
@@ -169,7 +169,7 @@ MainWindow::MessageReceived(BMessage* msg)
 				if (fSelectionWindow->IsHidden())
 					fSelectionWindow->Show();
 				else
-					fSelectionWindow->Activate();
+					fSelectionWindow->Activate(false);
 			}
 			break;
 		}

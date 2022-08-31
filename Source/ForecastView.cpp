@@ -32,7 +32,6 @@
 #include "ForecastView.h"
 #include "MainWindow.h"
 #include "PreferencesWindow.h"
-#include "SelectionWindow.h"
 #include "WSOpenMeteo.h"
 
 const float kDraggerSize = 7;

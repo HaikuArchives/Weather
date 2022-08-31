@@ -400,9 +400,16 @@ WSOpenMeteo::_ProcessCityData(bool success)
 				locationMessage.FindString("admin1", &admin1);
 				locationMessage.FindString("admin2", &admin2);
 				locationMessage.FindString("admin3", &admin3);
-				extendedInfo << locationName << ", " << country << " ("
-							 << admin1 << ", " << admin2 << ", " << admin3
-							 << ")";
+				
+				extendedInfo << locationName;
+				if (admin3 != "" && admin3 != locationName && admin3 != country)
+					extendedInfo << ", " << admin3;
+				if (admin2 != "" && admin2 != locationName && admin2 != country)
+					extendedInfo << ", "<< admin2;
+				if (admin1 != "" && admin1 != locationName && admin1 != country)
+					extendedInfo << ", "<< admin1;
+				extendedInfo << ", " << country;
+							 
 				locationMessage.FindDouble("longitude", &longitude);
 				locationMessage.FindDouble("latitude", &latitude);
 

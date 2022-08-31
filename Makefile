@@ -26,7 +26,6 @@ SRCS = \
 	 Source/WSOpenMeteo.cpp  \
 	 Source/MainWindow.cpp \
 	 Source/PreferencesWindow.cpp \
-	 Source/SelectionWindow.cpp \
 	 Source/ForecastDayView.cpp \
 	 Source/ForecastView.cpp \
 	 Source/ForecastDeskbarView.cpp \

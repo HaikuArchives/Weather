@@ -27,7 +27,7 @@
 #include "ForecastDayView.h"
 #include "LabelView.h"
 #include "PreferencesWindow.h"
-#include "SelectionWindow.h"
+#include "CitiesListSelectionWindow.h"
 
 const uint32 kAutoUpdateMessage = 'AutU';
 const uint32 kUpdateMessage = 'Upda';
@@ -207,7 +207,7 @@ private:
 
 	BDateFormat 	fDateFormat;
 
-	SelectionWindow*	fSelectionWindow;
+	CitiesListSelectionWindow*	fSelectionWindow;
 	PreferencesWindow* fPreferencesWindow;
 	BMessageRunner*	fAutoUpdate;
 	BMessageRunner*	fDelayUpdateAfterReconnection;

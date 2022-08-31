@@ -7,25 +7,42 @@
 
 #include <Message.h>
 #include <String.h>
+#include <TextControl.h>
+#include <ListView.h>
 #include <Window.h>
 
 
 const int32 kCloseCityCitiesListSelectionWindowMessage = 'CsSe';
-
+const int32 kSearchMessage = 'Srch';
+const int32 kSaveMessage = 'Save';
+const int32 kUpdateCityMessage = 'Updt';
+const int32 kCloseCitySelectionWindowMessage = 'SUCe';
 
 class CitiesListSelectionWindow : public BWindow
 {
 public:
 					CitiesListSelectionWindow(BRect rect, BWindow* parent,
-						BMessage* citiesMessage);
+						BString city, int32 cityId);
 	virtual			~CitiesListSelectionWindow();
 
 	virtual void	MessageReceived(BMessage* msg);
 	virtual bool	QuitRequested();
 
 private:
+	BTextControl*	fCityControl;
 	BListView*		fCitiesListView;
 	BWindow*		fParent;
+	thread_id		fDownloadThread;
+	
+	void			_StartSearch();
+	void			_StopSearch();
+	static int32	_FindIdFunc(void *cookie);
+	void			_UpdateCity();
+	void			_FindId();
+	
+	BString			fCity;
+	BString			fCityFullName;
+	int32			fCityId;
 };
 
 
