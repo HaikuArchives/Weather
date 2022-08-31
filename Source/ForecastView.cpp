@@ -24,6 +24,7 @@
 #include <NetworkRoster.h>
 #include <PopUpMenu.h>
 #include <TranslationUtils.h>
+#include <DataIO.h>
 #include <Url.h>
 #include <UrlProtocolRoster.h>
 #include <UrlRequest.h>
@@ -1109,11 +1110,14 @@ ForecastView::_DownloadDataFunc(void* cookie)
 void
 ForecastView::_DownloadData()
 {
-	WSOpenMeteo listener(this, WEATHER_REQUEST);
+	BMallocIO replyData;
+	WSOpenMeteo listener(this, &replyData, WEATHER_REQUEST);
 	BString urlString = listener.GetUrl(fLongitude, fLatitude, fDisplayUnit);
 
+	BUrl link(urlString.String());
+
 	BUrlRequest* request
-		= BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()), &listener);
+		= BUrlProtocolRoster::MakeRequest(link, &replyData, &listener);
 
 	thread_id thread = request->Run();
 	wait_for_thread(thread, NULL);
