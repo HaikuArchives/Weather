@@ -2,18 +2,19 @@
  * Copyright 2022 Davide Alfano (Nexus6) <nexus6.haiku@icloud.com>
  * Copyright 2020 Raheem Idowu <abdurraheemidowu@gmail.com>
  * All rights reserved. Distributed under the terms of the MIT license.
- * Weather data source using the MetaWeather API at: metaweather.com
+ * Weather data by Open-Meteo.com at https://open-meteo.com/
+ * under Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).
  */
+
+#include <Alert.h>
 #include <Json.h>
 #include <Messenger.h>
 #include <memory>
+#include <StorageKit.h>
+
 #include <parsedate.h>
 #include <stdio.h>
 #include <string>
-
-// remove
-#include <Alert.h>
-#include <StorageKit.h>
 
 #include "MainWindow.h"
 #include "PreferencesWindow.h"
@@ -42,18 +43,14 @@ WSOpenMeteo::ResponseStarted(BUrlRequest* caller)
 
 
 void
-WSOpenMeteo::DataReceived(
-	BUrlRequest* caller, const char* data, off_t position, ssize_t size)
+WSOpenMeteo::DataReceived(BUrlRequest* caller, const char* data, off_t position, ssize_t size)
 {
-	// libnetservices does not seem to require it as it is handled now by BUrlProtocolRoster::MakeRequest()
-	//fResponseData->Write(data, size);
 }
 
 
 void
 WSOpenMeteo::RequestCompleted(BUrlRequest* caller, bool success)
 {
-
 	if (fRequestType == WEATHER_REQUEST)
 		_ProcessWeatherData(success);
 
@@ -65,8 +62,6 @@ WSOpenMeteo::RequestCompleted(BUrlRequest* caller, bool success)
 BString
 WSOpenMeteo::GetUrl(double longitude, double latitude, DisplayUnit unit)
 {
-	// BString urlString("https://www.openmeteo.com/api/location/");
-	// urlString << fCityId << "/";
 
 	char lati[12];
 	char longi[12];
@@ -91,11 +86,6 @@ WSOpenMeteo::GetUrl(double longitude, double latitude, DisplayUnit unit)
 			urlString << "&temperature_unit=celsius";
 	}
 
-	//	double latitude = 45.49624;
-	//	double longitude= 9.29323;
-	//	BString
-	//	urlString("https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin");
-	//	https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&timeformat=unixtime&timezone=Europe%2FBerlin
 	return urlString;
 }
 
@@ -127,8 +117,9 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		return;
 	}
 
-
+#if DEBUG
 	SerializeBMessage(&parsedData, "weather_parsed_data");
+#endif
 
 	const int maxDaysForecast = 5;
 	struct {
@@ -138,16 +129,8 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		double weatherCode;
 	} dailyWeather[maxDaysForecast];
 
-	//	BString detailMessage;
-	//	if (!(parsedData.FindString("detail", &detailMessage) == B_OK)) {
-	// Get name of location
-	// BString title = "Milan";
-	// TO-DO: get city name from Geocoding service;
-	// parsedData.FindString("title", &title);
 	BMessage* message = new BMessage(kUpdateCityName);
-	// message->AddString("city", title);
 	messenger.SendMessage(message);
-	//	}
 	
 	// Get UTC timezone offset, use 0 as default
 	double utc_offset;
@@ -187,7 +170,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 
 						if (dayMessage.FindDouble(tName, &date) == B_OK)
 							// Offset is added to get the correct date for the timezone selected
-							dailyWeather[tDay].date = date + utc_offset; // date.String();
+							dailyWeather[tDay].date = date + utc_offset; 
 					}
 				}
 			}
@@ -244,10 +227,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 					int32 tCount;
 					uint32 tType;
 					char* tName;
-					for (int32 tDay = 0; codeMessage.GetInfo(B_DOUBLE_TYPE,
-											 tDay, &tName, &tType, &tCount) == B_OK
-							 && tDay < maxDaysForecast;
-							tDay++) {
+					for (int32 tDay = 0; codeMessage.GetInfo(B_DOUBLE_TYPE, tDay, &tName, &tType, 							&tCount) == B_OK && tDay < maxDaysForecast; tDay++) {
 
 						if (codeMessage.FindDouble(tName, &code) == B_OK)
 							dailyWeather[tDay].weatherCode = (int) code;
@@ -316,10 +296,6 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		if (currentWeatherData.FindDouble("weathercode", &condition) == B_OK)
 			currentMessage->AddInt32("condition", (int) condition);
 
-		// if (currentWeatherData.FindDouble("time",&time) == B_OK)
-		//	currentMessage->AddString("text",
-		//BString(std::to_string(temperature)));
-
 		messenger.SendMessage(currentMessage);
 	}
 }
@@ -331,7 +307,7 @@ WSOpenMeteo::SerializeBMessage(BMessage* message, BString fileName)
 	BPath p;
 	BFile f;
 
-	if (find_directory(B_USER_SETTINGS_DIRECTORY, &p) == B_OK) {
+	if (find_directory(B_USER_LOG_DIRECTORY, &p) == B_OK) {
 		p.Append(fileName);
 
 		f.SetTo(p.Path(), B_WRITE_ONLY | B_ERASE_FILE | B_CREATE_FILE);
@@ -359,7 +335,9 @@ WSOpenMeteo::_ProcessCityData(bool success)
 
 	status_t status = parser.Parse(jsonString, parsedData);
 
+#if DEBUG
 	SerializeBMessage(&parsedData, "weather_parsed_location");
+#endif
 
 	if (status == B_BAD_DATA) {
 		printf("JSON Parser error for data:\n%s\n", jsonString.String());
@@ -423,6 +401,9 @@ WSOpenMeteo::_ProcessCityData(bool success)
 			}
 		}
 	}
+	
+#if DEBUG
 	SerializeBMessage(message, "weather_location_message");
+#endif
 	messenger.SendMessage(message);
 }

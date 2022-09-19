@@ -1,4 +1,6 @@
 /*
+ * Copyright 2022 Davide Alfano (Nexus6) <nexus6.haiku@icloud.com>
+ * Et al.
  * All rights reserved. Distributed under the terms of the MIT license.
  */
 
@@ -32,23 +34,24 @@ class CityItem : public BStringItem
 {
 
 	public:
-		CityItem(const int32 id, const char* city, const char* country, const char* extendedInfo);
-		virtual ~CityItem();
+								CityItem(const int32 id, const char* city, 
+									const char* country, const char* extendedInfo);
+		virtual 				~CityItem();
 	
-		virtual void DrawItem(BView* owner, BRect frame, bool complete = false);
-		virtual void Update(BView* owner, const BFont* font);
+		virtual void 			DrawItem(BView* owner, BRect frame, bool complete = false);
+		virtual void 			Update(BView* owner, const BFont* font);
 	
-		int32 Id;
-		double Longitude;
-		double Latitude;
-		int32 CountryId;
-		BString City;
-		BString DisplayName;
-		BString Country;
-		BString ExtendedInfo;
-	
+		int32 					Id;
+		double 					Longitude;
+		double 					Latitude;
+		int32 					CountryId;
+		BString 				City;
+		BString 				DisplayName;
+		BString 				Country;
+		BString 				ExtendedInfo;
+								
 	private:
-		BBitmap* fIcon;
+		BBitmap* 				fIcon;
 };
 
 
@@ -86,8 +89,7 @@ CityItem::DrawItem(BView* owner, BRect frame, bool complete)
 	BStringItem::DrawItem(owner, offsetFrame, complete);
 
 	if (fIcon != NULL && fIcon->IsValid()) {
-		BRect iconFrame(frame.left + be_control_look->DefaultLabelSpacing(),
-			frame.top,
+		BRect iconFrame(frame.left + be_control_look->DefaultLabelSpacing(), frame.top,
 			frame.left + iconSize - 1 + be_control_look->DefaultLabelSpacing(),
 			frame.top + iconSize - 1);
 		if (IsSelected()) {
@@ -112,8 +114,6 @@ CityItem::Update(BView* owner, const BFont* font)
 
 	BString countryIdString;
 	countryIdString << CountryId;
-	// if (CountryId.IsEmpty())
-	//	return;
 
 	fIcon = new (std::nothrow)
 		BBitmap(BRect(0, 0, iconSize - 1, iconSize - 1), B_RGBA32);
@@ -131,13 +131,10 @@ const uint32 kSelectedCity = 'SeCy';
 const uint32 kCancelCity = 'CncC';
 
 
-CitiesListSelectionWindow::CitiesListSelectionWindow(
-	BRect rect, BWindow* parent, BString city, int32 cityId)
+CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent, BString city, 		int32 cityId)
 	:
-	BWindow(rect, B_TRANSLATE("Choose location"), 
-		B_TITLED_WINDOW,
-		B_NOT_ZOOMABLE | B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE
-			| B_AUTO_UPDATE_SIZE_LIMITS)
+	BWindow(rect, B_TRANSLATE("Choose location"), B_TITLED_WINDOW, B_NOT_ZOOMABLE 
+		| B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	fParent = parent;
 	fCitiesListView = new BListView("citiesList");
@@ -260,9 +257,6 @@ CitiesListSelectionWindow::MessageReceived(BMessage* msg)
 		}
 		case kCancelCity:
 		{
-			//BMessenger messenger(fParent);
-			//BMessage* message = new BMessage(kCitySelectionMessage);
-			//messenger.SendMessage(message);
 			QuitRequested();
 			Close();
 			break;

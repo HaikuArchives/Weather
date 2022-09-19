@@ -20,8 +20,7 @@ const uint32 kUpdateForecastMessage = 'Updt';
 const float kToolTipDelay = 1000000; /*1000000ms = 1s*/
 
 
-ForecastDeskbarView::ForecastDeskbarView(
-	BRect viewSize, ForecastView* forecastView)
+ForecastDeskbarView::ForecastDeskbarView(BRect viewSize, ForecastView* forecastView)
 	:
 	BView(viewSize, "ForecastDeskbarView", B_FOLLOW_ALL, B_WILL_DRAW)
 {
@@ -58,7 +57,9 @@ instantiate_deskbar_item()
 	BMessage settings;
 	LoadSettings(settings);
 	ForecastDeskbarView* view = new ForecastDeskbarView(
-		BRect(0, 0, 16, 16), new ForecastView(BRect(0, 0, 0, 0), &settings));
+		BRect(0, 0, 16, 16), 
+		new ForecastView(BRect(0, 0, 0, 0), 
+		&settings));
 	entry_ref appRef;
 	settings.FindRef("appLocation", &appRef);
 	view->SetAppLocation(appRef);
@@ -72,9 +73,9 @@ ForecastDeskbarView::Draw(BRect drawRect)
 	BView::Draw(drawRect);
 
 	SetDrawingMode(B_OP_OVER);
-	// SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
-	BBitmap* bitmap
-		= fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(1));
+		// TO-DO: Try with 
+		// SetBlendingMode(B_PIXEL_ALPHA, B_ALPHA_OVERLAY);
+	BBitmap* bitmap = fForecastView->GetWeatherIcon(static_cast<weatherIconSize>(1));
 	if (bitmap)
 		DrawBitmapAsync(bitmap, BPoint(0, 0));
 	SetDrawingMode(B_OP_COPY);
