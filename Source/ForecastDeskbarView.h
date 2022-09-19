@@ -14,8 +14,10 @@
 
 #include "ForecastView.h"
 
+
 class ForecastDeskbarView : public BView
 {
+	
 public:
 					ForecastDeskbarView(BRect viewSize, ForecastView* forecastView);
 					~ForecastDeskbarView();
@@ -23,14 +25,16 @@ public:
 	virtual void	AttachedToWindow();
 	virtual void	MouseDown(BPoint point);
 	virtual void	MouseMoved(
-						BPoint point, uint32 message, const BMessage* dragMessage);
+						BPoint point, 
+						uint32 message, 
+						const BMessage* dragMessage);
 	virtual void	Draw(BRect drawRect);
 	virtual void	MessageReceived(BMessage* message);
-	static BArchivable* Instantiate(BMessage* archive);
-
+	static 			BArchivable* Instantiate(BMessage* archive);
 	void 			SetAppLocation(entry_ref location);
 
 private:
+
 	ForecastView*	fForecastView;
 	BMessageRunner*	fMessageRunner;
 	entry_ref		fAppRef;

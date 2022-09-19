@@ -5,6 +5,7 @@
  * Copyright 2014 George White
  * All rights reserved. Distributed under the terms of the MIT license.
  */
+ 
 #include <Alert.h>
 #include <AppKit.h>
 #include <Bitmap.h>
@@ -37,11 +38,11 @@
 const float kDraggerSize = 7;
 const char* kSettingsFileName = "Weather settings";
 
-const char* kDefaultCityName = "San Francisco";
-const int32 kDefaultCityId = 5391959;
+const char* kDefaultCityName = "Menlo Park";
+const int32 kDefaultCityId = 5372223;
 const bool kDefaultShowForecast = true;
-const double kDefaultLongitude = -122.431297;
-const double kDefaultLatitude = 37.773972;
+const double kDefaultLongitude = -122.18219;
+const double kDefaultLatitude = 37.45383;
 
 const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
@@ -54,14 +55,14 @@ extern const char* kSignature;
 
 class TransparentButton : public BButton
 {
-public:
-	TransparentButton(const char* name, const char* label, BMessage* message);
-	virtual void Draw(BRect updateRect);
+	public:
+								TransparentButton(const char* name, const char* label, 
+									BMessage* message);
+		virtual void 			Draw(BRect updateRect);
 };
 
 
-TransparentButton::TransparentButton(
-	const char* name, const char* label, BMessage* message)
+TransparentButton::TransparentButton(const char* name, const char* label, BMessage* message)
 	:
 	BButton(name, label, message, B_DRAW_ON_CHILDREN)
 {
