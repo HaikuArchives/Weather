@@ -316,10 +316,10 @@ CitiesListSelectionWindow::_FindId()
 	// otherwise return english or the native location name. Lower-cased.
 	BFormattingConventions conventions;
 	if (BLocale::Default()->GetFormattingConventions(&conventions) == B_OK
-		&& conventions.CountryCode() != NULL)
+		&& conventions.LanguageCode() != NULL)
 	{
-		BString countryCode = conventions.CountryCode();
-		urlString << "&language=" << countryCode.ToLower();
+		BString languageCode = conventions.LanguageCode();
+		urlString << "&language=" << languageCode.ToLower();
 	}
 	
 	// Filter out characters that trip up BUrl
