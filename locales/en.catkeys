@@ -1,4 +1,4 @@
-1	English	x-vnd.przemub.Weather	3916380725
+1	English	x-vnd.przemub.Weather	1555884345
 No network	ForecastView		No network
 OK	ForecastView		OK
 Slight rain	ForecastView		Slight rain
@@ -6,8 +6,8 @@ Slight snow showers	ForecastView		Slight snow showers
 Loading…	ForecastView		Loading…
 OK	MainWindow		OK
 Quit	MainWindow		Quit
-Heavy snow showers	ForecastView		Heavy snow showers
 Dense drizzle	ForecastView		Dense drizzle
+Heavy snow showers	ForecastView		Heavy snow showers
 City:	CitiesListSelectionWindow		City:
 Background	ForecastView		Background
 Select city: city, country, region	CitiesListSelectionWindow		Select city: city, country, region
@@ -58,4 +58,3 @@ Slight snow fall	ForecastView		Slight snow fall
 Cancel	CitiesListSelectionWindow		Cancel
 About Weather	ForecastView		About Weather
 Moderate snow fall	ForecastView		Moderate snow fall
-Weather	MainWindow		Weather
