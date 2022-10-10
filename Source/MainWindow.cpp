@@ -41,7 +41,7 @@ BMenuBar*
 MainWindow::_PrepareMenuBar(void)
 {
 	BMenuBar* menubar = new BMenuBar("menu");
-	BMenu* menu = new BMenu(B_TRANSLATE("Weather"));
+	BMenu* menu = new BMenu(B_TRANSLATE_SYSTEM_NAME("Weather"));
 	menu->AddItem(new BMenuItem(
 		B_TRANSLATE("Refresh"), new BMessage(kUpdateMessage), 'R'));
 	menu->AddSeparatorItem();
