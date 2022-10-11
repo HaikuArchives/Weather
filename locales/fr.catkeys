@@ -26,21 +26,21 @@ Moderate snow fall	ForecastView		Chute de neige modérée
 No network	ForecastView		Pas de réseau
 Not available	ForecastView		Non disponible
 OK	ForecastView		D'accord
-Overcast	ForecastView		Nuageux
+Overcast	ForecastView		Couvert
 Partly cloudy	ForecastView		Partiellement couvert
 Slight rain	ForecastView		Pluie fine
 Slight rain showers	ForecastView		Averses de pluie fine
 Slight snow fall	ForecastView		Chute de neige fine
 Slight snow showers	ForecastView		Averses de neige fine
-Snow grains	ForecastView		Grains de neige
+Snow grains	ForecastView		Neige en grains
 Text	ForecastView		Appliquer au texte
 Thunderstorm	ForecastView		Orage
 Thunderstorm with heavy hail	ForecastView		Orage avec forte grêle
 Thunderstorm with slight hail	ForecastView		Orage avec légère grêle
 Transparent	ForecastView		Transparent
 Weather (The Replicant version)	ForecastView		Météo (La version Réplicant)
-About Weather	MainWindow		A propos de Météo
-An open source weather app showing a forecast for the next 5 days.	MainWindow		Une application météo open source affichant les prévisions pour les 5 jours à venir.
+About Weather	MainWindow		A propos de Weather
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Une application météo affichant les prévisions pour les 5 jours à venir.
 Change location…	MainWindow		Changer de localisation…
 Deskbar Replicant	MainWindow		Réplicant de la Deskbar
 Edit	MainWindow		Éditer

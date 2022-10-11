@@ -1,0 +1,65 @@
+1	Catalan	x-vnd.przemub.Weather	1423632369
+About Weather	ForecastView		Quant al Temps
+Background	ForecastView		Fons
+Clear sky	ForecastView		Cel clar
+Connecting…	ForecastView		Es connecta...
+Connection error	ForecastView		Error de connexió
+Default	ForecastView		Pe defecte
+Dense drizzle	ForecastView		Plugim dens
+Depositing rime fog	ForecastView		Boira gebradora
+Fog	ForecastView		Boira
+Freezing dense drizzle	ForecastView		Plugim gelat dens
+Freezing light drizzle	ForecastView		Plugim gelat lleuger
+Heavy freezing rain	ForecastView		Pluja gelada intensa
+Heavy rain	ForecastView		Pluja intensa
+Heavy rain showers	ForecastView		Xàfecs intensos
+Heavy snow fall	ForecastView		Nevada intensa
+Heavy snow showers	ForecastView		Xàfecs de neu intensos
+Light drizzle	ForecastView		Plugim lleuger
+Light freezing rain	ForecastView		Pluja freda lleugera
+Loading…	ForecastView		Es carrega...
+Mainly clear	ForecastView		Principalment clar
+Moderate drizzle	ForecastView		Plugim moderat
+Moderate rain	ForecastView		Pluja moderada
+Moderate rain showers	ForecastView		Xàfecs de pluja moderada
+Moderate snow fall	ForecastView		Nevada moderada
+No network	ForecastView		Sense xarxa
+Not available	ForecastView		No disponible
+OK	ForecastView		D'acord
+Overcast	ForecastView		Ennuvolat
+Partly cloudy	ForecastView		Parcialment ennuvolat
+Slight rain	ForecastView		Pluja lleugera
+Slight rain showers	ForecastView		Xàfecs de pluja lleugera
+Slight snow fall	ForecastView		Nevada lleugera
+Slight snow showers	ForecastView		Nevades lleugeres
+Snow grains	ForecastView		Neviscó
+Text	ForecastView		Text
+Thunderstorm	ForecastView		Tempesta
+Thunderstorm with heavy hail	ForecastView		Tempesta amb pedregada forta
+Thunderstorm with slight hail	ForecastView		Tempesta amb calamarsa lleu
+Transparent	ForecastView		Transparent
+Weather (The Replicant version)	ForecastView		Temps (La versió replicant)
+About Weather	MainWindow		Quant al Temps
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Una aplicació meteorològica de codi obert que mostra una previsió per als propers 5 dies.
+Change location…	MainWindow		Canvia la ubicació...
+Deskbar Replicant	MainWindow		Replicant de la barra de tasques
+Edit	MainWindow		Edita
+Loading…	MainWindow		Es carrega...
+OK	MainWindow		D'acord
+Preferences…	MainWindow		Preferències…
+Quit	MainWindow		Surt
+Refresh	MainWindow		Refresca
+Unable to create a deskbar replicant. The error is: \"	MainWindow		No es pot crear un replicant de la barra de tasques. L'error és aquest: \"
+View	MainWindow		Vista
+Cancel	CitiesListSelectionWindow		Cancel·la
+Choose location	CitiesListSelectionWindow		Trieu la ubicació
+OK	CitiesListSelectionWindow		D'acord
+Change location	SelectionWindow		Canvia la ubicació
+City:	SelectionWindow		Ciutat:
+OK	SelectionWindow		D'acord
+Select city: city, country, region	SelectionWindow		Seleccioneu la ciutat: ciutat, país, regió
+OK	PreferencesWindow		D'acord
+Preferences	PreferencesWindow		Preferències
+Use Celsius °C	PreferencesWindow		Usa graus Celsius (°C)
+Use Fahrenheit °F	PreferencesWindow		Usa graus Fahrenheit (°F)
+Weather	System name		Temps

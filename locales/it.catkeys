@@ -1,0 +1,65 @@
+1	Italian	x-vnd.przemub.Weather	1423632369
+About Weather	ForecastView		Informazioni su Meteo
+Background	ForecastView		Sfondo
+Clear sky	ForecastView		Cielo sereno
+Connecting…	ForecastView		Connessione…
+Connection error	ForecastView		Errore di connessione
+Default	ForecastView		Predefinito
+Dense drizzle	ForecastView		Pioggia fitta
+Depositing rime fog	ForecastView		Nebbia con brina
+Fog	ForecastView		Nebbia
+Freezing dense drizzle	ForecastView		Pioviggine sopraffusa fitta
+Freezing light drizzle	ForecastView		Pioviggine sopraffusa leggera
+Heavy freezing rain	ForecastView		Pioggia sopraffusa forte
+Heavy rain	ForecastView		Pioggia forte
+Heavy rain showers	ForecastView		Rovesci di pioggia forti
+Heavy snow fall	ForecastView		Nevicata forte
+Heavy snow showers	ForecastView		Tempesta di neve forte
+Light drizzle	ForecastView		Pioviggine sopraffusa leggera
+Light freezing rain	ForecastView		Pioggerella gelida
+Loading…	ForecastView		Caricamento…
+Mainly clear	ForecastView		In gran parte sgombro
+Moderate drizzle	ForecastView		Pioggerella moderata
+Moderate rain	ForecastView		Pioggia moderata
+Moderate rain showers	ForecastView		Moderati rovesci di pioggia
+Moderate snow fall	ForecastView		Nevicate moderate
+No network	ForecastView		Rete assente
+Not available	ForecastView		Non disponibile
+OK	ForecastView		OK
+Overcast	ForecastView		Cielo coperto
+Partly cloudy	ForecastView		Parzialmente nuvoloso
+Slight rain	ForecastView		Pioggia fine
+Slight rain showers	ForecastView		Rovesci di pioggia fine
+Slight snow fall	ForecastView		Nevicata fine
+Slight snow showers	ForecastView		Tempesta di neve fine
+Snow grains	ForecastView		Fiocchi di neve
+Text	ForecastView		Testo
+Thunderstorm	ForecastView		Tempesta
+Thunderstorm with heavy hail	ForecastView		Tempesta con grandine forte
+Thunderstorm with slight hail	ForecastView		Tempesta con grandine debole
+Transparent	ForecastView		Trasparente
+Weather (The Replicant version)	ForecastView		Meteo (versione replicante)
+About Weather	MainWindow		Informazioni su Meteo
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Un'applicazione meteo open source che mostra le previsioni per i prossimi 5 giorni.
+Change location…	MainWindow		Cambia località…
+Deskbar Replicant	MainWindow		Replicante Deskbar
+Edit	MainWindow		Modifica
+Loading…	MainWindow		Caricamento…
+OK	MainWindow		OK
+Preferences…	MainWindow		Preferenze…
+Quit	MainWindow		Esci
+Refresh	MainWindow		Aggiorna
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Impossibile creare un replicante sulla Deskbar. Errore: L'errore è \"
+View	MainWindow		Visualizza
+Cancel	CitiesListSelectionWindow		Annulla
+Choose location	CitiesListSelectionWindow		Scegli una località
+OK	CitiesListSelectionWindow		OK
+Change location	SelectionWindow		Cambia  località
+City:	SelectionWindow		Città:
+OK	SelectionWindow		OK
+Select city: city, country, region	SelectionWindow		Seleziona città: città, paese, regione
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Preferenze
+Use Celsius °C	PreferencesWindow		Utilizza i gradi Celsius °C
+Use Fahrenheit °F	PreferencesWindow		Utilizza i gradi Fahrenheit °F
+Weather	System name		Meteo
