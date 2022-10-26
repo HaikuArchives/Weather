@@ -41,7 +41,13 @@ BMenuBar*
 MainWindow::_PrepareMenuBar(void)
 {
 	BMenuBar* menubar = new BMenuBar("menu");
-	BMenu* menu = new BMenu(B_TRANSLATE("Edit"));
+	BMenu* menu = new BMenu(B_TRANSLATE_SYSTEM_NAME("Weather"));
+	menu->AddItem(new BMenuItem(
+		B_TRANSLATE("Refresh"), new BMessage(kUpdateMessage), 'R'));
+	menu->AddSeparatorItem();
+	//	Remove menu item until Deskbar replicant is fixed
+	//	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar
+	//Replicant"), 		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Change location" B_UTF8_ELLIPSIS),
 		new BMessage(kCitySelectionMessage), 'L'));
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Preferences" B_UTF8_ELLIPSIS),
@@ -51,18 +57,6 @@ MainWindow::_PrepareMenuBar(void)
 		B_TRANSLATE("About Weather"), new BMessage(B_ABOUT_REQUESTED)));
 	menu->AddItem(new BMenuItem(
 		B_TRANSLATE("Quit"), new BMessage(B_QUIT_REQUESTED), 'Q'));
-	menubar->AddItem(menu);
-
-	menu = new BMenu(B_TRANSLATE("View"));
-	// menu->AddItem(fShowForecastMenuItem = new BMenuItem("Show forecast",
-	//	new BMessage(kShowForecastMessage)));
-	// menu->AddSeparatorItem();
-	menu->AddItem(new BMenuItem(
-		B_TRANSLATE("Refresh"), new BMessage(kUpdateMessage), 'R'));
-
-	//	Remove menu item until Deskbar replicant is fixed
-	//	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar
-	//Replicant"), 		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
 	menubar->AddItem(menu);
 
 	return menubar;

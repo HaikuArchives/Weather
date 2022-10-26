@@ -1,22 +1,21 @@
-1	English	x-vnd.przemub.Weather	1423632369
+1	English	x-vnd.przemub.Weather	1555884345
 No network	ForecastView		No network
 OK	ForecastView		OK
-Slight snow showers	ForecastView		Slight snow showers
 Slight rain	ForecastView		Slight rain
+Slight snow showers	ForecastView		Slight snow showers
 Loading…	ForecastView		Loading…
 OK	MainWindow		OK
 Quit	MainWindow		Quit
-Heavy snow showers	ForecastView		Heavy snow showers
 Dense drizzle	ForecastView		Dense drizzle
-Select city: city, country, region	SelectionWindow		Select city: city, country, region
+Heavy snow showers	ForecastView		Heavy snow showers
+City:	CitiesListSelectionWindow		City:
 Background	ForecastView		Background
+Select city: city, country, region	CitiesListSelectionWindow		Select city: city, country, region
 Preferences…	MainWindow		Preferences…
 Freezing dense drizzle	ForecastView		Freezing dense drizzle
 Use Celsius °C	PreferencesWindow		Use Celsius °C
 Heavy snow fall	ForecastView		Heavy snow fall
 Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
-City:	SelectionWindow		City:
-Edit	MainWindow		Edit
 Weather	System name		Weather
 Loading…	MainWindow		Loading…
 Mainly clear	ForecastView		Mainly clear
@@ -28,17 +27,15 @@ Connecting…	ForecastView		Connecting…
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Unable to create a deskbar replicant. The error is: \"
 Overcast	ForecastView		Overcast
 Moderate rain	ForecastView		Moderate rain
-OK	SelectionWindow		OK
 Depositing rime fog	ForecastView		Depositing rime fog
 About Weather	MainWindow		About Weather
 Moderate drizzle	ForecastView		Moderate drizzle
-Moderate rain showers	ForecastView		Moderate rain showers
 Clear sky	ForecastView		Clear sky
+Moderate rain showers	ForecastView		Moderate rain showers
 Snow grains	ForecastView		Snow grains
 Slight rain showers	ForecastView		Slight rain showers
 Heavy rain	ForecastView		Heavy rain
 Light drizzle	ForecastView		Light drizzle
-View	MainWindow		View
 Change location…	MainWindow		Change location…
 OK	CitiesListSelectionWindow		OK
 Freezing light drizzle	ForecastView		Freezing light drizzle
@@ -48,18 +45,16 @@ Heavy rain showers	ForecastView		Heavy rain showers
 Not available	ForecastView		Not available
 Light freezing rain	ForecastView		Light freezing rain
 Heavy freezing rain	ForecastView		Heavy freezing rain
-Preferences	PreferencesWindow		Preferences
-Refresh	MainWindow		Refresh
 Connection error	ForecastView		Connection error
-Change location	SelectionWindow		Change location
+Refresh	MainWindow		Refresh
+Preferences	PreferencesWindow		Preferences
 Thunderstorm	ForecastView		Thunderstorm
 Fog	ForecastView		Fog
-Text	ForecastView		Text
 Default	ForecastView		Default
+Text	ForecastView		Text
 Thunderstorm with heavy hail	ForecastView		Thunderstorm with heavy hail
 Transparent	ForecastView		Transparent
 Slight snow fall	ForecastView		Slight snow fall
 Cancel	CitiesListSelectionWindow		Cancel
 About Weather	ForecastView		About Weather
 Moderate snow fall	ForecastView		Moderate snow fall
-Deskbar Replicant	MainWindow		Deskbar Replicant

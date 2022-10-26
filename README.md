@@ -3,8 +3,8 @@ Weather
 
 ![Weather screenshot](Weather.png "Weather")
 
-Weather is a Haiku application that displays the constantly-updated weather of a specified location (*Edit --> Change location*). It shows the current condition there and a forecast of the next 5 days.
-The temperature can be displayed in degrees Celsius and Fahrenheit (*Edit --> Preferences*).
+Weather is a Haiku application that displays the constantly-updated weather of a specified location (*Weather --> Change location*). It shows the current condition there and a forecast of the next 5 days.
+The temperature can be displayed in degrees Celsius and Fahrenheit (*Weather --> Preferences*).
 
 Weather displays daily highs/lows and cloudiness, precipitation, and sunlight. As a replicant, Weather can be easily integrated into the Desktop.
 
