@@ -37,10 +37,10 @@ class CityItem : public BStringItem
 								CityItem(const int32 id, const char* city, 
 									const char* country, const char* extendedInfo);
 		virtual 				~CityItem();
-	
+
 		virtual void 			DrawItem(BView* owner, BRect frame, bool complete = false);
 		virtual void 			Update(BView* owner, const BFont* font);
-	
+
 		int32 					Id;
 		double 					Longitude;
 		double 					Latitude;
@@ -49,7 +49,7 @@ class CityItem : public BStringItem
 		BString 				DisplayName;
 		BString 				Country;
 		BString 				ExtendedInfo;
-								
+
 	private:
 		BBitmap* 				fIcon;
 };
@@ -131,9 +131,10 @@ const uint32 kSelectedCity = 'SeCy';
 const uint32 kCancelCity = 'CncC';
 
 
-CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent, BString city, 		int32 cityId)
+CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent, BString city,
+	int32 cityId)
 	:
-	BWindow(rect, B_TRANSLATE("Choose location"), B_TITLED_WINDOW, B_NOT_ZOOMABLE 
+	BWindow(rect, B_TRANSLATE("Choose location"), B_TITLED_WINDOW, B_NOT_ZOOMABLE
 		| B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS)
 {
 	fParent = parent;
@@ -143,18 +144,18 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 	fCitiesListView->SetInvocationMessage(new BMessage(kSelectedCity));
 	fCityId = cityId;
 	fCitiesListView->Select(0);
-	
+
 	fCityControl = new BTextControl(NULL, B_TRANSLATE("City:"), fCity, NULL);
-	fCityControl->SetToolTip(B_TRANSLATE("Select city: city, country, region"));
+	fCityControl->SetToolTip(B_TRANSLATE("Enter location: city, country, region"));
 	fCityControl->SetModificationMessage(
 		new BMessage(kSearchMessage));
 	fCityControl->MakeFocus(true);
-	
+
 	BButton* fButtonOk
 		= new BButton("ok", B_TRANSLATE("OK"), new BMessage(kSelectedCity));
 	BButton* fButtonCancel = new BButton(
-		"cancel", B_TRANSLATE("Cancel"), new BMessage(kCancelCity));	
-	
+		"cancel", B_TRANSLATE("Cancel"), new BMessage(kCancelCity));
+
 	fCitiesListView->ResizeToPreferred();
 	BLayoutBuilder::Group<>(this, B_VERTICAL)
 		.SetInsets(B_USE_WINDOW_INSETS)
@@ -167,7 +168,7 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 			.End()
 		.End();
 	fButtonOk->MakeDefault(true);
-	
+
 	_StartSearch();
 }
 
@@ -196,7 +197,7 @@ CitiesListSelectionWindow::MessageReceived(BMessage* msg)
 				int32 id = 0L;
 				BString country = "";
 				BString extendedInfo = "";
-		
+
 				msg->FindInt32("id", index, &id);
 				msg->FindString("city", index, &city);
 				msg->FindString("country", index, &country);
@@ -204,12 +205,12 @@ CitiesListSelectionWindow::MessageReceived(BMessage* msg)
 				msg->FindString("extended_info", index, &extendedInfo);
 				msg->FindDouble("longitude", index, &longitude);
 				msg->FindDouble("latitude", index, &latitude);
-		
+
 				CityItem* cityItem = new CityItem(id, city, country, extendedInfo);
 				cityItem->Latitude = latitude;
 				cityItem->Longitude = longitude;
 				cityItem->CountryId = countryId;
-		
+
 				fCitiesListView->AddItem(cityItem);
 				index++;
 			}
@@ -311,7 +312,7 @@ CitiesListSelectionWindow::_FindId()
 {
 	BString urlString("https://geocoding-api.open-meteo.com/v1/search?name=");
 	urlString << fCityControl->Text();
-	
+
 	// use translated queries and results in local language if available
 	// otherwise return english or the native location name. Lower-cased.
 	BFormattingConventions conventions;
@@ -321,13 +322,13 @@ CitiesListSelectionWindow::_FindId()
 		BString languageCode = conventions.LanguageCode();
 		urlString << "&language=" << languageCode.ToLower();
 	}
-	
+
 	// Filter out characters that trip up BUrl
 	urlString.ReplaceAll(" ", "+");
 	urlString.ReplaceAll("<", "");
 	urlString.ReplaceAll(">", "");
 	urlString.ReplaceAll("\"", "");
-	
+
 	BMallocIO requestData;
 	WSOpenMeteo listener(this, &requestData, CITY_REQUEST);
 

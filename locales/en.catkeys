@@ -1,4 +1,4 @@
-1	English	x-vnd.przemub.Weather	1555884345
+1	English	x-vnd.przemub.Weather	704655087
 No network	ForecastView		No network
 OK	ForecastView		OK
 Slight rain	ForecastView		Slight rain
@@ -10,7 +10,6 @@ Dense drizzle	ForecastView		Dense drizzle
 Heavy snow showers	ForecastView		Heavy snow showers
 City:	CitiesListSelectionWindow		City:
 Background	ForecastView		Background
-Select city: city, country, region	CitiesListSelectionWindow		Select city: city, country, region
 Preferences…	MainWindow		Preferences…
 Freezing dense drizzle	ForecastView		Freezing dense drizzle
 Use Celsius °C	PreferencesWindow		Use Celsius °C
@@ -32,6 +31,7 @@ About Weather	MainWindow		About Weather
 Moderate drizzle	ForecastView		Moderate drizzle
 Clear sky	ForecastView		Clear sky
 Moderate rain showers	ForecastView		Moderate rain showers
+Enter location: city, country, region	CitiesListSelectionWindow		Enter location: city, country, region
 Snow grains	ForecastView		Snow grains
 Slight rain showers	ForecastView		Slight rain showers
 Heavy rain	ForecastView		Heavy rain
