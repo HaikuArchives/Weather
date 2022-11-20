@@ -1,4 +1,4 @@
-1	German	x-vnd.przemub.Weather	1423632369
+1	German	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Über Wetter
 Background	ForecastView		Hintergrund
 Clear sky	ForecastView		Klar
@@ -39,25 +39,20 @@ Thunderstorm with heavy hail	ForecastView		Gewitter mit starkem Hagel
 Thunderstorm with slight hail	ForecastView		Gewitter mit Hagel
 Transparent	ForecastView		Transparent
 Weather (The Replicant version)	ForecastView		Wetter (die Replikant Version)
-About Weather	MainWindow		Über Weather
+About Weather	MainWindow		Über Wetter
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Eine Anwendung zur Wetterprognose der nächsten 5 Tage.
 Change location…	MainWindow		Standort ändern…
-Deskbar Replicant	MainWindow		Deskbar Replikant
-Edit	MainWindow		Bearbeiten
 Loading…	MainWindow		Lade Daten…
 OK	MainWindow		OK
 Preferences…	MainWindow		Einstellungen…
 Quit	MainWindow		Beenden
 Refresh	MainWindow		Aktualisieren
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Der Deskbar Replikant konnte nicht installiert werden. Fehler: \"
-View	MainWindow		Ansicht
 Cancel	CitiesListSelectionWindow		Abbrechen
 Choose location	CitiesListSelectionWindow		Ort wählen
+City:	CitiesListSelectionWindow		Stadt:
+Enter location: city, country, region	CitiesListSelectionWindow		Ort: Stadt, Land, Region
 OK	CitiesListSelectionWindow		OK
-Change location	SelectionWindow		Standort ändern
-City:	SelectionWindow		Stadt:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Stadt auswählen: Stadt, Land, Region
 OK	PreferencesWindow		OK
 Preferences	PreferencesWindow		Einstellungen
 Use Celsius °C	PreferencesWindow		Celsius °C

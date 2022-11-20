@@ -1,4 +1,4 @@
-1	English (British)	x-vnd.przemub.Weather	704655087
+1	English (Australian)	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		About Weather
 Background	ForecastView		Background
 Clear sky	ForecastView		Clear sky
@@ -25,7 +25,7 @@ Moderate rain showers	ForecastView		Moderate rain showers
 Moderate snow fall	ForecastView		Moderate snow fall
 No network	ForecastView		No network
 Not available	ForecastView		Not available
-OK	ForecastView		Alright
+OK	ForecastView		OK
 Overcast	ForecastView		Overcast
 Partly cloudy	ForecastView		Partly cloudy
 Slight rain	ForecastView		Slight rain
@@ -43,7 +43,7 @@ About Weather	MainWindow		About Weather
 An open source weather app showing a forecast for the next 5 days.	MainWindow		An open source weather app showing a forecast for the next 5 days.
 Change location…	MainWindow		Change location…
 Loading…	MainWindow		Loading…
-OK	MainWindow		Alright
+OK	MainWindow		OK
 Preferences…	MainWindow		Preferences…
 Quit	MainWindow		Quit
 Refresh	MainWindow		Refresh
@@ -52,8 +52,8 @@ Cancel	CitiesListSelectionWindow		Cancel
 Choose location	CitiesListSelectionWindow		Choose location
 City:	CitiesListSelectionWindow		City:
 Enter location: city, country, region	CitiesListSelectionWindow		Enter location: city, country, region
-OK	CitiesListSelectionWindow		Alright
-OK	PreferencesWindow		Alright
+OK	CitiesListSelectionWindow		OK
+OK	PreferencesWindow		OK
 Preferences	PreferencesWindow		Preferences
 Use Celsius °C	PreferencesWindow		Use Celsius °C
 Use Fahrenheit °F	PreferencesWindow		Use Fahrenheit °F

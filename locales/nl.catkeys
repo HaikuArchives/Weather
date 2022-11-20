@@ -1,4 +1,4 @@
-1	Dutch	x-vnd.przemub.Weather	1423632369
+1	Dutch	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Over Weather
 Background	ForecastView		Achtergrond
 Clear sky	ForecastView		Heldere hemel
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Weather (De Replicant versie)
 About Weather	MainWindow		Over Weather
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Een open source weer toepassing die voorspelling doet voor de volgende 5 dagen.
 Change location…	MainWindow		Locatie aanpassen...
-Deskbar Replicant	MainWindow		Deskbar Replicant
-Edit	MainWindow		Bewerken
 Loading…	MainWindow		Laden...
 OK	MainWindow		OK
 Preferences…	MainWindow		Voorkeuren...
 Quit	MainWindow		Afsluiten
 Refresh	MainWindow		Ververs
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Aanmaken deskbar replicant is mislukt. De fout is: \"
-View	MainWindow		Toon
 Cancel	CitiesListSelectionWindow		Annuleer
 Choose location	CitiesListSelectionWindow		Kies locatie
+City:	CitiesListSelectionWindow		Stad:
+Enter location: city, country, region	CitiesListSelectionWindow		Geef locatie: stad, land, regio
 OK	CitiesListSelectionWindow		OK
-Change location	SelectionWindow		Locatie aanpassen
-City:	SelectionWindow		Stad:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Selecteer stad: stad, land, regio
 OK	PreferencesWindow		OK
 Preferences	PreferencesWindow		Voorkeuren
 Use Celsius °C	PreferencesWindow		Gebruik Celsius °C

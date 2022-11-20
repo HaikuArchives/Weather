@@ -1,4 +1,4 @@
-1	Turkish	x-vnd.przemub.Weather	1423632369
+1	Turkish	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Hava Durumu hakkında
 Background	ForecastView		Arka plan
 Clear sky	ForecastView		Açık gökyüzü
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Hava Durumu (Yinelenen)
 About Weather	MainWindow		Hava Durumu hakkında
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Sonraki beş günün hava tahminlerini gösteren, açık kaynaklı hava durumu uygulaması.
 Change location…	MainWindow		Konum değiştir…
-Deskbar Replicant	MainWindow		Masaüstü Çubuğu Yinelenen'i
-Edit	MainWindow		Düzen
 Loading…	MainWindow		Yükleniyor…
 OK	MainWindow		Tamam
 Preferences…	MainWindow		Tercihler…
 Quit	MainWindow		Çık
 Refresh	MainWindow		Yenile
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Masaüstü Çubuğu Yinelenen'i oluşturulamıyor. Hata iletisi: \"
-View	MainWindow		Görünüm
 Cancel	CitiesListSelectionWindow		İptal
 Choose location	CitiesListSelectionWindow		Konum seç
+City:	CitiesListSelectionWindow		Kent:
+Enter location: city, country, region	CitiesListSelectionWindow		Konum gir: Kent, bölge, ülke
 OK	CitiesListSelectionWindow		Tamam
-Change location	SelectionWindow		Konum değiştir
-City:	SelectionWindow		Kent:
-OK	SelectionWindow		Tamam
-Select city: city, country, region	SelectionWindow		Kent seçin: Kent, ülke, bölge
 OK	PreferencesWindow		Tamam
 Preferences	PreferencesWindow		Tercihler
 Use Celsius °C	PreferencesWindow		Celsius (°C) kullan

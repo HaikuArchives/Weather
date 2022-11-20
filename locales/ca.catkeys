@@ -1,4 +1,4 @@
-1	Catalan	x-vnd.przemub.Weather	1423632369
+1	Catalan	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Quant al Temps
 Background	ForecastView		Fons
 Clear sky	ForecastView		Cel clar
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Temps (La versió replicant)
 About Weather	MainWindow		Quant al Temps
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Una aplicació meteorològica de codi obert que mostra una previsió per als propers 5 dies.
 Change location…	MainWindow		Canvia la ubicació...
-Deskbar Replicant	MainWindow		Replicant de la barra de tasques
-Edit	MainWindow		Edita
 Loading…	MainWindow		Es carrega...
 OK	MainWindow		D'acord
 Preferences…	MainWindow		Preferències…
 Quit	MainWindow		Surt
 Refresh	MainWindow		Refresca
 Unable to create a deskbar replicant. The error is: \"	MainWindow		No es pot crear un replicant de la barra de tasques. L'error és aquest: \"
-View	MainWindow		Vista
 Cancel	CitiesListSelectionWindow		Cancel·la
 Choose location	CitiesListSelectionWindow		Trieu la ubicació
+City:	CitiesListSelectionWindow		Ciutat:
+Enter location: city, country, region	CitiesListSelectionWindow		Introduïu-hi la ubicació: ciutat, país o regió.
 OK	CitiesListSelectionWindow		D'acord
-Change location	SelectionWindow		Canvia la ubicació
-City:	SelectionWindow		Ciutat:
-OK	SelectionWindow		D'acord
-Select city: city, country, region	SelectionWindow		Seleccioneu la ciutat: ciutat, país, regió
 OK	PreferencesWindow		D'acord
 Preferences	PreferencesWindow		Preferències
 Use Celsius °C	PreferencesWindow		Usa graus Celsius (°C)

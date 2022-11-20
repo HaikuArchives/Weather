@@ -1,4 +1,4 @@
-1	Portuguese	x-vnd.przemub.Weather	1423632369
+1	Portuguese	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Acerca da Meteorologia
 Background	ForecastView		Fundo
 Clear sky	ForecastView		Céu claro
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Meteorologia (a versão em Replica
 About Weather	MainWindow		Sobre o tempo
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Uma aplicação meteorológica de código aberto que mostra uma previsão para os próximos 5 dias.
 Change location…	MainWindow		Alterar localização…
-Deskbar Replicant	MainWindow		Replicante da barra de mesa
-Edit	MainWindow		Editar
 Loading…	MainWindow		A carregar…
 OK	MainWindow		OK
 Preferences…	MainWindow		Preferências…
 Quit	MainWindow		Sair
 Refresh	MainWindow		Atualizar
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Incapaz de criar uma réplica de mesa. O erro é: \"
-View	MainWindow		Visualização
 Cancel	CitiesListSelectionWindow		Cancelar
 Choose location	CitiesListSelectionWindow		Escolha a localização
+City:	CitiesListSelectionWindow		Cidade:
+Enter location: city, country, region	CitiesListSelectionWindow		Digite a localização: cidade, país, região
 OK	CitiesListSelectionWindow		OK
-Change location	SelectionWindow		Alterar localização
-City:	SelectionWindow		Cidade:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Selecione cidade: cidade, país, região
 OK	PreferencesWindow		OK
 Preferences	PreferencesWindow		Preferências
 Use Celsius °C	PreferencesWindow		Utilização Celsius °C

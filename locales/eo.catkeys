@@ -1,4 +1,4 @@
-1	Esperanto	x-vnd.przemub.Weather	1423632369
+1	Esperanto	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Pri Vetero
 Background	ForecastView		Fonto
 Clear sky	ForecastView		Klara ĉielo
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Vetero (La Replikila versio)
 About Weather	MainWindow		Pri Vetero
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Liberkoda programo kiu montras la veterprognozon por la venontaj 5 tagoj.
 Change location…	MainWindow		Ŝanĝi lokon…
-Deskbar Replicant	MainWindow		Laborstria Replikilo
-Edit	MainWindow		Redakti
 Loading…	MainWindow		Ŝarĝante…
 OK	MainWindow		Bone
 Preferences…	MainWindow		Agordoj…
 Quit	MainWindow		Ĉesi
 Refresh	MainWindow		Reŝarĝi
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Neeblis fari laborstrian replikilon. La eraro estas: \"
-View	MainWindow		Vido
 Cancel	CitiesListSelectionWindow		Nuligi
 Choose location	CitiesListSelectionWindow		Elekti lokon
+City:	CitiesListSelectionWindow		City:
+Enter location: city, country, region	CitiesListSelectionWindow		Enter location: city, country, region
 OK	CitiesListSelectionWindow		Bone
-Change location	SelectionWindow		Interŝanĝi lokon
-City:	SelectionWindow		Urbo:
-OK	SelectionWindow		Bone
-Select city: city, country, region	SelectionWindow		Elektu urbon: urbo, lando, regiono
 OK	PreferencesWindow		Bone
 Preferences	PreferencesWindow		Agordoj
 Use Celsius °C	PreferencesWindow		Montri celsie (°C)

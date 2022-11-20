@@ -1,4 +1,4 @@
-1	Swedish	x-vnd.przemub.Weather	1423632369
+1	Swedish	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Om Väder
 Background	ForecastView		Bakgrund
 Clear sky	ForecastView		Klart
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Väder (Replikantversionen)
 About Weather	MainWindow		Om Väder
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Ett öppen-källkodprogram som visar en väderleksrapport för de närmsta fem dagarna.
 Change location…	MainWindow		Ändra plats…
-Deskbar Replicant	MainWindow		Skrivbords Replikant
-Edit	MainWindow		Ändra
 Loading…	MainWindow		Laddar…
 OK	MainWindow		OK
 Preferences…	MainWindow		Inställningar…
 Quit	MainWindow		Avsluta
 Refresh	MainWindow		Uppdatera
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Kan ej skapa deskbar replikant. Felet är: \"
-View	MainWindow		Visa
 Cancel	CitiesListSelectionWindow		Avbryt
 Choose location	CitiesListSelectionWindow		Välj plats
+City:	CitiesListSelectionWindow		Stad:
+Enter location: city, country, region	CitiesListSelectionWindow		Ange plats: stad, land, region
 OK	CitiesListSelectionWindow		OK
-Change location	SelectionWindow		Ändra plats
-City:	SelectionWindow		Stad:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Välj stad: stad, land, region
 OK	PreferencesWindow		OK
 Preferences	PreferencesWindow		Inställningar
 Use Celsius °C	PreferencesWindow		Använd Celsius °C

@@ -1,0 +1,60 @@
+1	Russian	x-vnd.przemub.Weather	704655087
+About Weather	ForecastView		О Погоде
+Background	ForecastView		Фон
+Clear sky	ForecastView		Ясное небо
+Connecting…	ForecastView		Соединение…
+Connection error	ForecastView		Ошибка соединения
+Default	ForecastView		По умолчанию
+Dense drizzle	ForecastView		Густая морось
+Depositing rime fog	ForecastView		Иней
+Fog	ForecastView		Туман
+Freezing dense drizzle	ForecastView		Плотная переохлажденная морось
+Freezing light drizzle	ForecastView		Легкая переохлажденная морось
+Heavy freezing rain	ForecastView		Сильный переохлажденный дождь
+Heavy rain	ForecastView		Сильный дождь
+Heavy rain showers	ForecastView		Сильные ливневые дожди
+Heavy snow fall	ForecastView		Интенсивный снегопад
+Heavy snow showers	ForecastView		Сильный снегопад
+Light drizzle	ForecastView		Легкая морось
+Light freezing rain	ForecastView		Легкий переохлажденный дождь
+Loading…	ForecastView		Загрузка…
+Mainly clear	ForecastView		В основном ясно
+Moderate drizzle	ForecastView		Умеренная морось
+Moderate rain	ForecastView		Умеренный дождь
+Moderate rain showers	ForecastView		Умеренные дождевые ливни
+Moderate snow fall	ForecastView		Умеренный снегопад
+No network	ForecastView		Нет соединения с сетью
+Not available	ForecastView		Недоступно
+OK	ForecastView		OK
+Overcast	ForecastView		Облачность
+Partly cloudy	ForecastView		Переменная облачность
+Slight rain	ForecastView		Слабый дождь
+Slight rain showers	ForecastView		Слабый ливень
+Slight snow fall	ForecastView		Слабый снегопад
+Slight snow showers	ForecastView		Слабый мокрый снег
+Snow grains	ForecastView		Снежная крупа
+Text	ForecastView		Текст
+Thunderstorm	ForecastView		Гроза
+Thunderstorm with heavy hail	ForecastView		Гроза с сильным градом
+Thunderstorm with slight hail	ForecastView		Гроза с слабым градом
+Transparent	ForecastView		Прозрачный
+Weather (The Replicant version)	ForecastView		Погода (репликант)
+About Weather	MainWindow		О программе Weather
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Приложение Погода показывает прогноз на следующее пять дней
+Change location…	MainWindow		Изменить местоположение…
+Loading…	MainWindow		Загрузка…
+OK	MainWindow		OK
+Preferences…	MainWindow		Настройки…
+Quit	MainWindow		Выйти
+Refresh	MainWindow		Обновить
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Невозможнос создать deskbar replicant. Ошибка: \"
+Cancel	CitiesListSelectionWindow		Отмена
+Choose location	CitiesListSelectionWindow		Выбрать локацию
+City:	CitiesListSelectionWindow		Город:
+Enter location: city, country, region	CitiesListSelectionWindow		Введите место: город, страну, область
+OK	CitiesListSelectionWindow		OK
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Настройки
+Use Celsius °C	PreferencesWindow		Использовать градусы Цельсия °C
+Use Fahrenheit °F	PreferencesWindow		Использовать градусы Фаренгейта °F
+Weather	System name		Погода

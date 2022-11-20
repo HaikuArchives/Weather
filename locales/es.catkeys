@@ -1,4 +1,4 @@
-1	Spanish	x-vnd.przemub.Weather	1423632369
+1	Spanish	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Acerca de Clima
 Background	ForecastView		Fondo
 Clear sky	ForecastView		Cielo despejado
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Clima (versión replicante)
 About Weather	MainWindow		Acerca de Clima
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Una aplicación de clima de código abierto que muestra el pronóstico para los próximos 5 días.
 Change location…	MainWindow		Cambiar ubicación…
-Deskbar Replicant	MainWindow		Replicante de la barra de escritorio
-Edit	MainWindow		Editar
 Loading…	MainWindow		Cargando…
 OK	MainWindow		Aceptar
 Preferences…	MainWindow		Preferencias…
 Quit	MainWindow		Salir
 Refresh	MainWindow		Actualizar
 Unable to create a deskbar replicant. The error is: \"	MainWindow		No se pudo crear un replicante de barra de escritorio. El error es: \"
-View	MainWindow		Ver
 Cancel	CitiesListSelectionWindow		Cancelar
 Choose location	CitiesListSelectionWindow		Elegir ubicación
+City:	CitiesListSelectionWindow		City:
+Enter location: city, country, region	CitiesListSelectionWindow		Enter location: city, country, region
 OK	CitiesListSelectionWindow		Aceptar
-Change location	SelectionWindow		Cambiar ubicación
-City:	SelectionWindow		Ciudad:
-OK	SelectionWindow		Aceptar
-Select city: city, country, region	SelectionWindow		Seleccionar ciudad: ciudad, país, región
 OK	PreferencesWindow		Aceptar
 Preferences	PreferencesWindow		Preferencias
 Use Celsius °C	PreferencesWindow		Usar grados Celsius °C

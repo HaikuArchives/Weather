@@ -1,0 +1,60 @@
+1	Ukrainian	x-vnd.przemub.Weather	704655087
+About Weather	ForecastView		Про Погоду
+Background	ForecastView		Тло
+Clear sky	ForecastView		Ясно
+Connecting…	ForecastView		Підключення…
+Connection error	ForecastView		Помилка підключення
+Default	ForecastView		Умовчання
+Dense drizzle	ForecastView		Густий дощ
+Depositing rime fog	ForecastView		Туман з інеєм
+Fog	ForecastView		Туман
+Freezing dense drizzle	ForecastView		Сильна мряка з памороззю
+Freezing light drizzle	ForecastView		Слабка мряка з памороззю
+Heavy freezing rain	ForecastView		Сильний крижаний дощ
+Heavy rain	ForecastView		Сильний дощ
+Heavy rain showers	ForecastView		Сильні зливи
+Heavy snow fall	ForecastView		Сильний снігопад
+Heavy snow showers	ForecastView		Сильний дощ зі снігом
+Light drizzle	ForecastView		Слабка мряка
+Light freezing rain	ForecastView		Дрібний дощ з памороззю
+Loading…	ForecastView		Завантаження…
+Mainly clear	ForecastView		Переважно ясно
+Moderate drizzle	ForecastView		Помірна мряка
+Moderate rain	ForecastView		Помірний дощ
+Moderate rain showers	ForecastView		Помірні зливи
+Moderate snow fall	ForecastView		Помірний снігопад
+No network	ForecastView		Немає мережі
+Not available	ForecastView		Недоступно
+OK	ForecastView		OK
+Overcast	ForecastView		Хмарно
+Partly cloudy	ForecastView		Хмарно з проясненнями
+Slight rain	ForecastView		Слабкий дощ
+Slight rain showers	ForecastView		Слабка злива
+Slight snow fall	ForecastView		Слабкий снігопад
+Slight snow showers	ForecastView		Слабкий дощ зі снігом
+Snow grains	ForecastView		Снігова крупа
+Text	ForecastView		Текст
+Thunderstorm	ForecastView		Гроза
+Thunderstorm with heavy hail	ForecastView		Гроза з сильним градом
+Thunderstorm with slight hail	ForecastView		Гроза зі слабким градом
+Transparent	ForecastView		Прозорість
+Weather (The Replicant version)	ForecastView		Погода (реплікант)
+About Weather	MainWindow		Про Погоду
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Додаток з відкритим вихідним кодом, що показує прогноз погоди на наступні 5 днів.
+Change location…	MainWindow		Змінити розташування…
+Loading…	MainWindow		Завантаження…
+OK	MainWindow		OK
+Preferences…	MainWindow		Налаштування…
+Quit	MainWindow		Вийти
+Refresh	MainWindow		Оновити
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Неможливо створити реплікант дескбару. Помилка: \"
+Cancel	CitiesListSelectionWindow		Скасувати
+Choose location	CitiesListSelectionWindow		Виберіть розташування
+City:	CitiesListSelectionWindow		Місто:
+Enter location: city, country, region	CitiesListSelectionWindow		Введіть розташування: місто, країна, регіон
+OK	CitiesListSelectionWindow		OK
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Налаштування
+Use Celsius °C	PreferencesWindow		Градуси Цельсія °C
+Use Fahrenheit °F	PreferencesWindow		Градуси Фаренгейта °F
+Weather	System name		Погода

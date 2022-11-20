@@ -1,4 +1,4 @@
-1	Friulian	x-vnd.przemub.Weather	1423632369
+1	Friulian	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Informazions su Meteo
 Background	ForecastView		Fonts
 Clear sky	ForecastView		Cîl clâr
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Meteo (La version Replicant)
 About Weather	MainWindow		Informazions su Meteo
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Une aplicazion meteo a codiç viert che e mostre une prevision pai prossims 5 dîs.
 Change location…	MainWindow		Cambie lûc…
-Deskbar Replicant	MainWindow		Replicant dal Deskbar
-Edit	MainWindow		Modifiche
 Loading…	MainWindow		Daûr a cjariâ…
 OK	MainWindow		Va ben
 Preferences…	MainWindow		Preferencis…
 Quit	MainWindow		Jes
 Refresh	MainWindow		Inzorne
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Impussibil creâ un replicant di deskbar. L'erôr al è: \"
-View	MainWindow		Viodude
 Cancel	CitiesListSelectionWindow		Anule
 Choose location	CitiesListSelectionWindow		Sielç il lûc
+City:	CitiesListSelectionWindow		Citât:
+Enter location: city, country, region	CitiesListSelectionWindow		Inserìs ubicazion: citât, paîs, regjon
 OK	CitiesListSelectionWindow		Va ben
-Change location	SelectionWindow		Cambie lûc
-City:	SelectionWindow		Citât:
-OK	SelectionWindow		Va ben
-Select city: city, country, region	SelectionWindow		Selezione citât: citât, paîs, regjon
 OK	PreferencesWindow		Va ben
 Preferences	PreferencesWindow		Preferencis
 Use Celsius °C	PreferencesWindow		Dopre grâts Celsius °C

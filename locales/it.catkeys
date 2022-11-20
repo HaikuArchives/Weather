@@ -1,4 +1,4 @@
-1	Italian	x-vnd.przemub.Weather	1423632369
+1	Italian	x-vnd.przemub.Weather	704655087
 About Weather	ForecastView		Informazioni su Meteo
 Background	ForecastView		Sfondo
 Clear sky	ForecastView		Cielo sereno
@@ -42,22 +42,17 @@ Weather (The Replicant version)	ForecastView		Meteo (versione replicante)
 About Weather	MainWindow		Informazioni su Meteo
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Un'applicazione meteo open source che mostra le previsioni per i prossimi 5 giorni.
 Change location…	MainWindow		Cambia località…
-Deskbar Replicant	MainWindow		Replicante Deskbar
-Edit	MainWindow		Modifica
 Loading…	MainWindow		Caricamento…
 OK	MainWindow		OK
 Preferences…	MainWindow		Preferenze…
 Quit	MainWindow		Esci
 Refresh	MainWindow		Aggiorna
 Unable to create a deskbar replicant. The error is: \"	MainWindow		Impossibile creare un replicante sulla Deskbar. Errore: L'errore è \"
-View	MainWindow		Visualizza
 Cancel	CitiesListSelectionWindow		Annulla
 Choose location	CitiesListSelectionWindow		Scegli una località
+City:	CitiesListSelectionWindow		Città:
+Enter location: city, country, region	CitiesListSelectionWindow		Inserisci la posizione: città, paese, regione
 OK	CitiesListSelectionWindow		OK
-Change location	SelectionWindow		Cambia  località
-City:	SelectionWindow		Città:
-OK	SelectionWindow		OK
-Select city: city, country, region	SelectionWindow		Seleziona città: città, paese, regione
 OK	PreferencesWindow		OK
 Preferences	PreferencesWindow		Preferenze
 Use Celsius °C	PreferencesWindow		Utilizza i gradi Celsius °C
