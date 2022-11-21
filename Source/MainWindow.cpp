@@ -265,14 +265,15 @@ MainWindow::AboutRequested()
 		"application/x-vnd.przemub.Weather");
 
 	const char* kAuthors[] = {
-		"Davide Alfano (Nexus6)",
 		"Adrián Arroyo Calle",
 		"Akshay Agarwal",
 		"Bach Nguyen",
 		"Benjamin Amos",
+		"Davide Alfano (Nexus6)",
 		"George White",
 		"Humdinger",
 		"Janus",
+		"Javier Steinaker",
 		"Kevin Adams",
 		"Naseef",
 		"Przemyslaw Buczkowski",
