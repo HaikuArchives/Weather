@@ -7,9 +7,6 @@
 
 #include <Bitmap.h>
 #include <Entry.h>
-#include <Looper.h>
-#include <MessageRunner.h>
-#include <SupportDefs.h>
 #include <View.h>
 
 #include "ForecastView.h"
@@ -17,16 +14,17 @@
 
 class ForecastDeskbarView : public BView
 {
-	
+
 public:
 					ForecastDeskbarView(BRect viewSize, ForecastView* forecastView);
+					ForecastDeskbarView(BMessage* archive);
 					~ForecastDeskbarView();
 
 	virtual void	AttachedToWindow();
 	virtual void	MouseDown(BPoint point);
 	virtual void	MouseMoved(
-						BPoint point, 
-						uint32 message, 
+						BPoint point,
+						uint32 message,
 						const BMessage* dragMessage);
 	virtual void	Draw(BRect drawRect);
 	virtual void	MessageReceived(BMessage* message);

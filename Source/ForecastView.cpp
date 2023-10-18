@@ -5,7 +5,7 @@
  * Copyright 2014 George White
  * All rights reserved. Distributed under the terms of the MIT license.
  */
- 
+
 #include <Alert.h>
 #include <AppKit.h>
 #include <Bitmap.h>
@@ -56,7 +56,7 @@ extern const char* kSignature;
 class TransparentButton : public BButton
 {
 	public:
-								TransparentButton(const char* name, const char* label, 
+								TransparentButton(const char* name, const char* label,
 									BMessage* message);
 		virtual void 			Draw(BRect updateRect);
 };

@@ -1,4 +1,4 @@
-1	English	x-vnd.przemub.Weather	704655087
+1	English	x-vnd.przemub.Weather	2992569182
 No network	ForecastView		No network
 OK	ForecastView		OK
 Slight rain	ForecastView		Slight rain
@@ -6,14 +6,15 @@ Slight snow showers	ForecastView		Slight snow showers
 Loading…	ForecastView		Loading…
 OK	MainWindow		OK
 Quit	MainWindow		Quit
-Dense drizzle	ForecastView		Dense drizzle
 Heavy snow showers	ForecastView		Heavy snow showers
+Dense drizzle	ForecastView		Dense drizzle
 City:	CitiesListSelectionWindow		City:
 Background	ForecastView		Background
 Preferences…	MainWindow		Preferences…
 Freezing dense drizzle	ForecastView		Freezing dense drizzle
 Use Celsius °C	PreferencesWindow		Use Celsius °C
 Heavy snow fall	ForecastView		Heavy snow fall
+Deskbar replicant	MainWindow		Deskbar replicant
 Weather (The Replicant version)	ForecastView		Weather (The Replicant version)
 Weather	System name		Weather
 Loading…	MainWindow		Loading…
@@ -33,6 +34,7 @@ Clear sky	ForecastView		Clear sky
 Moderate rain showers	ForecastView		Moderate rain showers
 Enter location: city, country, region	CitiesListSelectionWindow		Enter location: city, country, region
 Snow grains	ForecastView		Snow grains
+Temperature: %s\nCondition: %s\nLocation: %s	ForecastDeskbarView		Temperature: %s\nCondition: %s\nLocation: %s
 Slight rain showers	ForecastView		Slight rain showers
 Heavy rain	ForecastView		Heavy rain
 Light drizzle	ForecastView		Light drizzle
