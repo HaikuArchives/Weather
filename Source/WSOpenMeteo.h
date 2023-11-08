@@ -23,7 +23,7 @@ using namespace BPrivate::Network;
 class WSOpenMeteo : public BUrlProtocolListener
 {
 public:
-						WSOpenMeteo(BHandler* fHandler, BMallocIO* responseData, 
+						WSOpenMeteo(const BMessenger& messenger, BMallocIO* responseData, 
 							RequestType requestType);
 	virtual				~WSOpenMeteo();
 
@@ -37,7 +37,7 @@ public:
 private:
 	void				_ProcessWeatherData(bool success);
 	void				_ProcessCityData(bool success);
-	BHandler*			fHandler;
+	BMessenger			fMessenger;
 	RequestType 		fRequestType;
 	BMallocIO*			fResponseData;
 	void				SerializeBMessage(BMessage* message, BString fileName);

@@ -9,22 +9,20 @@
 #include <Alert.h>
 #include <Json.h>
 #include <Messenger.h>
-#include <memory>
 #include <StorageKit.h>
 
 #include <parsedate.h>
 #include <stdio.h>
-#include <string>
 
 #include "MainWindow.h"
 #include "PreferencesWindow.h"
 #include "WSOpenMeteo.h"
 
 
-WSOpenMeteo::WSOpenMeteo(BHandler* handler, BMallocIO* responseData, RequestType requestType)
+WSOpenMeteo::WSOpenMeteo(const BMessenger& messenger, BMallocIO* responseData, RequestType requestType)
 	:
 	BUrlProtocolListener(),
-	fHandler(handler),
+	fMessenger(messenger),
 	fRequestType(requestType),
 	fResponseData(responseData)
 {
@@ -62,15 +60,9 @@ WSOpenMeteo::RequestCompleted(BUrlRequest* caller, bool success)
 BString
 WSOpenMeteo::GetUrl(double longitude, double latitude, DisplayUnit unit)
 {
-
-	char lati[12];
-	char longi[12];
-	snprintf(lati, sizeof(lati), "%f", latitude);
-	snprintf(longi, sizeof(longi), "%f", longitude);
-
 	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=");
 	urlString
-		<< lati << "&longitude=" << longi
+		<< latitude << "&longitude=" << longitude
 		<< "&daily=weathercode,temperature_2m_max,temperature_2m_min&current_"
 		   "weather=true&timeformat=unixtime&timezone=auto";
 
@@ -93,7 +85,7 @@ WSOpenMeteo::GetUrl(double longitude, double latitude, DisplayUnit unit)
 void
 WSOpenMeteo::_ProcessWeatherData(bool success)
 {
-	BMessenger messenger(fHandler);
+	BMessenger messenger(fMessenger);
 	BString jsonString;
 
 	if (!success) {
@@ -131,7 +123,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 
 	BMessage* message = new BMessage(kUpdateCityName);
 	messenger.SendMessage(message);
-	
+
 	// Get UTC timezone offset, use 0 as default
 	double utc_offset;
 	if (parsedData.FindDouble("utc_offset_seconds", &utc_offset) != B_OK)
@@ -278,7 +270,6 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 		messenger.SendMessage(message);
 	}
 
-
 	// Get current weather
 	BMessage currentWeatherData;
 	if (parsedData.FindMessage("current_weather", &currentWeatherData)
@@ -320,7 +311,7 @@ WSOpenMeteo::SerializeBMessage(BMessage* message, BString fileName)
 void
 WSOpenMeteo::_ProcessCityData(bool success)
 {
-	BMessenger messenger(fHandler);
+	BMessenger messenger(fMessenger);
 	BString jsonString;
 
 	if (!success) {

@@ -19,7 +19,8 @@ class ForecastDeskbarView : public BView
 {
 	
 public:
-					ForecastDeskbarView(BRect viewSize, ForecastView* forecastView);
+					ForecastDeskbarView(BRect viewSize);
+					ForecastDeskbarView(BMessage* archive);
 					~ForecastDeskbarView();
 
 	virtual void	AttachedToWindow();
@@ -30,11 +31,11 @@ public:
 						const BMessage* dragMessage);
 	virtual void	Draw(BRect drawRect);
 	virtual void	MessageReceived(BMessage* message);
+	status_t 		Archive(BMessage* into, bool deep = true) const;
 	static 			BArchivable* Instantiate(BMessage* archive);
 	void 			SetAppLocation(entry_ref location);
 
 private:
-
 	ForecastView*	fForecastView;
 	BMessageRunner*	fMessageRunner;
 	entry_ref		fAppRef;

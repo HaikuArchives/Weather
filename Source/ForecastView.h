@@ -124,13 +124,10 @@ enum weatherConditions {
 //	WC_NOT_AVALIABLE,
 //};
 
-class _EXPORT ForecastView;
-
-
 class ForecastView : public BView
 {
 public:
-					ForecastView(BRect frame, BMessage* settings);
+					ForecastView(BRect frame);
 					ForecastView(BMessage* archive);
 	virtual			~ForecastView();
 
@@ -162,7 +159,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	void			SetBackgroundColor(rgb_color color);
 	bool			IsDefaultColor() const;
 	bool			IsConnected() const;
-	BBitmap*		GetWeatherIcon(weatherIconSize size);
+	BBitmap*		GetWeatherIcon();
 	BBitmap* 		GetWeatherIcon(int32 condition, weatherIconSize size);
 	int32			GetCondition();
 	BString			GetStatus();

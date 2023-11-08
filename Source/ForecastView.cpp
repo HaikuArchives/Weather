@@ -30,10 +30,14 @@
 #include <UrlProtocolRoster.h>
 #include <UrlRequest.h>
 
+#include "App.h"
 #include "ForecastView.h"
 #include "MainWindow.h"
 #include "PreferencesWindow.h"
+#include "Util.h"
 #include "WSOpenMeteo.h"
+
+
 
 const float kDraggerSize = 7;
 const char* kSettingsFileName = "Weather settings";
@@ -48,7 +52,6 @@ const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
 const int32 kReconnectionDelay = 5;
 
-extern const char* kSignature;
 
 #undef B_TRANSLATION_CONTEXT
 #define B_TRANSLATION_CONTEXT "ForecastView"
@@ -95,18 +98,48 @@ TransparentButton::Draw(BRect updateRect)
 }
 
 
-ForecastView::ForecastView(BRect frame, BMessage* settings)
+ForecastView::ForecastView(BRect frame)
 	:
 	BView(frame, B_TRANSLATE_SYSTEM_NAME("Weather"), B_FOLLOW_NONE,
 		B_WILL_DRAW | B_FRAME_EVENTS | B_DRAW_ON_CHILDREN),
 	fDownloadThread(-1),
 	fReplicated(false),
 	fUpdateDelay(kMaxUpdateDelay),
+	fShowForecast(true),
+	fLatitude(0),
+	fLongitude(0),
+	fTemperature(0),
+	fCondition(0),
 	fAutoUpdate(NULL),
 	fDelayUpdateAfterReconnection(NULL),
 	fConnected(false)
 {
-	_ApplyState(settings);
+	BMessage settings;
+	LoadSettings(settings);
+	_ApplyState(&settings);
+	_Init();
+}
+
+
+
+ForecastView::ForecastView(BMessage* archive)
+	:
+	BView(archive),
+	fDownloadThread(-1),
+	fForcedForecast(false),
+	fReplicated(true),
+	fUpdateDelay(kMaxUpdateDelay),
+	fShowForecast(false),
+	fLatitude(0),
+	fLongitude(0),
+	fTemperature(0),
+	fCondition(0),
+	fAutoUpdate(NULL),
+	fDelayUpdateAfterReconnection(NULL),
+	fConnected(false)
+{
+	_ApplyState(archive);
+	// Use _Init to rebuild the View with deep = false in Archive
 	_Init();
 }
 
@@ -123,7 +156,6 @@ void
 ForecastView::_Init()
 {
 	_LoadBitmaps();
-	fCondition = 34;
 	// Icon for weather
 	fConditionButton
 		= new TransparentButton("condition", "", new BMessage(kUpdateMessage));
@@ -198,23 +230,6 @@ ForecastView::Instantiate(BMessage* archive)
 }
 
 
-ForecastView::ForecastView(BMessage* archive)
-	:
-	BView(archive),
-	fDownloadThread(-1),
-	fForcedForecast(false),
-	fReplicated(true),
-	fUpdateDelay(kMaxUpdateDelay),
-	fAutoUpdate(NULL),
-	fDelayUpdateAfterReconnection(NULL),
-	fConnected(false)
-{
-	_ApplyState(archive);
-	// Use _Init to rebuild the View with deep = false in Archive
-	_Init();
-}
-
-
 status_t
 ForecastView::_ApplyState(BMessage* archive)
 {
@@ -272,18 +287,16 @@ ForecastView::_ApplyState(BMessage* archive)
 status_t
 ForecastView::Archive(BMessage* into, bool deep) const
 {
-	status_t status;
-
-	status = BView::Archive(into, false); // NO DEEP REBUILD THE VIEW
-	if (status < B_OK)
+	status_t status = BView::Archive(into, false); // NO DEEP REBUILD THE VIEW
+	if (status != B_OK)
 		return status;
 
 	status = into->AddString("add_on", kSignature);
-	if (status < B_OK)
+	if (status != B_OK)
 		return status;
 
 	status = SaveState(into, deep);
-	if (status < B_OK)
+	if (status != B_OK)
 		return status;
 
 	return B_OK;
@@ -293,9 +306,7 @@ ForecastView::Archive(BMessage* into, bool deep) const
 status_t
 ForecastView::SaveState(BMessage* into, bool deep) const
 {
-	status_t status;
-
-	status = into->AddString("city", fCity);
+	status_t status = into->AddString("city", fCity);
 	if (status != B_OK)
 		return status;
 	status = into->AddInt32("cityId", fCityId);
@@ -332,10 +343,11 @@ ForecastView::SaveState(BMessage* into, bool deep) const
 void
 ForecastView::AttachedToWindow()
 {
-	if (fReplicated)
+	if (fReplicated) {
 		fConditionButton->SetTarget(BMessenger(this));
-
-	BMessenger view(this);
+	}
+	
+	BMessenger view(this, Window());
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
 	fAutoUpdate = new BMessageRunner(
 		view, &autoUpdateMessage, (bigtime_t) fUpdateDelay * 60 * 1000 * 1000);
@@ -347,6 +359,7 @@ ForecastView::AttachedToWindow()
 			this);
 	} else
 		view.SendMessage(new BMessage(kUpdateMessage));
+
 	BView::AttachedToWindow();
 }
 
@@ -432,15 +445,39 @@ ForecastView::MessageReceived(BMessage* msg)
 		case kDataMessage:
 		{
 			// BString text("");
-
 			msg->FindInt32("temp", &fTemperature);
-			msg->FindInt32("condition", &fCondition);
+			int32 condition = 0;
+			if (msg->FindInt32("condition", &condition) == B_OK)
+				fCondition = condition;
 			// msg->FindString("text", &text);
 
 			BString tempText = FormatString(fDisplayUnit, fTemperature);
 			fTemperatureView->SetText(tempText.String());
 			SetCondition(_GetWeatherMessage(fCondition));
 			fConditionButton->SetIcon(GetWeatherIcon(fCondition, LARGE_ICON));
+			break;
+		}
+		case kUpdateCityMessage:
+		{
+			BString cityName;
+			int32 cityId;
+			double latitude, longitude;
+
+			msg->FindString("city", &cityName);
+			msg->FindInt32("id", &cityId);
+			msg->FindDouble("latitude", &latitude);
+			msg->FindDouble("longitude", &longitude);
+			if ((CityId() != cityId)) {
+				SetCityName(cityName);
+				SetCityId(cityId);
+				SetLatitude(latitude);
+				SetLongitude(longitude);
+				SetCondition(
+					B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+				// forcedForecast use forecast request to retrieve full city
+				// name In the condition respond the isn't the full city name
+				Reload(true);
+			}
 			break;
 		}
 		case kForecastDataMessage:
@@ -485,8 +522,11 @@ ForecastView::MessageReceived(BMessage* msg)
 			break;
 		}
 		case kUpdateMessage:
-			if (fConnected)
-				SetCondition(B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+			if (!IsConnected())
+				break;
+			SetCondition(
+				B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
+			// fall through
 		case kAutoUpdateMessage:
 			Reload();
 			break;
@@ -629,23 +669,24 @@ ForecastView::_DeleteIcons(BBitmap* bitmap[3])
 void
 ForecastView::_LoadIcons(BBitmap* bitmap[3], uint32 type, const char* name)
 {
-	size_t dataSize;
-
 	bitmap[0] = NULL;
 	bitmap[1] = NULL;
 	bitmap[2] = NULL;
 
 	const void* data = NULL;
 
-	BResources resources;
-	status_t status = resources.SetToImage(&&dummy_label);
-dummy_label:
-
+	app_info info;
+	status_t status = be_roster->GetAppInfo(kSignature, &info);
+	if (status != B_OK)
+		return;
+		
+	BResources resources(&info.ref);
+	status = resources.InitCheck();
+	size_t dataSize;
 	if (status == B_OK)
 		data = resources.LoadResource(type, name, &dataSize);
 
 	if (data != NULL) {
-
 		BBitmap* smallBitmap = new BBitmap(
 			BRect(0, 0, kSizeSmallIcon - 1, kSizeSmallIcon - 1), 0, B_RGBA32);
 		BBitmap* largeBitmap = new BBitmap(
@@ -773,9 +814,9 @@ ForecastView::_GetWeatherMessage(int32 condition)
 
 
 BBitmap*
-ForecastView::GetWeatherIcon(weatherIconSize iconSize)
+ForecastView::GetWeatherIcon()
 {
-	return GetWeatherIcon(fCondition, iconSize);
+	return GetWeatherIcon(fCondition, DESKBAR_ICON);
 }
 
 
@@ -1076,7 +1117,7 @@ ForecastView::Reload(bool forcedForecast)
 {
 	if (!fConnected)
 		return;
-
+	
 	StopReload();
 
 	fForcedForecast = forcedForecast;
@@ -1111,11 +1152,11 @@ void
 ForecastView::_DownloadData()
 {
 	BMallocIO replyData;
-	WSOpenMeteo listener(this, &replyData, WEATHER_REQUEST);
+	BMessenger messenger(this, Window());
+	WSOpenMeteo listener(messenger, &replyData, WEATHER_REQUEST);
 	BString urlString = listener.GetUrl(fLongitude, fLatitude, fDisplayUnit);
-
+	
 	BUrl link(urlString.String());
-
 	BUrlRequest* request
 		= BUrlProtocolRoster::MakeRequest(link, &replyData, &listener);
 
