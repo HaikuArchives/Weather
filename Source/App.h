@@ -6,6 +6,8 @@
 #include <Application.h>
 #include <Window.h>
 
+extern const char* kSignature;
+
 class App : public BApplication
 {
 private:

@@ -46,8 +46,8 @@ MainWindow::_PrepareMenuBar(void)
 		B_TRANSLATE("Refresh"), new BMessage(kUpdateMessage), 'R'));
 	menu->AddSeparatorItem();
 	//	Remove menu item until Deskbar replicant is fixed
-	//	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar
-	//Replicant"), 		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
+	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar Replicant"),
+ 		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Change location" B_UTF8_ELLIPSIS),
 		new BMessage(kCitySelectionMessage), 'L'));
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Preferences" B_UTF8_ELLIPSIS),
@@ -80,14 +80,12 @@ MainWindow::MainWindow()
 
 	BMessage settings;
 	LoadSettings(settings);
-
 	if (settings.FindRect("fMainWindowRect", &fMainWindowRect) != B_OK)
 		fMainWindowRect = kDefaultMainWindowRect;
 
 	MoveTo(fMainWindowRect.LeftTop());
 
-
-	fForecastView = new ForecastView(BRect(0, 0, 100, 100), &settings);
+	fForecastView = new ForecastView(BRect(0, 0, 100, 100));
 	AddChild(fForecastView);
 	// Enable when works
 	// fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
@@ -99,30 +97,9 @@ MainWindow::MessageReceived(BMessage* msg)
 {
 	switch (msg->what) {
 		case kUpdateCityMessage:
-		{
-
-			BString cityName;
-			int32 cityId;
-			double latitude, longitude;
-
-			msg->FindString("city", &cityName);
-			msg->FindInt32("id", &cityId);
-			msg->FindDouble("latitude", &latitude);
-			msg->FindDouble("longitude", &longitude);
-
-			if (fForecastView->CityId() != cityId) {
-				fForecastView->SetCityName(cityName);
-				fForecastView->SetCityId(cityId);
-				fForecastView->SetLatitude(latitude);
-				fForecastView->SetLongitude(longitude);
-				fForecastView->SetCondition(
-					B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
-				// forcedForecast use forecast request to retrieve full city
-				// name In the condition respond the isn't the full city name
-				fForecastView->Reload(true);
-			}
+			// forward the message there
+			fForecastView->MessageReceived(msg);
 			break;
-		}
 		case kUpdatePrefMessage:
 		{
 			int32 unit;
@@ -133,11 +110,7 @@ MainWindow::MessageReceived(BMessage* msg)
 		}
 		case kUpdateMessage:
 		{
-			if (fForecastView->IsConnected()) {
-				fForecastView->SetCondition(
-					B_TRANSLATE("Loading" B_UTF8_ELLIPSIS));
-				fForecastView->Reload();
-			}
+			fForecastView->MessageReceived(msg);
 			break;
 		}
 		case kShowForecastMessage:
@@ -187,7 +160,6 @@ MainWindow::MessageReceived(BMessage* msg)
 		case kToggleDeskbarReplicantMessage:
 		{
 			BDeskbar deskbar;
-
 			if (!deskbar.HasItem("ForecastDeskbarView")) {
 				app_info info;
 				be_roster->GetAppInfo(
@@ -253,8 +225,8 @@ void
 MainWindow::MenusBeginning()
 {
 	//	Menu item removed until Deskbar replicant is fixed
-	//	BDeskbar deskbar;
-	//	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
+	BDeskbar deskbar;
+	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
 }
 
 
