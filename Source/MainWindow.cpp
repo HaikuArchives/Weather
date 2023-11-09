@@ -46,8 +46,8 @@ MainWindow::_PrepareMenuBar(void)
 		B_TRANSLATE("Refresh"), new BMessage(kUpdateMessage), 'R'));
 	menu->AddSeparatorItem();
 	//	Remove menu item until Deskbar replicant is fixed
-	//	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar
-	//Replicant"), 		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
+	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar replicant"),
+		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Change location" B_UTF8_ELLIPSIS),
 		new BMessage(kCitySelectionMessage), 'L'));
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Preferences" B_UTF8_ELLIPSIS),
@@ -90,7 +90,7 @@ MainWindow::MainWindow()
 	fForecastView = new ForecastView(BRect(0, 0, 100, 100), &settings);
 	AddChild(fForecastView);
 	// Enable when works
-	// fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
+	//fShowForecastMenuItem->SetMarked(fForecastView->ShowForecast());
 }
 
 
@@ -253,8 +253,8 @@ void
 MainWindow::MenusBeginning()
 {
 	//	Menu item removed until Deskbar replicant is fixed
-	//	BDeskbar deskbar;
-	//	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
+	BDeskbar deskbar;
+	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
 }
 
 
