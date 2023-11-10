@@ -164,6 +164,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	int32			GetCondition();
 	BString			GetStatus();
 	int32			Temperature();
+	void			SetDeskbarIconSize(int height);
 
 private:
 	void			_Init();
