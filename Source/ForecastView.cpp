@@ -51,6 +51,7 @@ const double kDefaultLatitude = 37.45383;
 const int32 kMaxUpdateDelay = 240;
 const int32 kMaxForecastDay = 5;
 const int32 kReconnectionDelay = 5;
+int32 fSizeDeskBarIcon = 10;
 
 
 #undef B_TRANSLATION_CONTEXT
@@ -692,7 +693,7 @@ ForecastView::_LoadIcons(BBitmap* bitmap[3], uint32 type, const char* name)
 		BBitmap* largeBitmap = new BBitmap(
 			BRect(0, 0, kSizeLargeIcon - 1, kSizeLargeIcon - 1), 0, B_RGBA32);
 		BBitmap* deskbarBitmap = new BBitmap(
-			BRect(0, 0, kSizeDeskBarIcon - 1, kSizeDeskBarIcon - 1), 0,
+			BRect(0, 0, fSizeDeskBarIcon - 1, fSizeDeskBarIcon - 1), 0,
 			B_RGBA32);
 
 		status_t status = smallBitmap->InitCheck();
@@ -1287,4 +1288,10 @@ ForecastView::_NetworkConnected()
 		}
 	}
 	return false;
+}
+
+void
+ForecastView::SetDeskbarIconSize(int height)
+{
+	fSizeDeskBarIcon = height;
 }

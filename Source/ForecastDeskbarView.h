@@ -17,7 +17,7 @@
 
 class ForecastDeskbarView : public BView
 {
-	
+
 public:
 					ForecastDeskbarView(BRect viewSize);
 					ForecastDeskbarView(BMessage* archive);

@@ -46,7 +46,7 @@ MainWindow::_PrepareMenuBar(void)
 		B_TRANSLATE("Refresh"), new BMessage(kUpdateMessage), 'R'));
 	menu->AddSeparatorItem();
 	//	Remove menu item until Deskbar replicant is fixed
-	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar Replicant"),
+	menu->AddItem(fReplicantMenuItem = new BMenuItem(B_TRANSLATE("Deskbar replicant"),
  		new BMessage(kToggleDeskbarReplicantMessage), 'T'));
 	menu->AddItem(new BMenuItem(B_TRANSLATE("Change location" B_UTF8_ELLIPSIS),
 		new BMessage(kCitySelectionMessage), 'L'));
