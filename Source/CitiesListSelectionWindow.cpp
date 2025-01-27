@@ -135,7 +135,8 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 	int32 cityId)
 	:
 	BWindow(rect, B_TRANSLATE("Choose location"), B_TITLED_WINDOW, B_NOT_ZOOMABLE
-		| B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS)
+		| B_ASYNCHRONOUS_CONTROLS | B_CLOSE_ON_ESCAPE | B_AUTO_UPDATE_SIZE_LIMITS),
+	fDownloadThread(-1)
 {
 	fParent = parent;
 	fCitiesListView = new BListView("citiesList");
