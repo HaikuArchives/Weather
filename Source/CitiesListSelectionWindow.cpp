@@ -150,7 +150,6 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 	fCityControl->SetToolTip(B_TRANSLATE("Enter location: city, country, region"));
 	fCityControl->SetModificationMessage(
 		new BMessage(kSearchMessage));
-	fCityControl->MakeFocus(true);
 
 	BButton* fButtonOk
 		= new BButton("ok", B_TRANSLATE("OK"), new BMessage(kSelectedCity));
@@ -169,6 +168,7 @@ CitiesListSelectionWindow::CitiesListSelectionWindow(BRect rect, BWindow* parent
 			.End()
 		.End();
 	fButtonOk->MakeDefault(true);
+	fCityControl->MakeFocus(true);
 
 	_StartSearch();
 }
