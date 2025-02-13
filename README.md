@@ -13,3 +13,5 @@ You can drag & drop colors, e.g. from Icon-O-Matic, onto the Weather window or t
 Weather data by [Open-Meteo.com](https://open-meteo.com/) under [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
 
 Weather started as tasks for Google Code-In 2014/15 and has been improved substantially since then.
+
+If anyone wants to update translations with missing strings or add strings for more languages, please visit [Polyglot](https://i18n.kacperkasper.pl/).
