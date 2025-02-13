@@ -1,0 +1,60 @@
+1	Norwegian	x-vnd.przemub.Weather	704655087
+About Weather	ForecastView		Om Vær
+Background	ForecastView		Bakgrunn
+Clear sky	ForecastView		Klar himmel
+Connecting…	ForecastView		Kobler til...
+Connection error	ForecastView		Tilkoblingsfeil
+Default	ForecastView		Standard
+Dense drizzle	ForecastView		Tett duskregn
+Depositing rime fog	ForecastView		Rimtåke
+Fog	ForecastView		Tåke
+Freezing dense drizzle	ForecastView		Underkjølt tett duskregn
+Freezing light drizzle	ForecastView		Underkjølt lett duskregn
+Heavy freezing rain	ForecastView		Kraftig underkjølt regn
+Heavy rain	ForecastView		Kraftig regn
+Heavy rain showers	ForecastView		Kraftige regnbyger
+Heavy snow fall	ForecastView		Kraftig snøfall
+Heavy snow showers	ForecastView		Kraftige regnbyger
+Light drizzle	ForecastView		Lett duskregn
+Light freezing rain	ForecastView		Lett underkjølt regn
+Loading…	ForecastView		Laster...
+Mainly clear	ForecastView		Hovedsakelig klart
+Moderate drizzle	ForecastView		Moderat duskregn
+Moderate rain	ForecastView		Moderat regn
+Moderate rain showers	ForecastView		Moderate regnbyger
+Moderate snow fall	ForecastView		Moderat snøfall
+No network	ForecastView		Ingen nettverk
+Not available	ForecastView		Ikke tilgjengelig
+OK	ForecastView		OK
+Overcast	ForecastView		Overskyet
+Partly cloudy	ForecastView		Delvis skyet
+Slight rain	ForecastView		Lett regn
+Slight rain showers	ForecastView		Lette regnbyger
+Slight snow fall	ForecastView		Lett snøfall
+Slight snow showers	ForecastView		Lette snøbyger
+Snow grains	ForecastView		Snøkorn
+Text	ForecastView		Tekst
+Thunderstorm	ForecastView		Tordenvær
+Thunderstorm with heavy hail	ForecastView		Tordenvær med kraftig hagl
+Thunderstorm with slight hail	ForecastView		Tordenvær med lett hagl
+Transparent	ForecastView		Gjennomsiktig
+Weather (The Replicant version)	ForecastView		Vær (replikantversjonen)
+About Weather	MainWindow		Om Vær
+An open source weather app showing a forecast for the next 5 days.	MainWindow		En vær-app med åpen kildekode som viser et værvarsel for de neste 5 dagene.
+Change location…	MainWindow		Bytt sted...
+Loading…	MainWindow		Laster...
+OK	MainWindow		OK
+Preferences…	MainWindow		Innstillinger...
+Quit	MainWindow		Avslutt
+Refresh	MainWindow		Oppdater
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Kan ikke lage en skrivebordsreplikant. Feilen er: \"
+Cancel	CitiesListSelectionWindow		Avbryt
+Choose location	CitiesListSelectionWindow		Velg sted
+City:	CitiesListSelectionWindow		By:
+Enter location: city, country, region	CitiesListSelectionWindow		Velg sted: by, land, område
+OK	CitiesListSelectionWindow		OK
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Innstillinger
+Use Celsius °C	PreferencesWindow		Bruk Celsius °C
+Use Fahrenheit °F	PreferencesWindow		Bruk Fahrenheit °F
+Weather	System name		Vær

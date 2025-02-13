@@ -24,7 +24,7 @@ Moderate rain	ForecastView		Orta yağmur
 Moderate rain showers	ForecastView		Orta sağanak yağış
 Moderate snow fall	ForecastView		Orta kar yağışı
 No network	ForecastView		Ağ yok
-Not available	ForecastView		Mevcut değil
+Not available	ForecastView		Kullanılabilir değil
 OK	ForecastView		Tamam
 Overcast	ForecastView		Kapalı
 Partly cloudy	ForecastView		Parçalı bulutlu
@@ -47,7 +47,7 @@ OK	MainWindow		Tamam
 Preferences…	MainWindow		Tercihler…
 Quit	MainWindow		Çık
 Refresh	MainWindow		Yenile
-Unable to create a deskbar replicant. The error is: \"	MainWindow		Masaüstü Çubuğu Yinelenen'i oluşturulamıyor. Hata iletisi: \"
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Masaüstü Çubuğu Yinelenen’i oluşturulamıyor. Hata iletisi: \"
 Cancel	CitiesListSelectionWindow		İptal
 Choose location	CitiesListSelectionWindow		Konum seç
 City:	CitiesListSelectionWindow		Kent:

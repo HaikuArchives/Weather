@@ -1,0 +1,60 @@
+1	Polish	x-vnd.przemub.Weather	704655087
+About Weather	ForecastView		O Pogodzie
+Background	ForecastView		Tło
+Clear sky	ForecastView		Clear sky
+Connecting…	ForecastView		Łączenie…
+Connection error	ForecastView		Błąd połączenia
+Default	ForecastView		Domyślny
+Dense drizzle	ForecastView		Dense drizzle
+Depositing rime fog	ForecastView		Depositing rime fog
+Fog	ForecastView		Mgła
+Freezing dense drizzle	ForecastView		Freezing dense drizzle
+Freezing light drizzle	ForecastView		Freezing light drizzle
+Heavy freezing rain	ForecastView		Heavy freezing rain
+Heavy rain	ForecastView		Heavy rain
+Heavy rain showers	ForecastView		Heavy rain showers
+Heavy snow fall	ForecastView		Heavy snow fall
+Heavy snow showers	ForecastView		Heavy snow showers
+Light drizzle	ForecastView		Light drizzle
+Light freezing rain	ForecastView		Light freezing rain
+Loading…	ForecastView		Ładowanie…
+Mainly clear	ForecastView		Mainly clear
+Moderate drizzle	ForecastView		Moderate drizzle
+Moderate rain	ForecastView		Moderate rain
+Moderate rain showers	ForecastView		Moderate rain showers
+Moderate snow fall	ForecastView		Moderate snow fall
+No network	ForecastView		Brak połączenia
+Not available	ForecastView		Usługa niedostępna
+OK	ForecastView		OK
+Overcast	ForecastView		Overcast
+Partly cloudy	ForecastView		Częściowo zachmurzone niebo
+Slight rain	ForecastView		Slight rain
+Slight rain showers	ForecastView		Slight rain showers
+Slight snow fall	ForecastView		Slight snow fall
+Slight snow showers	ForecastView		Slight snow showers
+Snow grains	ForecastView		Snow grains
+Text	ForecastView		Tekst
+Thunderstorm	ForecastView		Thunderstorm
+Thunderstorm with heavy hail	ForecastView		Thunderstorm with heavy hail
+Thunderstorm with slight hail	ForecastView		Thunderstorm with slight hail
+Transparent	ForecastView		Przezroczysty
+Weather (The Replicant version)	ForecastView		Pogoda (replikant)
+About Weather	MainWindow		About Weather
+An open source weather app showing a forecast for the next 5 days.	MainWindow		An open source weather app showing a forecast for the next 5 days.
+Change location…	MainWindow		Zmień lokalizację…
+Loading…	MainWindow		Ładowanie…
+OK	MainWindow		OK
+Preferences…	MainWindow		Ustawienia…
+Quit	MainWindow		Wyjdź
+Refresh	MainWindow		Odśwież
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Unable to create a deskbar replicant. The error is: \"
+Cancel	CitiesListSelectionWindow		Cancel
+Choose location	CitiesListSelectionWindow		Choose location
+City:	CitiesListSelectionWindow		City:
+Enter location: city, country, region	CitiesListSelectionWindow		Enter location: city, country, region
+OK	CitiesListSelectionWindow		OK
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Ustawienia
+Use Celsius °C	PreferencesWindow		Use Celsius °C
+Use Fahrenheit °F	PreferencesWindow		Use Fahrenheit °F
+Weather	System name		Pogoda

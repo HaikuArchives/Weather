@@ -40,7 +40,7 @@ Thunderstorm with slight hail	ForecastView		Гроза с слабым град�
 Transparent	ForecastView		Прозрачный
 Weather (The Replicant version)	ForecastView		Погода (репликант)
 About Weather	MainWindow		О программе Weather
-An open source weather app showing a forecast for the next 5 days.	MainWindow		Приложение Погода показывает прогноз на следующее пять дней
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Открытое погодное приложение с прогнозом на следующие 5 дней.
 Change location…	MainWindow		Изменить местоположение…
 Loading…	MainWindow		Загрузка…
 OK	MainWindow		OK

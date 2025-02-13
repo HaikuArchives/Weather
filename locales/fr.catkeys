@@ -25,7 +25,7 @@ Moderate rain showers	ForecastView		Averses de pluie modérée
 Moderate snow fall	ForecastView		Chute de neige modérée
 No network	ForecastView		Pas de réseau
 Not available	ForecastView		Non disponible
-OK	ForecastView		D'accord
+OK	ForecastView		D’accord
 Overcast	ForecastView		Couvert
 Partly cloudy	ForecastView		Partiellement couvert
 Slight rain	ForecastView		Pluie fine
@@ -43,17 +43,17 @@ About Weather	MainWindow		A propos de Weather
 An open source weather app showing a forecast for the next 5 days.	MainWindow		Une application météo affichant les prévisions pour les 5 jours à venir.
 Change location…	MainWindow		Changer de localisation…
 Loading…	MainWindow		Chargement en cours…
-OK	MainWindow		D'accord
+OK	MainWindow		D’accord
 Preferences…	MainWindow		Préférences…
 Quit	MainWindow		Quitter
 Refresh	MainWindow		Actualiser
-Unable to create a deskbar replicant. The error is: \"	MainWindow		Impossible de créer un réplicant dans la Deskbar. L'erreur est : \"
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Impossible de créer un réplicant dans la Deskbar. L’erreur est : \"
 Cancel	CitiesListSelectionWindow		Annuler
 Choose location	CitiesListSelectionWindow		Choisir un lieu
-City:	CitiesListSelectionWindow		Ville:
+City:	CitiesListSelectionWindow		Ville :
 Enter location: city, country, region	CitiesListSelectionWindow		Saisir la position: ville, pays, région
-OK	CitiesListSelectionWindow		D'accord
-OK	PreferencesWindow		D'accord
+OK	CitiesListSelectionWindow		D’accord
+OK	PreferencesWindow		D’accord
 Preferences	PreferencesWindow		Préférences
 Use Celsius °C	PreferencesWindow		Utiliser des degrés Celsius °C
 Use Fahrenheit °F	PreferencesWindow		Utiliser des degrés Fahrenheit °F

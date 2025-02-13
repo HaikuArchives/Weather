@@ -1,0 +1,60 @@
+1	Japanese	x-vnd.przemub.Weather	704655087
+About Weather	ForecastView		Weatherについて
+Background	ForecastView		背景
+Clear sky	ForecastView		晴
+Connecting…	ForecastView		接続中…
+Connection error	ForecastView		接続エラー
+Default	ForecastView		デフォルト
+Dense drizzle	ForecastView		強めの小雨
+Depositing rime fog	ForecastView		霧氷
+Fog	ForecastView		霧
+Freezing dense drizzle	ForecastView		とても冷たい強めの小雨
+Freezing light drizzle	ForecastView		とても冷たい小雨
+Heavy freezing rain	ForecastView		とても冷たい強い雨
+Heavy rain	ForecastView		強い雨
+Heavy rain showers	ForecastView		断続的な強い雨
+Heavy snow fall	ForecastView		大雪
+Heavy snow showers	ForecastView		断続的な大雪
+Light drizzle	ForecastView		軽い小雨
+Light freezing rain	ForecastView		とても冷たい小雨
+Loading…	ForecastView		読み込み中…
+Mainly clear	ForecastView		おおむね晴れ
+Moderate drizzle	ForecastView		小雨
+Moderate rain	ForecastView		雨
+Moderate rain showers	ForecastView		にわか雨
+Moderate snow fall	ForecastView		にわか雪
+No network	ForecastView		ネットワーク接続はありません
+Not available	ForecastView		不明
+OK	ForecastView		OK
+Overcast	ForecastView		曇天
+Partly cloudy	ForecastView		晴れ時々くもり
+Slight rain	ForecastView		雨ぱらつく
+Slight rain showers	ForecastView		軽いにわか雨
+Slight snow fall	ForecastView		小雪
+Slight snow showers	ForecastView		にわか雪
+Snow grains	ForecastView		雪の結晶
+Text	ForecastView		Text
+Thunderstorm	ForecastView		雷雨
+Thunderstorm with heavy hail	ForecastView		強い雹を伴う雷雨
+Thunderstorm with slight hail	ForecastView		弱い雹を伴う雷雨
+Transparent	ForecastView		透明
+Weather (The Replicant version)	ForecastView		Weather (レプリカント版)
+About Weather	MainWindow		Weatherについて
+An open source weather app showing a forecast for the next 5 days.	MainWindow		オープンソースの天気予報アプリ。向こう５日間の予報が表示されます。
+Change location…	MainWindow		現在地設定…
+Loading…	MainWindow		起動中…
+OK	MainWindow		OK
+Preferences…	MainWindow		環境設定…
+Quit	MainWindow		終了
+Refresh	MainWindow		更新
+Unable to create a deskbar replicant. The error is: \"	MainWindow		デスクバーにレプリカントを追加できません。エラーは: \"
+Cancel	CitiesListSelectionWindow		キャンセル
+Choose location	CitiesListSelectionWindow		現在地選択
+City:	CitiesListSelectionWindow		都市名
+Enter location: city, country, region	CitiesListSelectionWindow		現在地の都市名、国名、地域名を入力
+OK	CitiesListSelectionWindow		OK
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		環境設定
+Use Celsius °C	PreferencesWindow		摂氏°C表示
+Use Fahrenheit °F	PreferencesWindow		華氏°F表示
+Weather	System name		Weather

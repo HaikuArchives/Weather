@@ -1,0 +1,60 @@
+1	Spanish (Latin American)	x-vnd.przemub.Weather	704655087
+About Weather	ForecastView		Acerca de Clima
+Background	ForecastView		Fondo
+Clear sky	ForecastView		Cielo despejado
+Connecting…	ForecastView		Conectando...
+Connection error	ForecastView		Error de conexión
+Default	ForecastView		Por defecto
+Dense drizzle	ForecastView		Llovizna densa
+Depositing rime fog	ForecastView		Depósitos de niebla helada
+Fog	ForecastView		Niebla
+Freezing dense drizzle	ForecastView		Llovizna helada y densa
+Freezing light drizzle	ForecastView		Llovizna helada y ligera
+Heavy freezing rain	ForecastView		Lluvia helada fuerte
+Heavy rain	ForecastView		Lluvia fuerte
+Heavy rain showers	ForecastView		Cortinas de lluvia fuerte
+Heavy snow fall	ForecastView		Nevazón fuerte
+Heavy snow showers	ForecastView		Cortinas de nevazón fuerte
+Light drizzle	ForecastView		Llovizna ligera
+Light freezing rain	ForecastView		Lluvia ligera y helada
+Loading…	ForecastView		Cargando...
+Mainly clear	ForecastView		Principalmente claro
+Moderate drizzle	ForecastView		Llovizna moderada
+Moderate rain	ForecastView		Lluvia moderada
+Moderate rain showers	ForecastView		Cortinas de lluvia moderada
+Moderate snow fall	ForecastView		Nezavón moderada
+No network	ForecastView		Sin conexión de red
+Not available	ForecastView		No disponible
+OK	ForecastView		Aceptar
+Overcast	ForecastView		Nublado
+Partly cloudy	ForecastView		Parcialmente nublado
+Slight rain	ForecastView		Un poco de lluvia
+Slight rain showers	ForecastView		Un poco de lluvia en cortinas
+Slight snow fall	ForecastView		Un poco de nieve
+Slight snow showers	ForecastView		Un poco de nieve en cortinas
+Snow grains	ForecastView		Copos de nieve
+Text	ForecastView		Texto
+Thunderstorm	ForecastView		Tormenta eléctrica
+Thunderstorm with heavy hail	ForecastView		Tormenta eléctrica con granizo fuerte
+Thunderstorm with slight hail	ForecastView		Tormenta eléctrica con un poco de granizo
+Transparent	ForecastView		Transparente
+Weather (The Replicant version)	ForecastView		Clima (versión Replicante)
+About Weather	MainWindow		Acerca de Clima
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Una aplicación meteorológica open-source que muestra la previsión para los próximos 5 días.
+Change location…	MainWindow		Cambiar ubicación...
+Loading…	MainWindow		Cargando...
+OK	MainWindow		Aceptar
+Preferences…	MainWindow		Preferencias…
+Quit	MainWindow		Salir
+Refresh	MainWindow		Refrescar
+Unable to create a deskbar replicant. The error is: \"	MainWindow		No se pudo crear el replicante en la barra de escritorio. El error es: \"
+Cancel	CitiesListSelectionWindow		Cancelar
+Choose location	CitiesListSelectionWindow		Seleccionar ubicación
+City:	CitiesListSelectionWindow		Ciudad:
+Enter location: city, country, region	CitiesListSelectionWindow		Ingrese ubicación: ciudad, país, región
+OK	CitiesListSelectionWindow		Aceptar
+OK	PreferencesWindow		Aceptar
+Preferences	PreferencesWindow		Preferencias
+Use Celsius °C	PreferencesWindow		Usar grados Celsius (°C)
+Use Fahrenheit °F	PreferencesWindow		Usar grados Fahrenheit (°F)
+Weather	System name		Clima

@@ -1,0 +1,60 @@
+1	Romanian	x-vnd.przemub.Weather	704655087
+About Weather	ForecastView		Despre Weather
+Background	ForecastView		Fundal
+Clear sky	ForecastView		Cer senin
+Connecting…	ForecastView		Se conectează...
+Connection error	ForecastView		Eroare de conexiune
+Default	ForecastView		Implicit
+Dense drizzle	ForecastView		Burniță densă
+Depositing rime fog	ForecastView		Ceață de jantă care se depune
+Fog	ForecastView		Ceață
+Freezing dense drizzle	ForecastView		Burniță densă înghețată
+Freezing light drizzle	ForecastView		Burniță ușoară înghețată
+Heavy freezing rain	ForecastView		Ploaie înghețată abundentă
+Heavy rain	ForecastView		Ploaie abundentă
+Heavy rain showers	ForecastView		Averse de ploaie puternică
+Heavy snow fall	ForecastView		Zăpadă abundentă
+Heavy snow showers	ForecastView		Averse abundente de zăpadă
+Light drizzle	ForecastView		Burniță ușoară
+Light freezing rain	ForecastView		Ploaie înghețată ușoară
+Loading…	ForecastView		Se încarcă...
+Mainly clear	ForecastView		În principal senin
+Moderate drizzle	ForecastView		Burniță moderată
+Moderate rain	ForecastView		Ploaie moderată
+Moderate rain showers	ForecastView		Averse de ploaie moderată
+Moderate snow fall	ForecastView		Zăpadă moderată
+No network	ForecastView		Fără rețea
+Not available	ForecastView		Nedisponibil
+OK	ForecastView		OK
+Overcast	ForecastView		Acoperit de nori
+Partly cloudy	ForecastView		Parțial înnorat
+Slight rain	ForecastView		Ploaie ușoară
+Slight rain showers	ForecastView		Averse uşoare de ploaie
+Slight snow fall	ForecastView		Zăpadă ușoară
+Slight snow showers	ForecastView		Averse ușoare de zăpadă
+Snow grains	ForecastView		Boabe de zăpadă
+Text	ForecastView		Text
+Thunderstorm	ForecastView		Furtună
+Thunderstorm with heavy hail	ForecastView		Furtună cu grindină puternică
+Thunderstorm with slight hail	ForecastView		Furtună cu grindină uşoară
+Transparent	ForecastView		Transparent
+Weather (The Replicant version)	ForecastView		Weather (Versiunea replicant)
+About Weather	MainWindow		Despre Weather
+An open source weather app showing a forecast for the next 5 days.	MainWindow		O aplicație meteo cu sursă deschisă care arată o prognoză pentru următoarele 5 zile.
+Change location…	MainWindow		Schimbă locația...
+Loading…	MainWindow		Se încarcă...
+OK	MainWindow		OK
+Preferences…	MainWindow		Preferințe...
+Quit	MainWindow		Închide
+Refresh	MainWindow		Reîncarcă
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Nu se poate crea un replicant de bară de desktop. Eroarea este: \"
+Cancel	CitiesListSelectionWindow		Anulează
+Choose location	CitiesListSelectionWindow		Alege locația
+City:	CitiesListSelectionWindow		Oraș:
+Enter location: city, country, region	CitiesListSelectionWindow		Introduceți locația: oraș, țară, regiune
+OK	CitiesListSelectionWindow		OK
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Preferințe
+Use Celsius °C	PreferencesWindow		Utilizează Celsius °C
+Use Fahrenheit °F	PreferencesWindow		Utilizează Fahrenheit °F
+Weather	System name		Weather

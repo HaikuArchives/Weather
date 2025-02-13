@@ -50,8 +50,8 @@ Refresh	MainWindow		Actualizar
 Unable to create a deskbar replicant. The error is: \"	MainWindow		No se pudo crear un replicante de barra de escritorio. El error es: \"
 Cancel	CitiesListSelectionWindow		Cancelar
 Choose location	CitiesListSelectionWindow		Elegir ubicación
-City:	CitiesListSelectionWindow		City:
-Enter location: city, country, region	CitiesListSelectionWindow		Enter location: city, country, region
+City:	CitiesListSelectionWindow		Ciudad:
+Enter location: city, country, region	CitiesListSelectionWindow		Ingrese la ubicación: ciudad, país, región
 OK	CitiesListSelectionWindow		Aceptar
 OK	PreferencesWindow		Aceptar
 Preferences	PreferencesWindow		Preferencias

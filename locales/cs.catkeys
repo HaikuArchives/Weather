@@ -1,0 +1,60 @@
+1	Czech	x-vnd.przemub.Weather	704655087
+About Weather	ForecastView		O aplikaci počasí
+Background	ForecastView		Pozadí
+Clear sky	ForecastView		Jasná obloha
+Connecting…	ForecastView		Připojování…
+Connection error	ForecastView		Chyba spojení (koukněte se z okna)
+Default	ForecastView		Výchozí
+Dense drizzle	ForecastView		Husté mrholení
+Depositing rime fog	ForecastView		Usazování námrazové mlhy
+Fog	ForecastView		Mlha
+Freezing dense drizzle	ForecastView		Mrazivé husté mrholení
+Freezing light drizzle	ForecastView		Mrznoucí slabé mrholení
+Heavy freezing rain	ForecastView		Silný mrznoucí déšť
+Heavy rain	ForecastView		Silný déšť
+Heavy rain showers	ForecastView		Silné dešťové přeháňky
+Heavy snow fall	ForecastView		Padá silný sníh
+Heavy snow showers	ForecastView		Silné sněhové přeháňky
+Light drizzle	ForecastView		Slabé mrholení
+Light freezing rain	ForecastView		Lehký mrznoucí déšť
+Loading…	ForecastView		Načítání…
+Mainly clear	ForecastView		Hlavně jasné
+Moderate drizzle	ForecastView		Mírné mrholení
+Moderate rain	ForecastView		Mírný déšť
+Moderate rain showers	ForecastView		Mírné dešťové přeháňky
+Moderate snow fall	ForecastView		Mírné sněžení
+No network	ForecastView		Žádná síť
+Not available	ForecastView		Nedostupné
+OK	ForecastView		OK
+Overcast	ForecastView		Zatažený
+Partly cloudy	ForecastView		Částečně oblačno
+Slight rain	ForecastView		Mírný déšť
+Slight rain showers	ForecastView		Slabé dešťové přeháňky
+Slight snow fall	ForecastView		Mírné sněžení
+Slight snow showers	ForecastView		Slabé sněhové přeháňky
+Snow grains	ForecastView		Sněhová zrna
+Text	ForecastView		Text
+Thunderstorm	ForecastView		Bouřka
+Thunderstorm with heavy hail	ForecastView		Bouřka se silným krupobitím
+Thunderstorm with slight hail	ForecastView		Bouřka se slabými kroupami
+Transparent	ForecastView		Průhledné
+Weather (The Replicant version)	ForecastView		Počasí (replikant)
+About Weather	MainWindow		O počasí
+An open source weather app showing a forecast for the next 5 days.	MainWindow		Open source aplikace pro počasí zobrazující předpověď na dalších 5 dní.
+Change location…	MainWindow		Změnit umístění…
+Loading…	MainWindow		Načítání…
+OK	MainWindow		OK
+Preferences…	MainWindow		Možnosti…
+Quit	MainWindow		Ukončit
+Refresh	MainWindow		Obnovit
+Unable to create a deskbar replicant. The error is: \"	MainWindow		Nelze vytvořit deskbar replikant. Chyba je: \"
+Cancel	CitiesListSelectionWindow		Zrušit
+Choose location	CitiesListSelectionWindow		Vybrat lokaci
+City:	CitiesListSelectionWindow		Město:
+Enter location: city, country, region	CitiesListSelectionWindow		Zadat lokaci: město, zemi, region
+OK	CitiesListSelectionWindow		OK
+OK	PreferencesWindow		OK
+Preferences	PreferencesWindow		Možnosti
+Use Celsius °C	PreferencesWindow		Použijte Celsia °C
+Use Fahrenheit °F	PreferencesWindow		Použijte Fahrenheita °F
+Weather	System name		Počasí
