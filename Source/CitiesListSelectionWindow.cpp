@@ -333,7 +333,7 @@ CitiesListSelectionWindow::_FindId()
 	BMallocIO requestData;
 	WSOpenMeteo listener(this, &requestData, CITY_REQUEST);
 
-#if B_HAIKU_VERSION < B_HAIKU_R1_PRE_BETA_6
+#if B_HAIKU_VERSION < B_HAIKU_VERSION_1_PRE_BETA_6
 	BUrl url(urlString.String());
 #else
 	BUrl url(urlString.String(), true);
