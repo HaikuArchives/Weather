@@ -38,7 +38,6 @@ extern const char* kSettingsFileName;
 
 const uint32 kSizeSmallIcon = 40;
 const uint32 kSizeLargeIcon = 80;
-const uint32 kSizeDeskBarIcon = 16;
 
 enum weatherIconSize {
 	SMALL_ICON,

@@ -1156,8 +1156,12 @@ ForecastView::_DownloadData()
 	BMessenger messenger(this, Window());
 	WSOpenMeteo listener(messenger, &replyData, WEATHER_REQUEST);
 	BString urlString = listener.GetUrl(fLongitude, fLatitude, fDisplayUnit);
-	
+
+#if B_HAIKU_VERSION < B_HAIKU_R1_PRE_BETA_6
 	BUrl link(urlString.String());
+#else
+	BUrl link(urlString.String(), true);
+#endif
 	BUrlRequest* request
 		= BUrlProtocolRoster::MakeRequest(link, &replyData, &listener);
 

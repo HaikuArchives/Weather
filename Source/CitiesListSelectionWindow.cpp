@@ -333,8 +333,13 @@ CitiesListSelectionWindow::_FindId()
 	BMallocIO requestData;
 	WSOpenMeteo listener(this, &requestData, CITY_REQUEST);
 
+#if B_HAIKU_VERSION < B_HAIKU_R1_PRE_BETA_6
+	BUrl url(urlString.String());
+#else
+	BUrl url(urlString.String(), true);
+#endif
 	BUrlRequest* request
-		= BUrlProtocolRoster::MakeRequest(BUrl(urlString.String()), &requestData, &listener);
+		= BUrlProtocolRoster::MakeRequest(url, &requestData, &listener);
 
 	thread_id thread = request->Run();
 	wait_for_thread(thread, NULL);
