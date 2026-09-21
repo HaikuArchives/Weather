@@ -141,6 +141,7 @@ status_t			SaveState(BMessage* into, bool deep = true) const;
 	void			SetDisplayUnit(DisplayUnit unit);
 	void			Reload(bool forcedForecast = false);
 	void			StopReload();
+	void			ReloadSettings();
 	void			SetCityName(BString city);
 	BString			CityName();
 	void			SetCityId(int32 cityId);

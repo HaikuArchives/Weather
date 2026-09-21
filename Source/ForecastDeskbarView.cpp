@@ -12,6 +12,7 @@
 #include <Roster.h>
 #include <String.h>
 #include <StringView.h>
+#include <cstdio>
 
 #include "App.h"
 #include "ForecastDeskbarView.h"
@@ -42,9 +43,6 @@ ForecastDeskbarView::ForecastDeskbarView(BMessage* archive)
 {
 	// fForecastView is unarchived and already added to the view hierarchy
 	fForecastView = static_cast<ForecastView*>(FindView("Weather"));
-	entry_ref appRef;
-	SetAppLocation(appRef);
-	archive->FindRef("appLocation", &appRef);
 }
 
 
@@ -62,6 +60,7 @@ ForecastDeskbarView::AttachedToWindow()
 	fMessageRunner = new BMessageRunner(BMessenger(this),
 		new BMessage(kUpdateForecastMessage), kToolTipDelay, -1);
 
+	fForecastView->ReloadSettings();
 	fForecastView->SetShowForecast(true);
 
 	AdoptParentColors();

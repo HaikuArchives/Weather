@@ -60,11 +60,19 @@ WSOpenMeteo::RequestCompleted(BUrlRequest* caller, bool success)
 BString
 WSOpenMeteo::GetUrl(double longitude, double latitude, DisplayUnit unit)
 {
+	// ToDo: Maybe there's a more elegant solution
+	// Fix potential locale error with double to BString conversion
+	BString longString;
+	longString << longitude;
+	longString.ReplaceAllChars(",", ".", 0);
+	BString latString;
+	latString << latitude;
+	latString.ReplaceAllChars(",", ".", 0);
+
 	BString urlString("https://api.open-meteo.com/v1/forecast?latitude=");
-	urlString
-		<< latitude << "&longitude=" << longitude
-		<< "&daily=weathercode,temperature_2m_max,temperature_2m_min&current_"
-		   "weather=true&timeformat=unixtime&timezone=auto";
+	urlString << latString << "&longitude=" << longString
+			  << "&daily=weathercode,temperature_2m_max,temperature_2m_min&current_"
+				 "weather=true&timeformat=unixtime&timezone=auto";
 
 	// Temperature unit measure
 	switch (unit) {
@@ -134,8 +142,8 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 	uint32 type;
 	int32 count, condition;
 	double high, low, temp;
-	BString code, text;		
-		
+	BString code, text;
+
 	int dayCount = 0;
 
 	BMessage weatherData;
@@ -162,7 +170,7 @@ WSOpenMeteo::_ProcessWeatherData(bool success)
 
 						if (dayMessage.FindDouble(tName, &date) == B_OK)
 							// Offset is added to get the correct date for the timezone selected
-							dailyWeather[tDay].date = date + utc_offset; 
+							dailyWeather[tDay].date = date + utc_offset;
 					}
 				}
 			}
@@ -369,7 +377,7 @@ WSOpenMeteo::_ProcessCityData(bool success)
 				locationMessage.FindString("admin1", &admin1);
 				locationMessage.FindString("admin2", &admin2);
 				locationMessage.FindString("admin3", &admin3);
-				
+
 				extendedInfo << locationName;
 				if (admin3 != "" && admin3 != locationName && admin3 != country)
 					extendedInfo << ", " << admin3;
@@ -378,7 +386,7 @@ WSOpenMeteo::_ProcessCityData(bool success)
 				if (admin1 != "" && admin1 != locationName && admin1 != country)
 					extendedInfo << ", "<< admin1;
 				extendedInfo << ", " << country;
-							 
+
 				locationMessage.FindDouble("longitude", &longitude);
 				locationMessage.FindDouble("latitude", &latitude);
 
@@ -392,7 +400,7 @@ WSOpenMeteo::_ProcessCityData(bool success)
 			}
 		}
 	}
-	
+
 #if DEBUG
 	SerializeBMessage(message, "weather_location_message");
 #endif

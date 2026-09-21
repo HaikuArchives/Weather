@@ -99,6 +99,7 @@ MainWindow::MessageReceived(BMessage* msg)
 		case kUpdateCityMessage:
 			// forward the message there
 			fForecastView->MessageReceived(msg);
+			_SaveSettings(); // Persist changes immediately
 			break;
 		case kUpdatePrefMessage:
 		{

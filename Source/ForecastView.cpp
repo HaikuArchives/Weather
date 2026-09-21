@@ -5,12 +5,13 @@
  * Copyright 2014 George White
  * All rights reserved. Distributed under the terms of the MIT license.
  */
- 
+
 #include <Alert.h>
 #include <AppKit.h>
 #include <Bitmap.h>
 #include <Catalog.h>
 #include <ControlLook.h>
+#include <DataIO.h>
 #include <FindDirectory.h>
 #include <Font.h>
 #include <GroupLayout.h>
@@ -25,7 +26,6 @@
 #include <NetworkRoster.h>
 #include <PopUpMenu.h>
 #include <TranslationUtils.h>
-#include <DataIO.h>
 #include <Url.h>
 #include <UrlProtocolRoster.h>
 #include <UrlRequest.h>
@@ -36,7 +36,6 @@
 #include "PreferencesWindow.h"
 #include "Util.h"
 #include "WSOpenMeteo.h"
-
 
 
 const float kDraggerSize = 7;
@@ -60,7 +59,7 @@ int32 fSizeDeskBarIcon = 10;
 class TransparentButton : public BButton
 {
 	public:
-								TransparentButton(const char* name, const char* label, 
+								TransparentButton(const char* name, const char* label,
 									BMessage* message);
 		virtual void 			Draw(BRect updateRect);
 };
@@ -285,6 +284,17 @@ ForecastView::_ApplyState(BMessage* archive)
 }
 
 
+void
+ForecastView::ReloadSettings()
+{
+	BMessage settings;
+	if (LoadSettings(settings) == B_OK) {
+		_ApplyState(&settings);
+		Reload(true);
+	}
+}
+
+
 status_t
 ForecastView::Archive(BMessage* into, bool deep) const
 {
@@ -347,7 +357,7 @@ ForecastView::AttachedToWindow()
 	if (fReplicated) {
 		fConditionButton->SetTarget(BMessenger(this));
 	}
-	
+
 	BMessenger view(this, Window());
 	BMessage autoUpdateMessage(kAutoUpdateMessage);
 	fAutoUpdate = new BMessageRunner(
@@ -676,12 +686,13 @@ ForecastView::_LoadIcons(BBitmap* bitmap[3], uint32 type, const char* name)
 
 	const void* data = NULL;
 
-	app_info info;
-	status_t status = be_roster->GetAppInfo(kSignature, &info);
+	entry_ref ref;
+	status_t status = be_roster->FindApp(kSignature, &ref);
+
 	if (status != B_OK)
 		return;
-		
-	BResources resources(&info.ref);
+
+	BResources resources(&ref);
 	status = resources.InitCheck();
 	size_t dataSize;
 	if (status == B_OK)
@@ -1118,7 +1129,7 @@ ForecastView::Reload(bool forcedForecast)
 {
 	if (!fConnected)
 		return;
-	
+
 	StopReload();
 
 	fForcedForecast = forcedForecast;
@@ -1162,6 +1173,7 @@ ForecastView::_DownloadData()
 #else
 	BUrl link(urlString.String(), true);
 #endif
+
 	BUrlRequest* request
 		= BUrlProtocolRoster::MakeRequest(link, &replyData, &listener);
 
