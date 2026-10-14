@@ -225,7 +225,6 @@ MainWindow::_SaveSettings()
 void
 MainWindow::MenusBeginning()
 {
-	//	Menu item removed until Deskbar replicant is fixed
 	BDeskbar deskbar;
 	fReplicantMenuItem->SetMarked(deskbar.HasItem("ForecastDeskbarView"));
 }
