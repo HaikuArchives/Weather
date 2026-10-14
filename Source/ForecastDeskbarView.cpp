@@ -6,9 +6,12 @@
 #include <Alert.h>
 #include <Bitmap.h>
 #include <Catalog.h>
+#include <FindDirectory.h>
 #include <IconUtils.h>
 #include <Looper.h>
 #include <MessageRunner.h>
+#include <NodeMonitor.h>
+#include <Path.h>
 #include <Roster.h>
 #include <String.h>
 #include <StringView.h>
@@ -49,6 +52,7 @@ ForecastDeskbarView::ForecastDeskbarView(BMessage* archive)
 
 ForecastDeskbarView::~ForecastDeskbarView()
 {
+	stop_watching(this);
 	delete fMessageRunner;
 	delete fForecastView;
 }
@@ -62,6 +66,15 @@ ForecastDeskbarView::AttachedToWindow()
 
 	fForecastView->ReloadSettings();
 	fForecastView->SetShowForecast(true);
+
+	BPath path;
+	if (find_directory(B_USER_SETTINGS_DIRECTORY, &path) == B_OK) {
+		path.Append(kSettingsFileName);
+		BEntry entry(path.Path());
+		node_ref nodeRef;
+		if (entry.GetNodeRef(&nodeRef) == B_OK)
+			watch_node(&nodeRef, B_WATCH_STAT, BMessenger(this));
+	}
 
 	AdoptParentColors();
 }
@@ -117,7 +130,9 @@ ForecastDeskbarView::MessageReceived(BMessage* message)
 		SetToolTip(weatherDetailsText);
 
 		Invalidate();
-	} else
+	} else if (message->what == B_NODE_MONITOR)
+		fForecastView->ReloadSettings();
+	else
 		BView::MessageReceived(message);
 }
 
@@ -163,6 +178,4 @@ instantiate_deskbar_item(float maxWidth, float maxHeight)
 	entry_ref appRef;
 	view->SetAppLocation(appRef);
 	return view;
-
-	//return new ForecastDeskbarView(BRect(0, 0, size - 1, size - 1));
 }
