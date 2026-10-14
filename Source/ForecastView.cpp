@@ -233,17 +233,11 @@ ForecastView::Instantiate(BMessage* archive)
 status_t
 ForecastView::_ApplyState(BMessage* archive)
 {
-	if (archive->FindString("city", &fCity) != B_OK)
-		fCity = kDefaultCityName;
-
-	if (archive->FindInt32("cityId", &fCityId) != B_OK)
-		fCityId = kDefaultCityId;
-
-	if (archive->FindDouble("longitude", &fLongitude) != B_OK)
-		fLongitude = kDefaultLongitude;
-
-	if (archive->FindDouble("latitude", &fLatitude) != B_OK)
-		fLatitude = kDefaultLatitude;
+	fCity = archive->GetString("city", kDefaultCityName);
+	fCityId = archive->GetInt32("cityId", kDefaultCityId);
+	fLongitude = archive->GetDouble("longitude", kDefaultLongitude);
+	fLatitude = archive->GetDouble("latitude", kDefaultLatitude);
+	fShowForecast = archive->GetBool("showForecast", kDefaultShowForecast);
 
 	int32 unit;
 	if (archive->FindInt32("displayUnit", &unit) != B_OK) {
@@ -261,9 +255,6 @@ ForecastView::_ApplyState(BMessage* archive)
 		}
 	} else
 		fDisplayUnit = (DisplayUnit) unit;
-
-	if (archive->FindBool("showForecast", &fShowForecast) != B_OK)
-		fShowForecast = kDefaultShowForecast;
 
 	rgb_color* color;
 	ssize_t colorsize;
@@ -478,6 +469,7 @@ ForecastView::MessageReceived(BMessage* msg)
 			msg->FindInt32("id", &cityId);
 			msg->FindDouble("latitude", &latitude);
 			msg->FindDouble("longitude", &longitude);
+
 			if ((CityId() != cityId)) {
 				SetCityName(cityName);
 				SetCityId(cityId);
@@ -986,6 +978,12 @@ void
 ForecastView::SetCityName(BString city)
 {
 	fCity = city;
+
+	// remove everything after the city name
+	int32 offset = city.FindFirst(",");
+	if (offset != B_ERROR)
+		city.Truncate(offset);
+
 	fCityView->TruncateString(&city, B_TRUNCATE_END, 150);
 	if (city != fCity)
 		fCityView->SetToolTip(fCity);
@@ -1012,7 +1010,13 @@ ForecastView::SetLongitude(double longitude)
 BString
 ForecastView::CityName()
 {
-	return fCity;
+	// remove everything after the city name
+	BString cityName = fCity;
+	int32 offset = cityName.FindFirst(",");
+	if (offset != B_ERROR)
+		cityName.Truncate(offset);
+
+	return cityName;
 }
 
 
